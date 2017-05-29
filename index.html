@@ -44,7 +44,6 @@
       </div>
     </div>
 
-
     <div id="containerboutonAggloTransports">
       <div style="font-size:14px; font-weight:bold; margin: 8px -10px 0px -10px;">Qualité mesurée</div>
       <div class="boutonAggloTransports" id="boutonTransports" style="margin: 5px 10px 0px 0px; position:relative;">
@@ -199,106 +198,8 @@
       </div>
       <div id="ZoneGraphiquesTransportsData" style="width: 224px; height: 126px; margin: 5px 19px 0px 19px; border:0px solid grey; float:left">
         <div id="menuDeroulantTransports" style="margin: 2px 10px 0px 2px; float:left">
-          <select name="axe" id="SelectAutoroutes" style="width: 220px;">
-          <option value="toutesAutoroutes"> Filtrer sur une autoroute</option>
-          <option value="A1">  A1 Paris - Lille</option>
-          <option value="A4">  A4 Paris - Strasbourg</option>
-          <option value="A6">  A6 Paris - Lyon</option>
-          <option value="A7">  A7 Lyon - Marseille</option>
-          <option value="A8">  A8 Aix en Provence - Menton</option>
-          <option value="A9">  A9 Orange - Perpignan</option>
-          <option value="A10">  A10 Paris - Bordeaux</option>
-          <option value="A11">  A11 Paris - Nantes</option>
-          <option value="A13">  A13 Paris - Caen</option>
-          <option value="A31">  A31 Luxembourg - Beaune</option>
-          <option value="A61">  A61 Toulouse - Narbonne</option>
-          <option value="A62">  A62 Bordeaux - Toulouse</option>
-        </select>
-          <select name="axe" id="SelectTGV" style="width: 220px; display: none;">
-          <option value="tousTGV"> Filtrer sur une ligne TGV</option>
-          <option value="TGV-PARISLILLE">  Paris - Lille</option>
-          <option value="TGV-PARISCALAIS">  Paris - Calais</option>
-          <option value="TGV-PARISRENNES">  Paris - Rennes</option>
-          <option value="TGV-PARISNANTES">  Paris - Nantes</option>
-          <option value="TGV-PARISBORDEAUX">  Paris - Bordeaux</option>
-          <option value="TGV-PARISMARSEILLE">  Paris - Marseille</option>
-          <option value="TGV-PARISLYON">  Paris - Lyon</option>
-          <option value="TGV-PARISMULHOUSE">  Paris - Mulhouse</option>
-          <option value="TGV-PARISSTRASBOURG">  Paris - Strasbourg</option>
-          <option value="TGV-LILLEMONTPELLIER">  Lille - Montpellier</option>
-        </select>
-          <select name="axe" id="SelectTET" style="width: 220px; display: none;">
-          <option value="tousTET"> Filtrer sur un train grandes lignes</option>
-          <option value="TET-BORDEAUXMARSEILLE">  Bordeaux - Marseille</option>
-          <option value="TET-NANTESBORDEAUX">  Nantes - Bordeaux</option>
-          <option value="TET-NANTESBOURGESLYON">  Nantes - Bourges - Lyon</option>
-          <option value="TET-PARISAMIENSBOULOGNE">  Paris - Amiens - Boulogne</option>
-          <option value="TET-PARISROUENLEHAVRE">  Paris - Rouen - Le Havre</option>
-          <option value="TET-PARISCAENCHERBOURG">  Paris - Caen - Cherbourg</option>
-          <option value="TET-PARISORLEANSTOURS">  Paris - Orléans - Tours</option>
-          <option value="TET-PARISLIMOGESTOULOUSE">  Paris - Limoges - Toulouse</option>
-          <option value="TET-PARISCLERMONTFERRAND">  Paris - Clermont Ferrand</option>
-          <option value="TET-PARISTROYESBELFORT">  Paris - Troyes - Belfort</option>
-        </select>
-          <select name="axe" id="SelectTDQ" style="width: 220px; display: none;">
-          <option value="tousTDQ"> Filtrer sur un train du quotidien</option>
-          <option value="TDQ-RERA">  RER A</option>
-          <option value="TDQ-RERB">  RER B</option>
-          <option value="TDQ-RERC">  RER C</option>
-          <option value="TDQ-RERD">  RER D</option>
-          <option value="TDQ-RERE">  RER E</option>
-          <option value="TDQ-LigneH">  Ligne H - Gare du Nord Ouest</option>
-          <option value="TDQ-LigneJ">  Ligne J - Gare Saint Lazare Nord</option>
-          <option value="TDQ-LigneL">  Ligne L - Gare Saint Lazare Sud</option>
-          <option value="TDQ-LigneN">  Ligne N - Gare Montparnasse</option>
-          <option value="TDQ-LigneP">  Ligne P - Gare de l'Est</option>
-          <option value="TDQ-LigneR">  Ligne R - Gare de Lyon</option>
-          <option value="TDQ-LigneU">  Ligne U - Tangentielle</option>
-          <option value="TDQ-Paris-Chartres">  Paris - Chartres</option>
-          <option value="TDQ-Lille-Bethune">  Lille - Bethune</option>
-          <option value="TDQ-Lille-Valenciennes">  Lille - Valenciennes</option>
-          <option value="TDQ-Lille-Amiens">  Lille - Amiens</option>
-          <option value="TDQ-Rennes-StMalo">  Rennes - St Malo</option>
-          <option value="TDQ-Rennes-StBrieuc">  Rennes - St Brieuc</option>
-          <option value="TDQ-Rennes-Redon">  Rennes - Redon</option>
-          <option value="TDQ-Brest-Morlaix">  Brest - Morlaix</option>
-          <option value="TDQ-Nantes-Vannes">  Nantes-Vannes</option>
-          <option value="TDQ-Nantes-StNazaire">  Nantes-St Nazaire</option>
-          <option value="TDQ-Bordeaux-Arcachon">  Bordeaux - Arcachon</option>
-          <option value="TDQ-Toulouse-Albi">  Toulouse - Albi</option>
-          <option value="TDQ-Narbonne-Cerbere">  Narbonne - Cerbère</option>
-          <option value="TDQ-Aix-Marseille">  Aix - Marseille</option>
-          <option value="TDQ-Marseille-Toulon">  Marseille - Toulon</option>
-          <option value="TDQ-Toulon-Nice">  Toulon - Nice</option>
-          <option value="TDQ-Nice-Menton">  Nice-Menton</option>
-          <option value="TDQ-Ajaccio-Bastia">  Ajaccio - Bastia</option>
-          <option value="TDQ-Lyon-Grenoble">  Lyon - Grenoble</option>
-          <option value="TDQ-Lyon-StEtienne">  Lyon - St Etienne</option>
-          <option value="TDQ-Lyon-AmbrieuenBugey">  Lyon - Ambérieu en Bugey</option>
-          <option value="TDQ-Lyon-Macon">  Lyon - Macon</option>
-          <option value="TDQ-Annecy-Chambery">  Annecy - Chambery</option>
-          <option value="TDQ-Dijon-ChalonsurSaone">  Dijon - Chalon sur Saône</option>
-          <option value="TDQ-Strasbourg-Nancy">  Strasbourg - Nancy</option>
-          <option value="TDQ-Strasbourg-Mulhouse-SaintLouis">  Strasbourg - Mulhouse - Saint Louis</option>
-          <option value="TDQ-Nancy-Metz-Luxembourg">  Nancy - Metz - Luxembourg</option>
-        </select>
-          <select name="axe" id="SelectMetro" style="width: 220px; display: none;">
-          <option value="tousMetros"> Filtrer sur une ligne de métro</option>
-          <option value="M1">  Ligne 1</option>
-          <option value="M2">  Ligne 2</option>
-          <option value="M3">  Lignes 3 et 3 bis</option>
-          <option value="M4">  Ligne 4</option>
-          <option value="M5">  Ligne 5</option>
-          <option value="M6">  Ligne 6</option>
-          <option value="M7">  Lignes 7 et 7 bis</option>
-          <option value="M8">  Ligne 8</option>
-          <option value="M9">  Ligne 9</option>
-          <option value="M10">  Ligne 10</option>
-          <option value="M11">  Ligne 11</option>
-          <option value="M12">  Ligne 12</option>
-          <option value="M13">  Ligne 13</option>
-          <option value="M14">  Ligne 14</option>
-        </select>
+          <input type="text" id="autocompleteRoute" list="voies" style="width: 220px;" placeholder="Filter sur une voie"/>
+          <datalist id="voies"></datalist>
         </div>
         <div id="GraphiqueQoS_WebTransports" style="width: 130px; height: 100px;margin: 0px 47px 10px 47px; float:left"></div>
       </div>

@@ -581,27 +581,6 @@ geocoder.on('result', function(ev) {
   map.getSource('single-point').setData(ev.result.geometry);
 });
 
-document.getElementById("SelectAutoroutes").onchange = function() {
-  MiseAjourIHM(strateTransports);
-  setTransportsFilter();
-};
-document.getElementById("SelectTGV").onchange = function() {
-  MiseAjourIHM(strateTransports);
-  setTransportsFilter();
-};
-document.getElementById("SelectTET").onchange = function() {
-  MiseAjourIHM(strateTransports);
-  setTransportsFilter();
-};
-document.getElementById("SelectTDQ").onchange = function() {
-  MiseAjourIHM(strateTransports);
-  setTransportsFilter();
-};
-document.getElementById("SelectMetro").onchange = function() {
-  MiseAjourIHM(strateTransports);
-  setTransportsFilter();
-};
-
 function convertirStrateEnTexte(strate) {
   if (strate == "dense") {
     return "dense";
@@ -1092,6 +1071,9 @@ $("#boutonCouverture").click(function() {
 $("#boutonQoS").click(function() {
   if (couvertureQosAvant != "QoS") {
     activeBoutonQoS();
+
+    createDataList(strateTransports);
+
     couvertureQos = "QoS";
     afficherCouches();
     if (agglosTransports == "agglos" || (agglosTransports == "transports" && transportsVoixData == "voix")) {
@@ -1335,61 +1317,46 @@ $("#boutonDense").click(function() {
 $("#boutonAutoroutes").click(function() {
   activeBoutonAutoroutes();
   strateTransports = "autoroutes";
+  sousStrateTransports = "toutesAutoroutes";
+  createDataList(strateTransports);
   MiseAjourIHM(strateTransports);
   MiseAjourCheckboxOperateursMetro();
-  document.getElementById('SelectAutoroutes').style.display = 'block';
-  document.getElementById('SelectTGV').style.display = 'none';
-  document.getElementById('SelectTET').style.display = 'none';
-  document.getElementById('SelectTDQ').style.display = 'none';
-  document.getElementById('SelectMetro').style.display = 'none';
   setTransportsFilter();
 });
 $("#boutonTGV").click(function() {
   activeBoutonTGV();
   strateTransports = "tgv";
+  sousStrateTransports = "tousTGV";
+  createDataList(strateTransports);
   MiseAjourIHM(strateTransports);
   MiseAjourCheckboxOperateursMetro();
-  document.getElementById('SelectAutoroutes').style.display = 'none';
-  document.getElementById('SelectTGV').style.display = 'block';
-  document.getElementById('SelectTET').style.display = 'none';
-  document.getElementById('SelectTDQ').style.display = 'none';
-  document.getElementById('SelectMetro').style.display = 'none';
   setTransportsFilter();
 });
 $("#boutonTET").click(function() {
   activeBoutonTET();
   strateTransports = "tet";
+  sousStrateTransports = "tousTET";
+  createDataList(strateTransports);
   MiseAjourIHM(strateTransports);
   MiseAjourCheckboxOperateursMetro();
-  document.getElementById('SelectAutoroutes').style.display = 'none';
-  document.getElementById('SelectTGV').style.display = 'none';
-  document.getElementById('SelectTET').style.display = 'block';
-  document.getElementById('SelectTDQ').style.display = 'none';
-  document.getElementById('SelectMetro').style.display = 'none';
   setTransportsFilter();
 });
 $("#boutonTDQ").click(function() {
   activeBoutonTDQ();
   strateTransports = "tdq";
+  sousStrateTransports = "tousTDQ";
+  createDataList(strateTransports);
   MiseAjourIHM(strateTransports);
   MiseAjourCheckboxOperateursMetro();
-  document.getElementById('SelectAutoroutes').style.display = 'none';
-  document.getElementById('SelectTGV').style.display = 'none';
-  document.getElementById('SelectTET').style.display = 'none';
-  document.getElementById('SelectTDQ').style.display = 'block';
-  document.getElementById('SelectMetro').style.display = 'none';
   setTransportsFilter();
 });
 $("#boutonMetro").click(function() {
   activeBoutonMetro();
   strateTransports = "metro";
+  sousStrateTransports = "tousMetros";
+  createDataList(strateTransports);
   MiseAjourIHM(strateTransports);
   MiseAjourCheckboxOperateursMetro();
-  document.getElementById('SelectAutoroutes').style.display = 'none';
-  document.getElementById('SelectTGV').style.display = 'none';
-  document.getElementById('SelectTET').style.display = 'none';
-  document.getElementById('SelectTDQ').style.display = 'none';
-  document.getElementById('SelectMetro').style.display = 'block';
   setTransportsFilter();
 });
 $("#boutonInfosCouvVoix").click(function() {
@@ -1824,22 +1791,6 @@ function MiseAjourIHM(features) {
     return 1;
   }
   if (features == "tgv" || features == "tet" || features == "tdq" || features == "metro" || features == "autoroutes") {
-    if (features == "tgv") {
-      sousStrateTransports = document.getElementById("SelectTGV").value;
-    }
-    if (features == "tet") {
-      sousStrateTransports = document.getElementById("SelectTET").value;
-    }
-    if (features == "tdq") {
-      sousStrateTransports = document.getElementById("SelectTDQ").value;
-    }
-    if (features == "metro") {
-      sousStrateTransports = document.getElementById("SelectMetro").value;
-    }
-    if (features == "autoroutes") {
-      sousStrateTransports = document.getElementById("SelectAutoroutes").value;
-    }
-    //document.getElementById('output').innerHTML = JSON.stringify(sousStrateTransports);
     if (features != "metro") {
       new Highcharts.Chart(GraphiqueQoS_VoixTransports(features), function(chart) {
         for (var i = 0; i < 4; i++) {
@@ -4293,3 +4244,90 @@ window.addEventListener('orientationchange', function() {
     $("#toggleHUD").css("left", "287px")
   }
 });
+
+
+
+document.getElementById("autocompleteRoute").addEventListener("input", getSelectedRoute);
+
+function createDataList(strateTransports){
+  console.log("createDataList function");
+  resetInput("autocompleteRoute");
+  removeAllChild("voies");
+  console.log("strateTransports : " + strateTransports);
+  var obj = JSON.parse(listeVoies);
+  var listeStrateTransports;
+  switch (strateTransports) {
+    case "autoroutes":
+      listeStrateTransports = obj.autoroutes;
+      break;
+    case "tgv":
+      listeStrateTransports = obj.tgv;
+      break;
+    case "metro":
+      listeStrateTransports = obj.metros;
+      break;
+    case "tet":
+      listeStrateTransports = obj.trainsET;
+      break;
+    case "tdq":
+      listeStrateTransports = obj.trainsQuotidien;
+      break;
+  }
+
+  //Select the blank datalist
+  var parentNode = document.getElementById("voies");
+
+  for (var i = 0; i < listeStrateTransports.length; i++) {
+    var newOption = document.createElement("option");
+    newOption.value = listeStrateTransports[i].value;
+    parentNode.appendChild(newOption);
+  }
+}
+
+function removeAllChild(selector) {
+  var parentNode = document.getElementById(selector);
+  while (parentNode.firstChild) {
+    parentNode.removeChild(parentNode.firstChild);
+  }
+}
+
+function resetInput(selector){
+  document.getElementById(selector).value = "";
+}
+
+function getSelectedRoute(){
+  if (document.getElementById("autocompleteRoute").value != "") {
+    var selectedValue = document.getElementById("autocompleteRoute").value;
+
+    var obj = JSON.parse(listeVoies);
+    switch (strateTransports) {
+      case "autoroutes":
+        var listeStrateTransports = obj.autoroutes;
+        break;
+      case "tgv":
+        var listeStrateTransports = obj.tgv;
+        break;
+      case "metro":
+        var listeStrateTransports = obj.metros;
+        break;
+      case "tet":
+        var listeStrateTransports = obj.trainsET;
+        break;
+      case "tdq":
+        var listeStrateTransports = obj.trainsQuotidien;
+        break;
+    }
+
+    for (var i = 0; i < listeStrateTransports.length; i++) {
+      if (selectedValue == listeStrateTransports[i].value) {
+        sousStrateTransports = listeStrateTransports[i].key;
+        console.log("New selection !");
+        console.log("strateTransports : " + strateTransports);
+        console.log("sousStrateTransports : " + sousStrateTransports);
+
+        MiseAjourIHM(strateTransports);
+        setTransportsFilter();
+      }
+    }
+  }
+}
