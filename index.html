@@ -64,12 +64,12 @@
       <div style="font-size:14px; font-weight:bold; margin: 18px -10px 0px -10px;">Cartes de couverture simulée</div>
 
       <div id="GraphiqueCouv_Techno" style="width: 100%; height: 120px;">
-        <boutonGeo id="boutonCarteVoix" style="width:124px; height:110px; margin: 5px 10px 0px 0px;position:relative;"><img <div style="height: 80px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteVoix.png">
-          <div style="line-height:12px;">Voix et SMS<br><span style="font-size:9px;">(version beta)</div><div class="selectLight" id="selectLightCarteVoix"></div></boutonGeo>
-          <boutonGeo id="boutonCarteData" style="width:124px; height:110px; margin: 5px 0px 0px 0px;position:relative;"><img <div style="height: 80px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteData.png"><div>Internet mobile</div><div class="selectLight" id="selectLightCarteData"></div></boutonGeo>
+        <div class="boutonGeo" id="boutonCarteVoix" style="width:124px; height:110px; margin: 5px 10px 0px 0px;position:relative;"><img <div style="height: 80px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteVoix.png">
+          <div style="line-height:12px;">Voix et SMS<br><span style="font-size:9px;">(version beta)</div><div class="selectLight" id="selectLightCarteVoix"></div></div>
+          <div class="boutonGeo" id="boutonCarteData" style="width:124px; height:110px; margin: 5px 0px 0px 0px;position:relative;"><img <div style="height: 80px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteData.png"><div>Internet mobile</div><div class="selectLight" id="selectLightCarteData"></div></div>
 
-          <boutonGeo id="bouton3G" style="height:30px; width:49px; margin: 8px 10px 0px 142px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;"><div>3G</div><div class="selectLight" id="selectLight3G"></div></boutonGeo>
-          <boutonGeo id="bouton4G" style="height:30px; width:49px; margin: 8px 0px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;"><div>4G</div><div class="selectLight" id="selectLight4G"></div></boutonGeo>
+          <div class="boutonGeo" id="bouton3G" style="height:30px; width:49px; margin: 8px 10px 0px 142px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;"><div>3G</div><div class="selectLight" id="selectLight3G"></div></div>
+          <div class="boutonGeo" id="bouton4G" style="height:30px; width:49px; margin: 8px 0px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;"><div>4G</div><div class="selectLight" id="selectLight4G"></div></div>
 
         </div>
 
@@ -104,26 +104,26 @@
     <div id="ZoneGraphiquesQoS">
       <div style="font-size:14px; font-weight:bold; margin: 10px -10px 0px -10px; float:left;">Par type de lieux</div>
       <div id="GraphiqueQoS_ZoneGeo" style="width: 100%; height: 110px;">
-        <boutonGeo id="boutonNational" style="width:258px; margin: 5px 0px 10px 0px;position:relative;">
+        <div class="boutonGeo" id="boutonNational" style="width:258px; margin: 5px 0px 10px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/ToutesZones.png"></div>
           <div>Toutes zones</div>
           <div class="selectLight" id="selectLightNational"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonRural" style="width:73px; margin: 0px 10px 0px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonRural" style="width:73px; margin: 0px 10px 0px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Rural.png"></div>
           <div>Zone rurale</div>
           <div class="selectLight" id="selectLightRural"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonIntermediaire" style="width:92px; margin: 0px 10px 0px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonIntermediaire" style="width:92px; margin: 0px 10px 0px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Intermediaire.png"></div>
           <div>Z. intermédiaire</div>
           <div class="selectLight" id="selectLightIntermediaire"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonDense" style="width:73px; margin: 0px 0px 0px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonDense" style="width:73px; margin: 0px 0px 0px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Dense.png"></div>
           <div>Zone dense</div>
           <div class="selectLight" id="selectLightDense"></div>
-        </boutonGeo>
+        </div>
       </div>
 
       <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
@@ -144,31 +144,31 @@
     <div id="ZoneGraphiquesTransports">
       <div style="font-size:14px; font-weight:bold; margin: 10px -10px 0px -10px; float:left;">Par type de transports</div>
       <div id="GraphiqueQoSTransports_ZoneGeo" style="width: 100%; height: 110px; float:left;">
-        <boutonGeo id="boutonAutoroutes" style="width:76px; margin: 5px 10px 10px 0px;position:relative;">
+        <div class="boutonGeo" id="boutonAutoroutes" style="width:76px; margin: 5px 10px 10px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Autoroutes.png"></div>
           <div>Autoroutes</div>
           <div class="selectLight" id="selectLightAutoroutes"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonTGV" style="width:76px; margin: 5px 10px 10px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonTGV" style="width:76px; margin: 5px 10px 10px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/TGV.png"></div>
           <div>TGV</div>
           <div class="selectLight" id="selectLightTGV"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonTET" style="width:88px; margin: 5px 0px 10px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonTET" style="width:88px; margin: 5px 0px 10px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/TET.png"></div>
           <div>Grandes lignes</div>
           <div class="selectLight" id="selectLightTET"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonTDQ" style="width:115px; margin: 5px 10px 0px 10px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonTDQ" style="width:115px; margin: 5px 10px 0px 10px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Tdb.png"></div>
           <div>Trains du quotidien</div>
           <div class="selectLight" id="selectLightTDQ"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonMetro" style="width:115px; margin: 5px 10px 0px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonMetro" style="width:115px; margin: 5px 10px 0px 0px;position:relative;">
           <div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Metro.png"></div>
           <div>Métro parisien</div>
           <div class="selectLight" id="selectLightMetro"></div>
-        </boutonGeo>
+        </div>
       </div>
 
       <div style="width: 60%; height: 1px; margin: 15px 20% 5px 20%; float:left;">
@@ -177,16 +177,16 @@
       <div style="font-size:14px; font-weight:bold; margin: 0px -10px 0px -10px; float:left;">Par type de service</div>
 
       <div style="float:left;">
-        <boutonGeo id="boutonQoSTransportsVoixSMS" style="width:100px; margin: 10px 10px 0px 24px;position:relative;">
+        <div class="boutonGeo" id="boutonQoSTransportsVoixSMS" style="width:100px; margin: 10px 10px 0px 24px;position:relative;">
           <div style="height: 25px;"><img <div style="height: 25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQosVoix.png"></div>
           <div>Voix et SMS</div>
           <div class="selectLight" id="selectLightQoSTransportsVoixSMS"></div>
-        </boutonGeo>
-        <boutonGeo id="boutonQoSTransportsData" style="width:100px; margin: 10px 24px 0px 0px;position:relative;">
+        </div>
+        <div class="boutonGeo" id="boutonQoSTransportsData" style="width:100px; margin: 10px 24px 0px 0px;position:relative;">
           <div style="height: 25px;"><img <div style="height: 25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQosData.png"></div>
           <div>Internet mobile</div>
           <div class="selectLight" id="selectLightQoSTransportsData"></div>
-        </boutonGeo>
+        </div>
       </div>
       <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
         <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
