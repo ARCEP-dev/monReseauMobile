@@ -22,11 +22,11 @@ var agglosTransportsAvant = "transports";
 var agglosTransports = "transports";
 var transportsVoixDataAvant = "data";
 var transportsVoixData = "data";
-var nomCommune = "";
 
 MiseAjourIHM("4G");
 MiseAjourIHM("national");
 MiseAjourIHM("autoroutes");
+
 activeBoutonCouverture();
 activeBoutonCarteVoix();
 activeBouton4G();
@@ -36,9 +36,9 @@ activeBoutonQoSTransportsData();
 activeBoutonAutoroutes();
 
 if (!mapboxgl.supported()) {
-  alert('Votre navigateur Internet ne permet pas d\'afficher cette page. Veuillez le mettre à jour.');
+  alert("Votre navigateur Internet ne permet pas d\'afficher cette page. Veuillez le mettre à jour.");
 } else {
-  mapboxgl.accessToken = 'pk.eyJ1Ijoic3RlcGhhbmVkZWJveXNzb24iLCJhIjoiY2lvN3A1eGQ4MDA3M3Z5a3AzNzQzMmJsZCJ9.u_6ia9oYkGwdRpjQ1R8_qg';
+  mapboxgl.accessToken = mapBoxToken;
   var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/stephanedeboysson/cixuos482006j2slg51a945r8',
@@ -49,17 +49,18 @@ if (!mapboxgl.supported()) {
     maxBounds: [-12, 39, 18, 53],
     attributionControl: false,
   });
+  // disable map rotation
+  map.dragRotate.disable();
+  map.touchZoomRotate.disableRotation();
 }
 
-// disable map rotation
-//map.dragRotate.disable();
-//map.touchZoomRotate.disableRotation();
 // Add geocoder
 var geocoder = new MapboxGeocoder({
   accessToken: mapboxgl.accessToken,
   country: 'fr',
   types: 'place,locality,postcode,address',
 });
+
 geocoder.options.placeholder = "Rechercher votre adresse";
 map.addControl(geocoder);
 // Add geolocate control to the map.
@@ -73,6 +74,7 @@ map.addControl(new mapboxgl.ScaleControl({
   maxWidth: 80,
   unit: 'metric'
 }));
+
 map.on('load', function() {
   map.addSource('single-point', {
     "type": "geojson",
@@ -93,7 +95,6 @@ map.on('load', function() {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.2oma6qi3'
   });
-
   map.addSource('BC_Orange', {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.1itlprfq'
@@ -106,7 +107,6 @@ map.on('load', function() {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.byh030uw'
   });
-
   map.addSource('BC_Bouygues', {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.d2cg6m3r'
@@ -119,7 +119,6 @@ map.on('load', function() {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.2ojpr35i'
   });
-
   map.addSource('BC_SFR', {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.3ugfuhda'
@@ -132,7 +131,6 @@ map.on('load', function() {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.55trxcxo'
   });
-
   map.addSource('BC_Free', {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.2k878f8z'
@@ -145,7 +143,6 @@ map.on('load', function() {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.9f327gzv'
   });
-
   map.addSource('3G_Orange', {
     type: 'vector',
     url: 'mapbox://stephanedeboysson.5y8y2hfk'
@@ -224,9 +221,6 @@ map.on('load', function() {
     //"filter": ["==", "Operateur", 20801],
     //"filter": ["==", "Operateur", MCCMNCCouv],
   });
-
-
-
   map.addLayer({
     "id": "TBC_Orange",
     "type": "fill",
@@ -238,7 +232,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "BC_Orange",
     "type": "fill",
@@ -261,7 +254,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "TBC_Bouygues",
     "type": "fill",
@@ -273,7 +265,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "BC_Bouygues",
     "type": "fill",
@@ -296,7 +287,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "TBC_SFR",
     "type": "fill",
@@ -308,7 +298,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "BC_SFR",
     "type": "fill",
@@ -331,7 +320,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "TBC_Free",
     "type": "fill",
@@ -343,7 +331,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "BC_Free",
     "type": "fill",
@@ -366,7 +353,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "3G_Orange",
     "type": "fill",
@@ -444,7 +430,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "3G_Free_bridee",
     "type": "fill",
@@ -456,7 +441,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "4G_Free",
     "type": "fill",
@@ -468,7 +452,6 @@ map.on('load', function() {
       "fill-outline-color": 'rgba(255, 255, 255, 0)',
     },
   }, 'place_label_other');
-
   map.addLayer({
     "id": "transports",
     "type": "circle",
@@ -498,31 +481,67 @@ map.on('load', function() {
     //"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", MCCMNCCouv]],
   });
 
-  map.setLayoutProperty('transports', 'visibility', 'none');
-  map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-  map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-  map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-  map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-  map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-  map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-  map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-  map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-  map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-  map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-  map.setLayoutProperty('BC_Free', 'visibility', 'none');
-  map.setLayoutProperty('CL_Free', 'visibility', 'none');
-  map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-  map.setLayoutProperty('4G_Orange', 'visibility', 'none');
-  map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-  map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
-  map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-  map.setLayoutProperty('4G_SFR', 'visibility', 'none');
-  map.setLayoutProperty('3G_Free', 'visibility', 'none');
-  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-  map.setLayoutProperty('4G_Free', 'visibility', 'none');
+  setAllLayersInvisible();
   randomOperateur();
 });
 
+/*
+map.on('load', function() {
+  map.addSource('single-pointest', {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": []
+    }
+  });
+
+  map.addLayer({
+    "id": "point",
+    "source": "single-pointest",
+    "type": "circle",
+    "paint": {
+      "circle-radius": 10,
+      "circle-color": "#4c4c4c"
+    }
+  });
+
+  addMbSource("single-point");
+  addMbSource("3d-buildings");
+  addMbSource("transports");
+  addMbSource("Sites");
+  addMbSource("BC_Orange");
+  addMbSource("CL_Orange");
+  addMbSource("TBC_Orange");
+  addMbSource("BC_Bouygues");
+  addMbSource("CL_Bouygues");
+  addMbSource("TBC_Bouygues");
+  addMbSource("BC_SFR");
+  addMbSource("CL_SFR");
+  addMbSource("TBC_SFR");
+  addMbSource("BC_Free");
+  addMbSource("CL_Free");
+  addMbSource("TBC_Free");
+
+  addMbLayer("3d-buildings");
+  addMbLayer("Sites");
+  addMbLayer("point");
+
+  addMbLayer("TBC_Orange");
+  addMbLayer("BC_Orange");
+  addMbLayer("CL_Orange");
+  addMbLayer("TBC_Bouygues");
+  addMbLayer("BC_Bouygues");
+  addMbLayer("CL_Bouygues");
+  addMbLayer("TBC_SFR");
+  addMbLayer("BC_SFR");
+  addMbLayer("CL_SFR");
+  addMbLayer("TBC_Free");
+  addMbLayer("BC_Free");
+  addMbLayer("CL_Free");
+
+  randomOperateur();
+});
+*/
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point);
   if (!features.length) {
@@ -560,12 +579,13 @@ var popup = new mapboxgl.Popup({
   closeButton: false,
   closeOnClick: false
 });
+
 map.on('mousemove', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
     layers: ['Sites']
   });
   // Change the cursor style as a UI indicator.
-  map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+  //map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
   if (!features.length) {
     popup.remove();
     return;
@@ -577,6 +597,7 @@ map.on('mousemove', function(e) {
     .setHTML(getIconeOperateur() + "<br>Emetteur " + getTechnosInstalleesSite(feature.properties.C4G, feature.properties.C3G, feature.properties.C2G))
     .addTo(map);
 });
+
 geocoder.on('result', function(ev) {
   map.getSource('single-point').setData(ev.result.geometry);
 });
@@ -625,219 +646,78 @@ function afficherCouches() {
   if ((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
     map.setLayoutProperty('Sites', 'visibility', 'visible');
     if (carteCouverture == "voix") {
+      setAllLayersInvisible();
       if (MCCMNCCouv == 20801) {
-        map.setLayoutProperty('TBC_Orange', 'visibility', 'visible');
-        map.setLayoutProperty('BC_Orange', 'visibility', 'visible');
-        map.setLayoutProperty('CL_Orange', 'visibility', 'visible');
-        map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-        map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-        map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-        map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-        map.setLayoutProperty('BC_Free', 'visibility', 'none');
-        map.setLayoutProperty('CL_Free', 'visibility', 'none');
+        setLayerVisible("TBC_Orange");
+        setLayerVisible("BC_Orange");
+        setLayerVisible("CL_Orange");
       }
       if (MCCMNCCouv == 20810) {
-        map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-        map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-        map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-        map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('TBC_SFR', 'visibility', 'visible');
-        map.setLayoutProperty('BC_SFR', 'visibility', 'visible');
-        map.setLayoutProperty('CL_SFR', 'visibility', 'visible');
-        map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-        map.setLayoutProperty('BC_Free', 'visibility', 'none');
-        map.setLayoutProperty('CL_Free', 'visibility', 'none');
+        setLayerVisible("TBC_SFR");
+        setLayerVisible("BC_SFR");
+        setLayerVisible("CL_SFR");
       }
       if (MCCMNCCouv == 20815) {
-        map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-        map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-        map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-
-        map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-        map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-        map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-        map.setLayoutProperty('TBC_Free', 'visibility', 'visible');
-        map.setLayoutProperty('BC_Free', 'visibility', 'visible');
-        map.setLayoutProperty('CL_Free', 'visibility', 'visible');
+        setLayerVisible("TBC_Free");
+        setLayerVisible("BC_Free");
+        setLayerVisible("CL_Free");
       }
       if (MCCMNCCouv == 20820) {
-        map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-        map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-        map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-
-        map.setLayoutProperty('TBC_Bouygues', 'visibility', 'visible');
-        map.setLayoutProperty('BC_Bouygues', 'visibility', 'visible');
-        map.setLayoutProperty('CL_Bouygues', 'visibility', 'visible');
-        map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-        map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-        map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-        map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-        map.setLayoutProperty('BC_Free', 'visibility', 'none');
-        map.setLayoutProperty('CL_Free', 'visibility', 'none');
+        setLayerVisible("TBC_Bouygues");
+        setLayerVisible("BC_Bouygues");
+        setLayerVisible("CL_Bouygues");
       }
-      map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-      map.setLayoutProperty('4G_Orange', 'visibility', 'none');
-      map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-      map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
-      map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-      map.setLayoutProperty('4G_SFR', 'visibility', 'none');
-      map.setLayoutProperty('3G_Free', 'visibility', 'none');
-      map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-      map.setLayoutProperty('4G_Free', 'visibility', 'none');
     }
     if (carteCouverture == "data") {
-      map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-      map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-      map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-
-      map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-      map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-      map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-      map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-      map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-      map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-      map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-      map.setLayoutProperty('BC_Free', 'visibility', 'none');
-      map.setLayoutProperty('CL_Free', 'visibility', 'none');
-      map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-      map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-      map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+      setAllLayersInvisible();
       if (MCCMNCCouv == 20801) {
         if (technoCarteCouverture == "3G") {
-          map.setLayoutProperty('3G_Orange', 'visibility', 'visible');
-          map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+          setLayerVisible("3G_Orange");
         }
         if (technoCarteCouverture == "4G") {
-          map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-          map.setLayoutProperty('4G_Orange', 'visibility', 'visible');
+          setLayerVisible("4G_Orange");
         }
-        map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-        map.setLayoutProperty('4G_SFR', 'visibility', 'none');
-        map.setLayoutProperty('3G_Free', 'visibility', 'none');
-        map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-        map.setLayoutProperty('4G_Free', 'visibility', 'none');
       }
       if (MCCMNCCouv == 20810) {
-        map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-        map.setLayoutProperty('4G_Orange', 'visibility', 'none');
-        map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+        setAllLayersInvisible();
         if (technoCarteCouverture == "3G") {
-          map.setLayoutProperty('3G_SFR', 'visibility', 'visible');
-          map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+          setLayerVisible("3G_SFR");
         }
         if (technoCarteCouverture == "4G") {
-          map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-          map.setLayoutProperty('4G_SFR', 'visibility', 'visible');
+          setLayerVisible("4G_SFR");
         }
-        map.setLayoutProperty('3G_Free', 'visibility', 'none');
-        map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-        map.setLayoutProperty('4G_Free', 'visibility', 'none');
       }
       if (MCCMNCCouv == 20815) {
-        map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-        map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+        setAllLayersInvisible();
         if (technoCarteCouverture == "3G") {
-          map.setLayoutProperty('3G_Free', 'visibility', 'visible');
-          map.setLayoutProperty('3G_Free_bridee', 'visibility', 'visible');
-          map.setLayoutProperty('4G_Free', 'visibility', 'none');
+          setLayerVisible("3G_Free");
+          setLayerVisible("3G_Free_bridee");
         }
         if (technoCarteCouverture == "4G") {
-          map.setLayoutProperty('3G_Free', 'visibility', 'none');
-          map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-          map.setLayoutProperty('4G_Free', 'visibility', 'visible');
+          setLayerVisible("4G_Free");
         }
-        map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
-        map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-        map.setLayoutProperty('4G_SFR', 'visibility', 'none');
       }
       if (MCCMNCCouv == 20820) {
-        map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-        map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+        setAllLayersInvisible();
         if (technoCarteCouverture == "3G") {
-          map.setLayoutProperty('3G_Bouygues', 'visibility', 'visible');
-          map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+          setLayerVisible("3G_Bouygues");
         }
         if (technoCarteCouverture == "4G") {
-          map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-          map.setLayoutProperty('4G_Bouygues', 'visibility', 'visible');
+          setLayerVisible("4G_Bouygues");
         }
-        map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-        map.setLayoutProperty('4G_SFR', 'visibility', 'none');
-        map.setLayoutProperty('3G_Free', 'visibility', 'none');
-        map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-        map.setLayoutProperty('4G_Free', 'visibility', 'none');
       }
     }
-    map.setLayoutProperty('transports', 'visibility', 'none');
   }
   if (couvertureQos == "QoS" && agglosTransports == "agglos" && (agglosTransportsAvant == "transports" || couvertureQosAvant == "couverture")) {
-    map.setLayoutProperty('Sites', 'visibility', 'none');
-    map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-    map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-    map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-
-    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-    map.setLayoutProperty('BC_Free', 'visibility', 'none');
-    map.setLayoutProperty('CL_Free', 'visibility', 'none');
-    map.setLayoutProperty('transports', 'visibility', 'none');
-    map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-    map.setLayoutProperty('4G_Orange', 'visibility', 'none');
-    map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-    map.setLayoutProperty('4G_SFR', 'visibility', 'none');
-    map.setLayoutProperty('3G_Free', 'visibility', 'none');
-    map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-    map.setLayoutProperty('4G_Free', 'visibility', 'none');
+    setAllLayersInvisible();
   }
   if ((couvertureQos == "QoS" && agglosTransports == "transports" && (agglosTransportsAvant == "agglos" || couvertureQosAvant == "couverture") || transportsVoixDataAvant != transportsVoixData)) {
-    map.setLayoutProperty('Sites', 'visibility', 'none');
-    map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
-    map.setLayoutProperty('BC_Orange', 'visibility', 'none');
-    map.setLayoutProperty('CL_Orange', 'visibility', 'none');
-
-    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
-    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
-    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
-    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
-    map.setLayoutProperty('BC_Free', 'visibility', 'none');
-    map.setLayoutProperty('CL_Free', 'visibility', 'none');
-    map.setLayoutProperty('transports', 'visibility', 'none');
-    map.setLayoutProperty('3G_Orange', 'visibility', 'none');
-    map.setLayoutProperty('4G_Orange', 'visibility', 'none');
-    map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
-    map.setLayoutProperty('3G_SFR', 'visibility', 'none');
-    map.setLayoutProperty('4G_SFR', 'visibility', 'none');
-    map.setLayoutProperty('3G_Free', 'visibility', 'none');
-    map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
-    map.setLayoutProperty('4G_Free', 'visibility', 'none');
+    setAllLayersInvisible();
     if (transportsVoixData == "data") {
-      map.setLayoutProperty('transports', 'visibility', 'visible');
+      setLayerVisible("transports");
     }
     if (transportsVoixData == "voix") {
-      map.setLayoutProperty('transports', 'visibility', 'none');
+      //map.setLayoutProperty('transports', 'visibility', 'none');
     }
   }
   carteCouvertureAvant = carteCouverture;
@@ -848,183 +728,274 @@ function afficherCouches() {
   MCCMNCCouvAvant = MCCMNCCouv;
 };
 
+/*
+function afficherCouches() {
+  if ((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
+    if (carteCouverture == "voix") {
+      if (MCCMNCCouv == 20801) {
+        setAllLayersInvisible();
+        setLayerVisible("TBC_Orange");
+        setLayerVisible("BC_Orange");
+        setLayerVisible("CL_Orange");
+      }
+      if (MCCMNCCouv == 20810) {
+        setAllLayersInvisible();
+        setLayerVisible("TBC_SFR");
+        setLayerVisible("BC_SFR");
+        setLayerVisible("CL_SFR");
+      }
+      if (MCCMNCCouv == 20815) {
+        setAllLayersInvisible();
+        setLayerVisible("TBC_Free");
+        setLayerVisible("BC_Free");
+        setLayerVisible("CL_Free");
+      }
+      if (MCCMNCCouv == 20820) {
+        setAllLayersInvisible();
+        setLayerVisible("TBC_Bouygues");
+        setLayerVisible("BC_Bouygues");
+        setLayerVisible("CL_Bouygues");
+      }
+    }
+
+    if (carteCouverture == "data") {
+      if (MCCMNCCouv == 20801) {
+        setAllLayersInvisible();
+        if (technoCarteCouverture == "3G") {
+          setLayerVisible("3G_Orange");
+        } else if (technoCarteCouverture == "4G") {
+          setLayerVisible("4G_Orange");
+        }
+      }
+      if (MCCMNCCouv == 20810) {
+        setAllLayersInvisible();
+        if (technoCarteCouverture == "3G") {
+          setLayerVisible("3G_SFR");
+        } else if (technoCarteCouverture == "4G") {
+          setLayerVisible("4G_SFR");
+        }
+      }
+      if (MCCMNCCouv == 20815) {
+        setAllLayersInvisible();
+        if (technoCarteCouverture == "3G") {
+          setLayerVisible("3G_Free");
+          setLayerVisible("3G_Free_bridee");
+        }
+        if (technoCarteCouverture == "4G") {
+          setLayerVisible("4G_Free");
+        }
+      }
+      if (MCCMNCCouv == 20820) {
+        setAllLayersInvisible();
+        if (technoCarteCouverture == "3G") {
+          setLayerVisible("3G_Bouygues");
+        }
+        if (technoCarteCouverture == "4G") {
+          setLayerVisible("4G_Bouygues");
+        }
+      }
+    }
+    setLayerVisible("Sites");
+  }
+
+  if (couvertureQos == "QoS" && agglosTransports == "agglos" && (agglosTransportsAvant == "transports" || couvertureQosAvant == "couverture")) {
+    setAllLayersInvisible();
+  }
+
+  if ((couvertureQos == "QoS" && agglosTransports == "transports" && (agglosTransportsAvant == "agglos" || couvertureQosAvant == "couverture") || transportsVoixDataAvant != transportsVoixData)) {
+    setAllLayersInvisible();
+    if (transportsVoixData == "data") {
+      setLayerVisible("transports");
+    } else if (transportsVoixData == "voix") {
+      setAllLayersInvisible();
+    }
+  }
+
+  carteCouvertureAvant = carteCouverture;
+  technoCarteCouvertureAvant = technoCarteCouverture;
+  couvertureQosAvant = couvertureQos;
+  agglosTransportsAvant = agglosTransports;
+  transportsVoixDataAvant = transportsVoixData;
+  MCCMNCCouvAvant = MCCMNCCouv;
+};
+*/
 function activeBoutonCouverture() {
-  $(boutonQoS).removeClass('active');
-  $(boutonCouverture).addClass('active');
-  $(selectLightQoS).removeClass('active');
-  $(selectLightCouverture).addClass('active');
+  unactiveButton(boutonQoS);
+  unactiveButton(selectLightQoS);
+  activeButton(selectLightCouverture);
+  activeButton(boutonCouverture);
 };
 
 function activeBoutonQoS() {
-  $(boutonQoS).addClass('active');
-  $(boutonCouverture).removeClass('active');
-  $(selectLightQoS).addClass('active');
-  $(selectLightCouverture).removeClass('active');
+  unactiveButton(boutonCouverture);
+  unactiveButton(selectLightCouverture);
+  activeButton(boutonQoS);
+  activeButton(selectLightQoS);
 };
 
 function activeBoutonAgglos() {
-  $(boutonAgglos).addClass('active');
-  $(boutonTransports).removeClass('active');
-  $(selectLightAgglos).addClass('active');
-  $(selectLightTransports).removeClass('active');
+  unactiveButton(boutonTransports);
+  unactiveButton(selectLightTransports);
+  activeButton(boutonAgglos);
+  activeButton(selectLightAgglos);
 };
 
 function activeBoutonTransports() {
-  $(boutonAgglos).removeClass('active');
-  $(boutonTransports).addClass('active');
-  $(selectLightAgglos).removeClass('active');
-  $(selectLightTransports).addClass('active');
+  unactiveButton(boutonAgglos);
+  unactiveButton(selectLightAgglos);
+  activeButton(boutonTransports);
+  activeButton(selectLightTransports);
 };
 
 function activeBoutonQoSTransportsVoixSMS() {
-  $(boutonQoSTransportsVoixSMS).addClass('active');
-  $(boutonQoSTransportsData).removeClass('active');
-  $(selectLightQoSTransportsVoixSMS).addClass('active');
-  $(selectLightQoSTransportsData).removeClass('active');
+  unactiveButton(boutonQoSTransportsData);
+  unactiveButton(selectLightQoSTransportsData);
+  activeButton(boutonQoSTransportsVoixSMS);
+  activeButton(selectLightQoSTransportsVoixSMS);
 };
 
 function activeBoutonQoSTransportsData() {
-  $(boutonQoSTransportsVoixSMS).removeClass('active');
-  $(boutonQoSTransportsData).addClass('active');
-  $(selectLightQoSTransportsVoixSMS).removeClass('active');
-  $(selectLightQoSTransportsData).addClass('active');
+  unactiveButton(boutonQoSTransportsVoixSMS);
+  unactiveButton(selectLightQoSTransportsVoixSMS);
+  activeButton(boutonQoSTransportsData);
+  activeButton(selectLightQoSTransportsData);
 };
 
 function activeBoutonCarteVoix() {
-  $(boutonCarteVoix).addClass('active');
-  $(boutonCarteData).removeClass('active');
-  $(selectLightCarteVoix).addClass('active');
-  $(selectLightCarteData).removeClass('active');
+  unactiveButton(selectLightCarteData);
+  unactiveButton(boutonCarteData);
+  activeButton(selectLightCarteVoix);
+  activeButton(boutonCarteVoix);
 };
 
 function activeBoutonCarteData() {
-  $(boutonCarteVoix).removeClass('active');
-  $(boutonCarteData).addClass('active');
-  $(selectLightCarteVoix).removeClass('active');
-  $(selectLightCarteData).addClass('active');
+  unactiveButton(boutonCarteVoix);
+  unactiveButton(selectLightCarteVoix);
+  activeButton(boutonCarteData);
+  activeButton(selectLightCarteData);
 };
 
 function activeBouton3G() {
-  $(bouton3G).addClass('active');
-  $(bouton4G).removeClass('active');
-  $(selectLight3G).addClass('active');
-  $(selectLight4G).removeClass('active');
+  unactiveButton(bouton4G);
+  unactiveButton(selectLight4G);
+  activeButton(bouton3G);
+  activeButton(selectLight3G);
 };
 
 function activeBouton4G() {
-  $(bouton3G).removeClass('active');
-  $(bouton4G).addClass('active');
-  $(selectLight3G).removeClass('active');
-  $(selectLight4G).addClass('active');
+  unactiveButton(bouton3G);
+  unactiveButton(selectLight3G);
+  activeButton(selectLight4G);
+  activeButton(bouton4G);
 };
 
 function activeBoutonNational() {
-  $(boutonNational).addClass('active');
-  $(boutonRural).removeClass('active');
-  $(boutonIntermediaire).removeClass('active');
-  $(boutonDense).removeClass('active');
-  $(selectLightNational).addClass('active');
-  $(selectLightRural).removeClass('active');
-  $(selectLightIntermediaire).removeClass('active');
-  $(selectLightDense).removeClass('active');
+  unactiveButton(boutonRural);
+  unactiveButton(boutonIntermediaire);
+  unactiveButton(boutonDense);
+  unactiveButton(selectLightRural);
+  unactiveButton(selectLightIntermediaire);
+  unactiveButton(selectLightDense);
+  activeButton(selectLightNational);
+  activeButton(boutonNational);
 };
 
 function activeBoutonRural() {
-  $(boutonNational).removeClass('active');
-  $(boutonRural).addClass('active');
-  $(boutonIntermediaire).removeClass('active');
-  $(boutonDense).removeClass('active');
-  $(selectLightNational).removeClass('active');
-  $(selectLightRural).addClass('active');
-  $(selectLightIntermediaire).removeClass('active');
-  $(selectLightDense).removeClass('active');
+  unactiveButton(boutonNational);
+  unactiveButton(boutonIntermediaire);
+  unactiveButton(boutonDense);
+  unactiveButton(selectLightNational);
+  unactiveButton(selectLightIntermediaire);
+  unactiveButton(selectLightDense);
+  activeButton(selectLightRural);
+  activeButton(boutonRural);
 };
 
 function activeBoutonIntermediaire() {
-  $(boutonNational).removeClass('active');
-  $(boutonRural).removeClass('active');
-  $(boutonIntermediaire).addClass('active');
-  $(boutonDense).removeClass('active');
-  $(selectLightNational).removeClass('active');
-  $(selectLightRural).removeClass('active');
-  $(selectLightIntermediaire).addClass('active');
-  $(selectLightDense).removeClass('active');
+  unactiveButton(boutonNational);
+  unactiveButton(boutonRural);
+  unactiveButton(boutonDense);
+  unactiveButton(selectLightNational);
+  unactiveButton(selectLightRural);
+  unactiveButton(selectLightDense);
+  activeButton(boutonIntermediaire);
+  activeButton(selectLightIntermediaire);
 };
 
 function activeBoutonDense() {
-  $(boutonNational).removeClass('active');
-  $(boutonRural).removeClass('active');
-  $(boutonIntermediaire).removeClass('active');
-  $(boutonDense).addClass('active');
-  $(selectLightNational).removeClass('active');
-  $(selectLightRural).removeClass('active');
-  $(selectLightIntermediaire).removeClass('active');
-  $(selectLightDense).addClass('active');
+  unactiveButton(boutonNational);
+  unactiveButton(boutonRural);
+  unactiveButton(boutonIntermediaire);
+  unactiveButton(selectLightNational);
+  unactiveButton(selectLightRural);
+  unactiveButton(selectLightIntermediaire);
+  activeButton(boutonDense);
+  activeButton(selectLightDense);
 };
 
 function activeBoutonAutoroutes() {
-  $(boutonAutoroutes).addClass('active');
-  $(boutonTGV).removeClass('active');
-  $(boutonTET).removeClass('active');
-  $(boutonTDQ).removeClass('active');
-  $(boutonMetro).removeClass('active');
-  $(selectLightAutoroutes).addClass('active');
-  $(selectLightTGV).removeClass('active');
-  $(selectLightTET).removeClass('active');
-  $(selectLightTDQ).removeClass('active');
-  $(selectLightMetro).removeClass('active');
+  unactiveButton(boutonTGV);
+  unactiveButton(boutonTET);
+  unactiveButton(boutonTDQ);
+  unactiveButton(boutonMetro);
+  unactiveButton(selectLightTGV);
+  unactiveButton(selectLightTET);
+  unactiveButton(selectLightTDQ);
+  unactiveButton(selectLightMetro);
+  activeButton(boutonAutoroutes);
+  activeButton(selectLightAutoroutes);
 };
 
 function activeBoutonTGV() {
-  $(boutonAutoroutes).removeClass('active');
-  $(boutonTGV).addClass('active');
-  $(boutonTET).removeClass('active');
-  $(boutonTDQ).removeClass('active');
-  $(boutonMetro).removeClass('active');
-  $(selectLightAutoroutes).removeClass('active');
-  $(selectLightTGV).addClass('active');
-  $(selectLightTET).removeClass('active');
-  $(selectLightTDQ).removeClass('active');
-  $(selectLightMetro).removeClass('active');
+  unactiveButton(boutonAutoroutes);
+  unactiveButton(boutonTET);
+  unactiveButton(boutonTDQ);
+  unactiveButton(boutonMetro);
+  unactiveButton(selectLightAutoroutes);
+  unactiveButton(selectLightTET);
+  unactiveButton(selectLightTDQ);
+  unactiveButton(selectLightMetro);
+  activeButton(selectLightTGV);
+  activeButton(boutonTGV);
 };
 
 function activeBoutonTET() {
-  $(boutonAutoroutes).removeClass('active');
-  $(boutonTGV).removeClass('active');
-  $(boutonTET).addClass('active');
-  $(boutonTDQ).removeClass('active');
-  $(boutonMetro).removeClass('active');
-  $(selectLightAutoroutes).removeClass('active');
-  $(selectLightTGV).removeClass('active');
-  $(selectLightTET).addClass('active');
-  $(selectLightTDQ).removeClass('active');
-  $(selectLightMetro).removeClass('active');
+  unactiveButton(boutonAutoroutes);
+  unactiveButton(boutonTGV);
+  unactiveButton(boutonTDQ);
+  unactiveButton(boutonMetro);
+  unactiveButton(selectLightAutoroutes);
+  unactiveButton(selectLightTGV);
+  unactiveButton(selectLightTDQ);
+  unactiveButton(selectLightMetro);
+  activeButton(boutonTET);
+  activeButton(selectLightTET);
 };
 
 function activeBoutonTDQ() {
-  $(boutonAutoroutes).removeClass('active');
-  $(boutonTGV).removeClass('active');
-  $(boutonTET).removeClass('active');
-  $(boutonTDQ).addClass('active');
-  $(boutonMetro).removeClass('active');
-  $(selectLightAutoroutes).removeClass('active');
-  $(selectLightTGV).removeClass('active');
-  $(selectLightTET).removeClass('active');
-  $(selectLightTDQ).addClass('active');
-  $(selectLightMetro).removeClass('active');
+  unactiveButton(boutonAutoroutes);
+  unactiveButton(boutonTGV);
+  unactiveButton(boutonTET);
+  unactiveButton(boutonMetro);
+  unactiveButton(selectLightAutoroutes);
+  unactiveButton(selectLightTGV);
+  unactiveButton(selectLightTET);
+  unactiveButton(selectLightMetro);
+  activeButton(boutonTDQ);
+  activeButton(selectLightTDQ);
 };
 
 function activeBoutonMetro() {
-  $(boutonAutoroutes).removeClass('active');
-  $(boutonTGV).removeClass('active');
-  $(boutonTET).removeClass('active');
-  $(boutonTDQ).removeClass('active');
-  $(boutonMetro).addClass('active');
-  $(selectLightAutoroutes).removeClass('active');
-  $(selectLightTGV).removeClass('active');
-  $(selectLightTET).removeClass('active');
-  $(selectLightTDQ).removeClass('active');
-  $(selectLightMetro).addClass('active');
+  unactiveButton(boutonAutoroutes);
+  unactiveButton(boutonTGV);
+  unactiveButton(boutonTET);
+  unactiveButton(boutonTDQ);
+  unactiveButton(selectLightAutoroutes);
+  unactiveButton(selectLightTGV);
+  unactiveButton(selectLightTET);
+  unactiveButton(selectLightTDQ);
+  activeButton(boutonMetro);
+  activeButton(selectLightMetro);
 };
 
 $("#boutonCouverture").click(function() {
@@ -1722,2508 +1693,6 @@ function getIconeOperateur() {
   }
 };
 
-function MiseAjourIHM(features) {
-  if (features == "2G" || features == "3G" || features == "4G") {
-    new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population"));
-    new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire"));
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "3G"));
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "3G"));
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "4G"));
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "4G"));
-
-    return 1;
-  }
-  if (features == "national" || features == "rural" || features == "intermediaire" || features == "dense") {
-    new Highcharts.Chart(GraphiqueQoS_Voix(features), function(chart) {
-      for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
-          chart.series[i].data[0].dataLabel.attr({
-            y: 24
-          });
-        }
-      }
-    });
-    new Highcharts.Chart(GraphiqueQoS_SMS(features), function(chart) {
-      for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
-          chart.series[i].data[0].dataLabel.attr({
-            y: 24
-          });
-        }
-      }
-    });
-    new Highcharts.Chart(GraphiqueQoS_Web(features), function(chart) {
-      for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
-          chart.series[i].data[0].dataLabel.attr({
-            y: 24
-          });
-        }
-      }
-    });
-    new Highcharts.Chart(GraphiqueQoS_DebitsDl(features), function(chart) {
-      for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
-          chart.series[i].data[0].dataLabel.attr({
-            y: 24
-          });
-        }
-      }
-    });
-    new Highcharts.Chart(GraphiqueQoS_DebitsUl(features), function(chart) {
-      for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
-          chart.series[i].data[0].dataLabel.attr({
-            y: 24
-          });
-        }
-      }
-    });
-    new Highcharts.Chart(GraphiqueQoS_Video(features), function(chart) {
-      for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
-          chart.series[i].data[0].dataLabel.attr({
-            y: 24
-          });
-        }
-      }
-    });
-    return 1;
-  }
-  if (features == "tgv" || features == "tet" || features == "tdq" || features == "metro" || features == "autoroutes") {
-    if (features != "metro") {
-      new Highcharts.Chart(GraphiqueQoS_VoixTransports(features), function(chart) {
-        for (var i = 0; i < 4; i++) {
-          if (chart.series[i].data[0].y < 47) {
-            chart.series[i].data[0].dataLabel.attr({
-              y: 24
-            });
-          }
-        }
-      });
-      new Highcharts.Chart(GraphiqueQoS_SMSTransports(features), function(chart) {
-        for (var i = 0; i < 4; i++) {
-          if (chart.series[i].data[0].y < 47) {
-            chart.series[i].data[0].dataLabel.attr({
-              y: 24
-            });
-          }
-        }
-      });
-      new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports), function(chart) {
-        for (var i = 0; i < 4; i++) {
-          if (chart.series[i].data[0].y < 47) {
-            chart.series[i].data[0].dataLabel.attr({
-              y: 24
-            });
-          }
-        }
-      });
-    } else {
-      new Highcharts.Chart(GraphiqueQoS_VoixTransports(features));
-      new Highcharts.Chart(GraphiqueQoS_SMSTransports(features));
-      new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports));
-    }
-    return 1;
-  }
-};
-
-function GraphiqueCouvCumul(texteLeg, inUnite) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueCouv' + texteLeg,
-      margin: [25, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      widthAdjust: 140,
-      x: -7,
-      y: 97,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">' + texteLeg + '</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      formatter: function() {
-        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.x) + '">' + this.x + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">' + texteLeg + ' sous ' + this.series.name + ' </div>';
-      },
-      followPointer: true,
-      useHTML: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      categories: ['Orange', 'Bouygues', 'SFR', 'Free'],
-      labels: {
-        enabled: false,
-      },
-    },
-
-    plotOptions: {
-      column: {
-        stacking: 'normal',
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          inside: false,
-          y: -15,
-          crop: false,
-          overflow: 'none',
-          padding: 0,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.series.name == 'couverture limitée') {
-              if (this.total > 99)
-                return '> 99 %';
-              if (this.total > 0)
-                return this.total + ' %';
-            }
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false,
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'couverture limitée',
-        data: [{
-          y: dataRaw.couvertureTechno.CL[inUnite].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ffdac1'],
-              [1, '#ffdac1']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.CL[inUnite].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cce2e3'],
-              [1, '#cce2e3']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.CL[inUnite].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ebc1c1'],
-              [1, '#ebc1c1']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.CL[inUnite].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#c1e8c1'],
-              [1, '#c1e8c1']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'bonne couverture',
-        data: [{
-          y: dataRaw.couvertureTechno.BC[inUnite].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ffa366'],
-              [1, '#ffa366']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.BC[inUnite].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#81b8ba'],
-              [1, '#81b8ba']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.BC[inUnite].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf6666'],
-              [1, '#cf6666']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.BC[inUnite].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#66c766'],
-              [1, '#66c766']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'très bonne couverture',
-        data: [{
-          y: dataRaw.couvertureTechno.TBC[inUnite].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#FF6600'],
-              [1, '#FF6600']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.TBC[inUnite].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#2e898d'],
-              [1, '#2e898d']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.TBC[inUnite].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#af0000'],
-              [1, '#af0000']
-            ],
-          }
-        }, {
-          y: dataRaw.couvertureTechno.TBC[inUnite].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#00a200'],
-              [1, '#00a200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueCouv' + texteLeg + inTechno,
-      margin: [25, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      widthAdjust: 140,
-      x: -7,
-      y: 97,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">' + texteLeg + '</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      formatter: function() {
-        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.x) + '">' + this.x + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">' + texteLeg + ' sous ' + this.series.name + ' </div>';
-      },
-      followPointer: true,
-      useHTML: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      categories: ['Orange', 'Bouygues', 'SFR', 'Free'],
-      labels: {
-        enabled: false,
-      },
-    },
-
-    plotOptions: {
-      column: {
-        stacking: 'normal',
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          inside: false,
-          y: -15,
-          crop: false,
-          overflow: 'none',
-          padding: 0,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.series.name == 'couverture ' + inTechno + ' bridée à 1Mbit/s') {
-              if (this.total > 99)
-                return '> 99 %';
-              if (this.total > 0)
-                return this.total + ' %';
-            }
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false,
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'couverture ' + inTechno + ' bridée à 1Mbit/s',
-        data: [{
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ffdac1'],
-              [1, '#ffdac1']
-            ],
-          }
-        }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cce2e3'],
-              [1, '#cce2e3']
-            ],
-          }
-        }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ebc1c1'],
-              [1, '#ebc1c1']
-            ],
-          }
-        }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#c1e8c1'],
-              [1, '#c1e8c1']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'couverture ' + inTechno,
-        data: [{
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ffa366'],
-              [1, '#ffa366']
-            ],
-          }
-        }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#81b8ba'],
-              [1, '#81b8ba']
-            ],
-          }
-        }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf6666'],
-              [1, '#cf6666']
-            ],
-          }
-        }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#66c766'],
-              [1, '#66c766']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_Voix(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_Voix',
-      margin: [18, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      x: -7,
-      y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      formatter: function() {
-        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes avec une qualité parfaite</div>';
-      },
-      followPointer: true,
-      useHTML: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_VoixTransports(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_VoixTransports',
-      margin: [18, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      y: 87,
-      x: -7,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_SMS(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_SMS',
-      margin: [18, 10, 16, 20],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      x: 5,
-      y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 95px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">SMS reçus en moins de 10 secondes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.SMS[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.SMS[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.SMS[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.SMS[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_SMSTransports(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_SMSTransports',
-      margin: [18, 10, 16, 20],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      x: 5,
-      y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 95px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">SMS reçus en moins de 10 secondes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.SMS[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.SMS[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.SMS[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.SMS[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_Web(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_Web',
-      margin: [18, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      x: -7,
-      y: 87,
-      widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.web[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.web[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.web[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.web[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_WebTransports',
-      margin: [18, 15, 16, 15],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      y: 87,
-      widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
-    },
-    subtitle: {
-      text: sousTitreVariableGraphMetro(),
-      align: 'center',
-      verticalAlign: 'middle',
-      x: 0,
-      y: -15,
-      widthAdjust: -10,
-      style: {
-        fontSize: '11px',
-        color: '#FFFFFF',
-      },
-      useHTML: true,
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.web[inStrate][sousStrateTransports].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.web[inStrate][sousStrateTransports].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.web[inStrate][sousStrateTransports].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.web[inStrate][sousStrateTransports].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_DebitsDl(inStrate) {
-  var options = {
-    chart: {
-      type: 'solidgauge',
-      renderTo: 'GraphiqueQoS_DebitsDl',
-      margin: [0, 10, 5, 0],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      x: -7,
-      y: 87,
-      widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Débit descendant</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + Highcharts.numberFormat(this.y / 1000, 0) + 'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Débit moyen constaté lors de téléchargements de fichiers</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    pane: {
-      center: ['50%', '85%'],
-      size: '85%',
-      startAngle: -90,
-      endAngle: 90,
-      background: {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
-        innerRadius: '40%',
-        shape: 'arc'
-      }
-    },
-
-    plotOptions: {
-      solidgauge: {
-        dataLabels: {
-          enabled: false,
-        },
-      },
-    },
-    yAxis: {
-      min: 0,
-      max: 50000,
-      tickWidth: 0,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.debitsDl[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '100%',
-        radius: '85%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#ff8432',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: -50,
-          y: -75,
-        }
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.debitsDl[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '85%',
-        radius: '70%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#3baeb3',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: -50,
-          y: -62,
-        }
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.debitsDl[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '70%',
-        radius: '55%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#cf3232',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: 50,
-          y: -75,
-        }
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.debitsDl[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '55%',
-        radius: '40%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#32b432',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: 50,
-          y: -62,
-        }
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_DebitsUl(inStrate) {
-  var options = {
-    chart: {
-      type: 'solidgauge',
-      renderTo: 'GraphiqueQoS_DebitsUl',
-      margin: [0, 0, 5, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      widthAdjust: 140,
-      x: 5,
-      y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Débit montant</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + Highcharts.numberFormat(this.y / 1000, 0) + 'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Débit moyen constaté lors de l\'envoi de fichiers</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    pane: {
-      center: ['50%', '85%'],
-      size: '85%',
-      startAngle: -90,
-      endAngle: 90,
-      background: {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
-        innerRadius: '40%',
-        shape: 'arc'
-      }
-    },
-
-    plotOptions: {
-      solidgauge: {
-        dataLabels: {
-          enabled: false,
-        },
-      },
-    },
-    yAxis: {
-      min: 0,
-      max: 50000,
-      tickWidth: 0,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.debitsUl[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '100%',
-        radius: '85%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#ff8432',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: -50,
-          y: -75,
-        }
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.debitsUl[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '85%',
-        radius: '70%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#3baeb3',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: -50,
-          y: -62,
-        }
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.debitsUl[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '70%',
-        radius: '55%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#cf3232',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: 50,
-          y: -75,
-        }
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.debitsUl[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-        innerRadius: '55%',
-        radius: '40%',
-        dataLabels: {
-          align: 'left',
-          style: {
-            color: '#32b432',
-            //textShadow: '0px 0px 2px #BDBDBD',
-            textOutline: '0px 0px #000000',
-            fontSize: '10px',
-          },
-          allowOverlap: true,
-          borderWidth: 0,
-          padding: 0,
-          formatter: function() {
-            return Highcharts.numberFormat(this.y / 1000, 0) + ' Mb/s';
-          },
-          enabled: true,
-          x: 50,
-          y: -62,
-        }
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-function GraphiqueQoS_Video(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoS_Video',
-      margin: [18, 10, 16, 20],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-    title: {
-      align: 'center',
-      x: 5,
-      y: 87,
-      widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Vidéo en ligne</span>',
-    },
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Vidéos de 2 minutes avec une qualité parfaite</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          //crop:false,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.video[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.video[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.video[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.video[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-    credits: {
-      enabled: false,
-    },
-  }
-  return options;
-};
-
-//Haut, haut, bas, bas, gauche, droite, gauche, droite, B, A
-var kb = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-//superman
-var ks = [83, 85, 80, 69, 82, 77, 65, 78];
-n = 0;
-i = 0;
-var timer;
-$(document).keydown(function(e) {
-  if (e.keyCode === ks[n++]) {
-    if (n === ks.length) {
-      n = 0;
-      document.getElementById('timerS').style.display = 'block';
-      map.addSource('testFree', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Polygon',
-            'coordinates': [
-              [
-                [2.3214, 48.8717],
-                [2.3218, 48.8715],
-                [2.3218, 48.8713],
-                [2.3214, 48.8711],
-                [2.321, 48.8711],
-                [2.3206, 48.8713],
-                [2.3206, 48.8715],
-                [2.321, 48.8717],
-                [2.3214, 48.8717]
-              ]
-            ]
-          }
-        }
-      });
-      map.addSource('testBouygues', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Polygon',
-            'coordinates': [
-              [
-                [2.2895, 48.8673],
-                [2.2899, 48.8671],
-                [2.2899, 48.8669],
-                [2.2895, 48.8667],
-                [2.2891, 48.8667],
-                [2.2887, 48.8669],
-                [2.2887, 48.8671],
-                [2.2891, 48.8673],
-                [2.2895, 48.8673]
-              ]
-            ]
-          }
-        }
-      });
-      map.addSource('testOrange', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Polygon',
-            'coordinates': [
-              [
-                [2.2938, 48.8334],
-                [2.2942, 48.8332],
-                [2.2942, 48.833],
-                [2.2938, 48.8328],
-                [2.2934, 48.8328],
-                [2.293, 48.833],
-                [2.293, 48.8332],
-                [2.2934, 48.8334],
-                [2.2938, 48.8334]
-              ]
-            ]
-          }
-        }
-      });
-      map.addSource('testSFR', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Polygon',
-            'coordinates': [
-              [
-                [2.2859, 48.8512],
-                [2.2863, 48.851],
-                [2.2863, 48.8508],
-                [2.2859, 48.8506],
-                [2.2855, 48.8506],
-                [2.2851, 48.8508],
-                [2.2851, 48.851],
-                [2.2855, 48.8512],
-                [2.2859, 48.8512]
-              ]
-            ]
-          }
-        }
-      });
-      map.addLayer({
-        'id': 'testFree',
-        'type': 'fill-extrusion',
-        'source': 'testFree',
-        'layout': {},
-        'paint': {
-          'fill-extrusion-color': '#32b432',
-          'fill-extrusion-height': 300,
-          'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.6
-        }
-      });
-      map.addLayer({
-        'id': 'testBouygues',
-        'type': 'fill-extrusion',
-        'source': 'testBouygues',
-        'layout': {},
-        'paint': {
-          'fill-extrusion-color': '#3baeb3',
-          'fill-extrusion-height': 300,
-          'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.6
-        }
-      });
-      map.addLayer({
-        'id': 'testOrange',
-        'type': 'fill-extrusion',
-        'source': 'testOrange',
-        'layout': {},
-        'paint': {
-          'fill-extrusion-color': '#ff8432',
-          'fill-extrusion-height': 300,
-          'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.6
-        }
-      });
-      map.addLayer({
-        'id': 'testSFR',
-        'type': 'fill-extrusion',
-        'source': 'testSFR',
-        'layout': {},
-        'paint': {
-          'fill-extrusion-color': '#cf3232',
-          'fill-extrusion-height': 300,
-          'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.6
-        }
-      });
-      var superMan = $('<img>');
-      superMan.attr('id', "superMan");
-      superMan.attr('src', "https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/superman.png");
-      var x = 300;
-      var y = 0;
-      superMan.attr('style', "position:absolute;bottom:" + (y - 0) + "px; margin-bottom:-38px; margin-left: auto; margin-right: auto; left: 100px; right: 0; width: 400px;");
-      superMan.appendTo('body');
-      map.setPitch(80);
-      map.setBearing(270);
-      map.setZoom(15);
-      map.setCenter([2.3380, 48.8719]);
-
-      map.keyboard.disable();
-      map.getCanvas().focus();
-      map.getCanvas().addEventListener('keydown', function(e) {
-        e.preventDefault();
-        if (e.which === 37) { // left
-          document.getElementById("superMan").style.transform = "rotate(-10deg)";
-          map.setBearing(map.getBearing() - 6);
-          map.panBy([-80, 0], {
-            easing: easingLinear,
-            duration: 0
-          });
-          map.panBy([0, -100], {
-            easing: easingLinear,
-            duration: 500
-          });
-        } else if (e.which === 39) { // right
-          document.getElementById("superMan").style.transform = "rotate(10deg)";
-          map.setBearing(map.getBearing() + 6);
-          map.panBy([80, 0], {
-            easing: easingLinear,
-            duration: 0
-          });
-          map.panBy([-0, -100], {
-            easing: easingLinear,
-            duration: 500
-          });
-        }
-      }, true);
-      timer = setInterval('decompte()', 500);
-      return false;
-    }
-  } else if (e.keyCode === kb[i++]) {
-    if (i === kb.length) {
-      i = 0;
-      var doABarrelRoll = function() {
-        var a = "-webkit-",
-          b = 'transform:rotate(3turn);',
-          c = 'transition:4s;';
-        document.head.innerHTML += '<style>#map{' + a + b + a + c + b + c + '}'
-      }
-      doABarrelRoll();
-      return false;
-    }
-  } else {
-    n = 0;
-    i = 0;
-  }
-});
-
-var compte = 30;
-var xSuper;
-var ySuper;
-var distanceFree, distanceBouygues, distanceSFR, distanceOrange;
-
-function decompte() {
-  document.getElementById('BOUM').style.display = 'none';
-  document.getElementById("superMan").style.transform = "rotate(0deg)";
-  map.panBy([0, -200], {
-    easing: easingLinear,
-    duration: 500
-  });
-  document.getElementById("timerS").innerHTML = Math.round(compte / 2);
-  if (compte == 0 || compte < 0) {
-    compte = 0;
-    clearInterval(timer);
-  }
-  compte--;
-  xSuper = document.getElementById("superMan").getBoundingClientRect().right - document.getElementById("superMan").getBoundingClientRect().left;
-  ySuper = document.getElementById("superMan").getBoundingClientRect().top;
-  //distance
-  distanceFree = Math.sqrt(Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lng - 2.3213, 2) + Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lat - 48.8712, 2));
-  distanceBouygues = Math.sqrt(Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lng - 2.2892, 2) + Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lat - 48.8669, 2));
-  distanceSFR = Math.sqrt(Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lng - 2.2857, 2) + Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lat - 48.8508, 2));
-  distanceOrange = Math.sqrt(Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lng - 2.2936, 2) + Math.pow(map.unproject({
-    "x": xSuper,
-    "y": ySuper
-  }).lat - 48.8330, 2));
-  //console.log(distanceFree);
-  if (distanceFree < 0.003) {
-    document.getElementById('BOUM').style.left = (xSuper + 300) + 'px';
-    document.getElementById('BOUM').style.top = (ySuper - 220) + 'px';
-    document.getElementById('BOUM').style.display = 'block';
-    map.setLayoutProperty('testFree', 'visibility', 'none');
-  }
-  if (distanceBouygues < 0.003) {
-    document.getElementById('BOUM').style.left = (xSuper + 300) + 'px';
-    document.getElementById('BOUM').style.top = (ySuper - 220) + 'px';
-    document.getElementById('BOUM').style.display = 'block';
-    map.setLayoutProperty('testBouygues', 'visibility', 'none');
-  }
-  if (distanceSFR < 0.003) {
-    document.getElementById('BOUM').style.left = (xSuper + 300) + 'px';
-    document.getElementById('BOUM').style.top = (ySuper - 220) + 'px';
-    document.getElementById('BOUM').style.display = 'block';
-    map.setLayoutProperty('testSFR', 'visibility', 'none');
-  }
-  if (distanceOrange < 0.003) {
-    document.getElementById('BOUM').style.left = (xSuper + 300) + 'px';
-    document.getElementById('BOUM').style.top = (ySuper - 220) + 'px';
-    document.getElementById('BOUM').style.display = 'block';
-    map.setLayoutProperty('testOrange', 'visibility', 'none');
-  }
-}
-
-function easingLinear(t) {
-  return t;
-}
-
 $("#toggleHUD").click(function() {
   if ($(this).css("left") == "5px") {
     $("aside").show();
@@ -4250,10 +1719,9 @@ window.addEventListener('orientationchange', function() {
 document.getElementById("autocompleteRoute").addEventListener("input", getSelectedRoute);
 
 function createDataList(strateTransports){
-  console.log("createDataList function");
   resetInput("autocompleteRoute");
   removeAllChild("voies");
-  console.log("strateTransports : " + strateTransports);
+  //console.log("strateTransports : " + strateTransports);
   var obj = JSON.parse(listeVoies);
   var listeStrateTransports;
   switch (strateTransports) {
@@ -4321,13 +1789,173 @@ function getSelectedRoute(){
     for (var i = 0; i < listeStrateTransports.length; i++) {
       if (selectedValue == listeStrateTransports[i].value) {
         sousStrateTransports = listeStrateTransports[i].key;
-        console.log("New selection !");
-        console.log("strateTransports : " + strateTransports);
-        console.log("sousStrateTransports : " + sousStrateTransports);
-
         MiseAjourIHM(strateTransports);
         setTransportsFilter();
       }
     }
+  }
+}
+
+function activeButton(value){
+  //console.log("activeButton : " + value.id);
+  $(value).addClass('active');
+  value.status = "active";
+}
+
+function unactiveButton(value){
+  //console.log("unactiveButton : " + value.id);
+  $(value).removeClass('active');
+  value.status = "unactive";
+}
+
+var sourceLoaded = [];
+
+function addMbSource(value) {
+  console.log("addMbSource : " + value);
+  for (var i = 0; i < sourceLoaded.length; i++) {
+    if (sourceLoaded[i] == value) {
+      console.log("Deja charge");
+      return 0;
+    }
+  }
+  if (value == "single-point") {
+    map.addSource('single-point', {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": []
+      }
+    });
+  } else {
+    var obj = JSON.parse(mbData);
+    var MbSources = obj.sources;
+    for (var i = 0; i < MbSources.length; i++) {
+      if (value == MbSources[i].id) {
+        map.addSource(value, {
+          type: MbSources[i].type,
+          url: MbSources[i].url
+        });
+      }
+    }
+  }
+  sourceLoaded.push(value);
+}
+
+function addMbLayer(value){
+  console.log("addMbLayer function : " + value);
+  if (value == "3d-buildings") {
+    map.addLayer({
+      'id': '3d-buildings',
+      'source': '3d-buildings',
+      'source-layer': 'building',
+      'filter': ['==', 'extrude', 'true'],
+      'type': 'fill-extrusion',
+      'minzoom': 15,
+      'paint': {
+        'fill-extrusion-color': '#777',
+        'fill-extrusion-height': {
+          'type': 'identity',
+          'property': 'height'
+        },
+        'fill-extrusion-base': {
+          'type': 'identity',
+          'property': 'min_height'
+        },
+        'fill-extrusion-opacity': .7
+      }
+    }, 'place_label_other');
+  }
+  else if (value == "point") {
+    map.addLayer({
+      "id": "point",
+      "source": "single-point",
+      "type": "circle",
+      "paint": {
+        "circle-radius": 10,
+        "circle-color": "#4c4c4c"
+      }
+    });
+  }
+  else if (value == "Sites") {
+    map.addLayer({
+      "id": "Sites",
+      "type": "symbol",
+      "minzoom": 10,
+      "source": "Sites",
+      "source-layer": "2017-01_sites-58ec8q",
+      "layout": {
+        "icon-image": "triangle-15",
+      },
+      //"filter": ["==", "Operateur", 20801],
+      //"filter": ["==", "Operateur", MCCMNCCouv],
+    });
+  }
+  else if (value == "transports") {
+    map.addLayer({
+      "id": "transports",
+      "type": "circle",
+      "source": "transports",
+      "source-layer": "QosTransports2016_-_V2",
+      'paint': {
+        'circle-radius': {
+          'base': 2,
+          'stops': [
+            [4, 2.5],
+            [12, 8]
+          ],
+        },
+        "circle-blur": 1,
+        'circle-color': {
+          property: 'BILAN2-OD',
+          type: 'categorical',
+          stops: [
+            ["ECHEC-HR", '#d82727'],
+            ["2G", '#d82727'],
+            ["3G", '#8AE300'],
+            ["4G", '#3b913b']
+          ]
+        }
+      },
+      //"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", 20801]],
+      //"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", MCCMNCCouv]],
+    });
+  }
+  //Layers Couverture, 3G, 4G
+  else {
+    var obj = JSON.parse(mbData);
+    var MbLayers = obj.layers;
+    for (var i = 0; i < MbLayers.length; i++) {
+      if (value == MbLayers[i].id) {
+        map.addLayer({
+          "id": MbLayers[i].id,
+          "type": MbLayers[i].type,
+          "source": MbLayers[i].source,
+          "source-layer": MbLayers[i].sourceLayer,
+          "paint": {
+            "fill-color": MbLayers[i].paint.fillColor,
+            'fill-opacity': MbLayers[i].paint.fillOpacity,
+            "fill-outline-color": MbLayers[i].paint.fillOutlineColor,
+          },
+        }, 'place_label_other');
+      }
+    }
+  }
+}
+
+function setLayerVisible(layer) {
+  console.log("setLayerVisible : " + layer);
+  map.setLayoutProperty(layer, "visibility", "visible");
+}
+
+function setLayerInvisible(layer) {
+  //console.log("setLayerInvisible : " + layer);
+  map.setLayoutProperty(layer, "visibility", "none");
+}
+
+function setAllLayersInvisible() {
+  var obj = JSON.parse(mbData);
+  var layers = obj.sources;
+  for (var i = 0; i < layers.length; i++) {
+    setLayerInvisible(layers[i].id);
   }
 }
