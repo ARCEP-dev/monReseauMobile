@@ -195,7 +195,7 @@ select {
   left: calc(50% - 157px);
   height: 180px;
   width: 300px;
-  color: #black;
+  color: black;
   background: rgba(255, 255, 255, 1);
   border-radius: 10px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
@@ -211,7 +211,7 @@ select {
   right: 20px;
   height: 272px;
   width: 200px;
-  color: #black;
+  color: black;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
@@ -226,7 +226,7 @@ select {
   bottom: 90px;
   right: 20px;
   width: 200px;
-  color: #black;
+  color: black;
   display: none;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
@@ -242,7 +242,7 @@ select {
   bottom: 90px;
   right: 20px;
   width: 200px;
-  color: #black;
+  color: black;
   display: none;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
@@ -258,7 +258,7 @@ select {
   bottom: 90px;
   right: 20px;
   width: 200px;
-  color: #black;
+  color: black;
   display: none;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
@@ -276,14 +276,14 @@ select {
   right: 100px;
   height: 315px;
   width: 200px;
-  color: #black;
+  color: black;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
   border: 1px solid #555555;
 }
 
-popupBoutonFermer {
+.popupButtonClose {
   position: absolute;
   top: -10px;
   right: -10px;
