@@ -1,0 +1,5186 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <!-- General -->
+  <meta charset="utf-8">
+  <title>Cartes interactives | Arcep</title>
+  <!-- Meta -->
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+  <link rel="shortcut icon" href="https://monreseaumobile.fr/fileadmin/images/tpl/favicon.ico" />
+  <link type="image/png" href="https://monreseaumobile.fr/fileadmin/images/tpl/favicon.png" />
+  <!-- CSS -->
+  <!-- http://www.groovymeta.com/ -->
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
+  <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css' rel='stylesheet'/>
+  <style>
+body {
+  font-family: Arial;
+  margin:0;
+  padding:0;
+  background-color: white;
+  overflow: hidden;
+}
+
+input{
+  position:relative;
+  vertical-align:middle;
+}
+label{
+  position:relative;
+  display:inline-block;
+  vertical-align:middle;
+}
+#EnteteLegendeAgglos, #EnteteLegendeTransports, #EnteteLegendeCouvData {
+    font-family: Arial,sans-serif;
+    font-size: 12px;
+    padding: 3px 0px 0px 3px;
+    bottom: 57px;
+    right: 4px;
+    position: absolute;
+    height: 15px;
+    line-height: 1;
+    overflow: auto;
+    color: #fff;
+    background: rgb(60, 60, 60);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.10);
+}
+#containerboutonCouvertureQoS{
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  float:left;
+  height:35px;
+  margin: 10px;
+  color:#fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.10);
+}
+#containerboutonAggloTransports{
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  display:none;
+  float:left;
+  height:80px;
+  margin: 10px;
+  color:#fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.10);
+}
+
+#boutonInfosCouvVoix{
+  height:16px;
+  width:16px;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  color:#FFFFFF;
+  border-radius: 7px;
+  background: rgba(39, 39, 39, 0.9);
+  cursor: pointer;
+  -moz-outline:0 none;
+  outline:0 none;
+  float:left;
+}
+#boutonInfosCouvData3G, #boutonInfosCouvData4G{
+  height:16px;
+  width:16px;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  color:#FFFFFF;
+  border-radius: 7px;
+  background: rgba(39, 39, 39, 0.9);
+  cursor: pointer;
+  -moz-outline:0 none;
+  outline:0 none;
+  float:left;
+}
+
+.boutonAggloTransports{
+  height: 40px;
+  width:125px;
+  padding:4px 0px;
+  text-align: center;
+  font-family: Arial,sans-serif;
+  cursor: pointer;
+  -moz-outline:0 none;
+  outline:0 none;
+  color: white;
+  border-radius: 5px;
+  background: #444444;
+  box-shadow: 0 0 5px rgba( 0, 0, 0, 0.5),
+  0 -1px 0 rgba( 255, 255, 255, 0.4);
+  float:left;
+}
+.boutonAggloTransports img{
+  vertical-align: middle;
+}
+.boutonAggloTransports p{
+  margin-top: 8px;
+}
+.boutonAggloTransports.active{
+  background: #777777;
+  box-shadow: 0px 0px 5px black inset,
+  0 1px 0 rgba( 255, 255, 255, 0.4);
+}
+.selectLight{
+  position:absolute;
+  top:4px;
+  right:4px;
+  height:7px;
+  width:7px;
+  border-radius: 7px;
+  background-color: #666666;
+}
+.selectLight.active{
+  background-color: #2AED11;
+}
+boutonGeo{
+  height: 40px;
+  padding:4px 0px;
+  text-align: center;
+  background: #444444;
+  font-family: Arial,sans-serif;
+  cursor: pointer;
+  -moz-outline:0 none;
+  outline:0 none;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba( 0, 0, 0, 0.5),
+  0 -1px 0 rgba( 255, 255, 255, 0.4);
+  float:left;
+}
+boutonGeo.active{
+
+   background: #777777;
+  box-shadow: 0px 0px 5px black inset,
+  0 1px 0 rgba( 255, 255, 255, 0.4);
+}
+select {
+  padding:3px;
+  -moz-outline:0 none;
+  outline:0 none;
+  border-radius:4px;
+  background:#DDDDDD;
+}
+#legendeAgglos {
+  font-family: Arial,sans-serif;
+  font-weight: bold;
+  position: absolute;
+  z-index: 2;
+  bottom: 4px;
+  right: 4px;
+  height: 41px;
+  width: 230px;
+  background-color: #fff;
+  padding: 5px;
+  border: 2px solid #555555;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.10);
+}
+#legendeTransports {
+  font-family: Arial,sans-serif;
+  font-weight: bold;
+  position: absolute;
+  z-index: 2;
+  bottom: 4px;
+  right: 4px;
+  height: 50px;
+  width: 230px;
+  background-color: #fff;
+  padding: 5px;
+  border: 2px solid #555555;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.10);
+}
+
+#PopupBienvenue {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 5px;
+  position: absolute;
+  z-index: 5;
+  top: calc(50% - 150px);
+  left: calc(50% - 157px);
+  height: 180px;
+  width: 300px;
+  color:#black;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.10);
+  border: 1px solid #555555;
+}
+
+#PopupInfosLegendeCouvVoix {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  z-index: 5;
+  bottom: 90px;
+  right: 20px;
+  height: 272px;
+  width: 200px;
+  color:#black;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.10);
+  border: 1px solid #555555;
+}
+#PopupInfosLegendeCouvData3G {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  z-index: 5;
+  bottom: 90px;
+  right: 20px;
+  width: 200px;
+  color:#black;
+  display:none;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.10);
+  border: 1px solid #555555;
+}
+
+#PopupInfosLegendeCouvData3GFree {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  z-index: 5;
+  bottom: 90px;
+  right: 20px;
+  width: 200px;
+  color:#black;
+  display:none;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.10);
+  border: 1px solid #555555;
+}
+
+#PopupInfosLegendeCouvData4G {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  z-index: 5;
+  bottom: 90px;
+  right: 20px;
+  width: 200px;
+  color:#black;
+  display:none;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.10);
+  border: 1px solid #555555;
+}
+
+#PopupInfosInfosComplementairesCouverture {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  display: none;
+  padding: 10px;
+  position: absolute;
+  z-index: 6;
+  bottom: 180px;
+  right: 100px;
+  height: 315px;
+  width: 200px;
+  color:#black;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.10);
+  border: 1px solid #555555;
+}
+
+
+popupBoutonFermer {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  cursor:pointer;
+  color: #fff;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  background: #000;
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 20px;
+}
+
+#ZoneGraphiquesCouv {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 0px 10px 0px 10px;
+  float:left;
+  z-index: 3;
+  display: block;
+  height: 370px;
+  width: 260px;
+  color:#fff;
+}
+
+#ZoneGraphiquesQoS {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 0px 10px 0px 10px;
+  z-index: 3;
+  display: none;
+  height: 470px;
+  width: 260px;
+  color:#fff;
+}
+#ZoneGraphiquesTransports {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 0px 10px 0px 10px;
+  z-index: 3;
+  display: none;
+  height: 450px;
+  width: 260px;
+  color:#fff;
+}
+#map { position:absolute; top:0px; bottom:0; left: 300px;right: 0px;}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+    background-color: rgba(255,255,255,0);
+  font-size:11px;
+  line-height: 14px;
+}
+.mapboxgl-ctrl-attrib a {
+    color: grey;
+}
+.mapbox-improve-map {
+    display: none;
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-scale {
+    background-color: rgba(255,255,255,0);
+  border-color: #777;
+  border-width: 1px;
+  color: #777;
+  height: 13px;
+    line-height: 13px;
+  margin: 0 0 -10px 160px;
+}
+
+#logo {
+  height: 50px;
+  position: absolute;
+  bottom : 10px;
+  left:300px;
+}
+aside {
+  font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  position: absolute;
+  top : 0px;
+  bottom : 0px;
+  left: 0px;
+  overflow: auto;
+  color: white;
+  background: rgba(39, 39, 39, 0.9);
+  width: 300px;
+  z-index:2;
+}
+aside p {
+  color: white;
+}
+
+aside::-webkit-scrollbar { width: 0 !important }
+
+#toggleHUD {
+background : rgba(39, 39, 39, 0.9);
+color: white;
+display: none;
+position: absolute;
+border-radius:5px;
+}
+
+
+
+#infoCouvVoix{
+  font: 11px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 12px;
+  width:280px;
+  bottom: 5px;
+  left: 0px;
+  text-align: center;
+  position: absolute;
+  margin-top: 25px;
+  color: white;
+}
+
+#infoCouvData{
+  font: 11px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 12px;
+  display:none;
+  width:280px;
+  bottom: 5px;
+  left: 0px;
+  text-align: center;
+  position: absolute;
+  margin-top: 25px;
+  color: white;
+}
+
+#infoQoS{
+  font: 11px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 12px;
+  display:none;
+  width:280px;
+  bottom: 5px;
+  left: 0px;
+  text-align: center;
+  position: absolute;
+  margin-top: 25px;
+}
+
+#infoCouvVoix  a {
+    color: white;
+}
+
+#infoCouvData  a {
+    color: white;
+}
+
+#infoQoS  a {
+    color: white;
+}
+
+
+
+@media screen and (max-height: 700px) {
+      #infoQoS  {
+      position: static;
+      }
+}
+@media screen and (max-height: 500px) {
+      #infoCouvVoix,#infoCouvData  {
+      position: static;
+      }
+}
+@media screen and (max-width: 910px) {
+  #toggleHUD {
+    display: block;
+        z-index: 6;
+    top: 40px;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+  }
+  #logo {
+  height: 35px;
+  position: absolute;
+  top: 0px;
+  left:0px;
+  }
+  aside {
+    display :none;
+  }
+
+  #PopupInfosLegendeCouvVoix{
+    display:none;
+  }
+  .mapboxgl-ctrl-geocoder{
+  min-width: 210px;
+  }
+
+  .mapboxgl-ctrl.mapboxgl-ctrl-scale {
+  margin: 0 0 5px 5px;
+}
+
+#map {
+  left: 0px;
+}
+}
+  </style>
+</head>
+
+<body>
+  <img id="logo" style="z-index:1;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoArcep.png">
+  <div id='map'></div>
+  <div id="masquerMap" style="display:none; opacity:0.7; background-color: #ffffff; z-index:2; position:absolute; top:0px; bottom:0; left: 0px;right: 0px;">
+  <div style="position:absolute; top:calc(40%); left:calc(50% - 151px); text-align:center; font-size: 30px; transform: rotate(-10deg);">Pas de données cartographiques</div>
+  </div>
+  <div id='toggleHUD'>☰</div>
+
+  <aside>
+    <div id="containerboutonCouvertureQoS">
+        <div class="boutonAggloTransports" id="boutonCouverture" style="margin: 0px 10px 0px 0px; position:relative;">
+          <div class="selectLight"id="selectLightCouverture"></div>
+          <div><div><img id="iconeTransportSelec" style="height:25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCouvNegative.png"></div><div>Couverture simulée</div></div>
+        </div>
+        <div class="boutonAggloTransports" id="boutonQoS" style="margin: 0px 0px 0px 0px; position:relative;">
+          <div class="selectLight" id="selectLightQoS"></div>
+      <div><div><img id="iconeTransportSelec" style="height:25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQoSNegative.png"></div><div>Qualité mesurée</div></div>
+        </div>
+
+        <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
+          <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
+        </div>
+    </div>
+
+
+    <div id="containerboutonAggloTransports">
+        <div style="font-size:14px; font-weight:bold; margin: 8px -10px 0px -10px;">Qualité mesurée</div>
+        <div class="boutonAggloTransports" id="boutonTransports" style="margin: 5px 10px 0px 0px; position:relative;">
+          <div class="selectLight"id="selectLightTransports"></div>
+          <p><img id="iconeTransportSelec" style="height:25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Autoroutes.png">&nbspTransports</p>
+        </div>
+        <div class="boutonAggloTransports" id="boutonAgglos" style="margin: 5px 0px 0px 0px; position:relative;">
+          <div class="selectLight" id="selectLightAgglos"></div>
+          <p><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoLieuxDeVie.png">&nbspLieux de vie</p>
+        </div>
+
+        <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
+          <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
+        </div>
+    </div>
+
+      <div id="ZoneGraphiquesCouv">
+        <div style="font-size:14px; font-weight:bold; margin: 18px -10px 0px -10px;">Cartes de couverture simulée</div>
+
+        <div id="GraphiqueCouv_Techno" style="width: 100%; height: 120px;">
+          <boutonGeo id="boutonCarteVoix" style="width:124px; height:110px; margin: 5px 10px 0px 0px;position:relative;"><img <div style="height: 80px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteVoix.png"><div style="line-height:12px;">Voix et SMS<br><span style="font-size:9px;">(version beta)</div><div class="selectLight" id="selectLightCarteVoix"></div></boutonGeo>
+          <boutonGeo id="boutonCarteData" style="width:124px; height:110px; margin: 5px 0px 0px 0px;position:relative;"><img <div style="height: 80px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteData.png"><div>Internet mobile</div><div class="selectLight" id="selectLightCarteData"></div></boutonGeo>
+
+          <boutonGeo id="bouton3G" style="height:30px; width:49px; margin: 8px 10px 0px 142px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;"><div>3G</div><div class="selectLight" id="selectLight3G"></div></boutonGeo>
+          <boutonGeo id="bouton4G" style="height:30px; width:49px; margin: 8px 0px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;"><div>4G</div><div class="selectLight" id="selectLight4G"></div></boutonGeo>
+
+        </div>
+
+        <div style="width: 60%; height: 1px; margin: 15px 20% 15px 20%; float:left;">
+          <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
+        </div>
+
+        <div id="ZoneGraphiquesCouvVoix">
+            <div id="GraphiqueCouvPopulation" style="width: 130px; height: 110px; float:left"></div>
+            <div id="GraphiqueCouvSurface" style="width: 130px; height: 110px; float:left"></div>
+      <div id="legendeCouv" style="width: 150px; text-align:center; font-weight:bold; margin: 10px 55px 0px 45px; float:left;"><span style="color:#ff8432; font-size:11px;">Orange&nbsp&nbsp&nbsp</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp&nbsp&nbsp</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp&nbsp&nbsp</span><span style="color:#32b432; font-size:11px;">Free</span></div>
+      <div style="text-align:justify; font-size:10px; line-height:11px; margin: 5px 0px 0px 0px; float:left"><u>Note:</u> en raison de leur caractère expérimental, les chiffres et cartes voix/SMS de "nouvelle génération" ci-contre ne sont diponibles <span style= "zoom: 1"><u>que pour la région Nouvelle Aquitaine</u></span> et que pour la 2G. Cette démarche sera étendue à l'ensemble du territoire après contrôle sur le terrain par l'Arcep.</div>
+
+    </div>
+
+        <div id="ZoneGraphiquesCouvData" style="display:none;">
+          <div id="GraphiqueCouvPopulation4G" style="width: 130px; height: 110px; float:left;"></div>
+          <div id="GraphiqueCouvSurface4G" style="width: 130px; height: 110px; float:left"></div>
+          <div id="GraphiqueCouvPopulation3G" style="width: 130px; height: 110px; float:left; display:none;"></div>
+          <div id="GraphiqueCouvSurface3G" style="width: 130px; height: 110px; float:left; display:none;"></div>
+        <div id="legendeCouv" style="width: 150px; text-align:center; font-weight:bold; margin: 10px 55px 0px 45px; float:left;"><span style="color:#ff8432; font-size:11px;">Orange&nbsp&nbsp&nbsp</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp&nbsp&nbsp</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp&nbsp&nbsp</span><span style="color:#32b432; font-size:11px;">Free</span></div>
+        <div style="text-align:justify; font-size:10px; line-height:11px; margin: 5px 0px 0px 0px; float:left"><u>Note:</u> les cartes présentées pour le service Internet mobile se limitent au niveau « couverture limitée ». L’ajout des niveaux « bonne couverture » et « très bonne couverture », comme pour le service Voix/SMS, fera l’objet de travaux complémentaires dans le futur.</div>
+      </div>
+
+
+      </div>
+
+      <div id="ZoneGraphiquesQoS">
+      <div style="font-size:14px; font-weight:bold; margin: 10px -10px 0px -10px; float:left;">Par type de lieux</div>
+        <div id="GraphiqueQoS_ZoneGeo" style="width: 100%; height: 110px;">
+          <boutonGeo id="boutonNational" style="width:258px; margin: 5px 0px 10px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/ToutesZones.png"></div><div>Toutes zones</div><div class="selectLight" id="selectLightNational"></div></boutonGeo>
+          <boutonGeo id="boutonRural" style="width:73px; margin: 0px 10px 0px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Rural.png"></div><div>Zone rurale</div><div class="selectLight" id="selectLightRural"></div></boutonGeo>
+          <boutonGeo id="boutonIntermediaire" style="width:92px; margin: 0px 10px 0px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Intermediaire.png"></div><div>Z. intermédiaire</div><div class="selectLight" id="selectLightIntermediaire"></div></boutonGeo>
+          <boutonGeo id="boutonDense" style="width:73px; margin: 0px 0px 0px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Dense.png"></div><div>Zone dense</div><div class="selectLight" id="selectLightDense"></div></boutonGeo>
+        </div>
+
+        <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
+          <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
+        </div>
+
+        <div id="GraphiqueQoS_Voix" style="width: 130px; height: 100px; float:left"></div>
+        <div id="GraphiqueQoS_SMS" style="width: 130px; height: 100px; float:left"></div>
+        <div id="GraphiqueQoS_DebitsDl" style="width: 130px; height: 105px; float:left"></div>
+        <div id="GraphiqueQoS_DebitsUl" style="width: 130px; height: 105px; float:left"></div>
+        <div id="GraphiqueQoS_Web" style="width: 130px; height: 100px;float:left"></div>
+        <div id="GraphiqueQoS_Video" style="width: 130px; height: 100px; float:left"></div>
+
+        <div id="legendeQoS" style="width: 150px; text-align:center; font-weight:bold; margin: 10px 55px 0px 45px; float:left;"><span style="color:#ff8432; font-size:11px;">Orange&nbsp&nbsp&nbsp</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp&nbsp&nbsp</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp&nbsp&nbsp</span><span style="color:#32b432; font-size:11px;">Free</span></div>
+
+      </div>
+
+  <div id="ZoneGraphiquesTransports">
+  <div style="font-size:14px; font-weight:bold; margin: 10px -10px 0px -10px; float:left;">Par type de transports</div>
+    <div id="GraphiqueQoSTransports_ZoneGeo" style="width: 100%; height: 110px; float:left;">
+      <boutonGeo id="boutonAutoroutes" style="width:76px; margin: 5px 10px 10px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Autoroutes.png"></div><div>Autoroutes</div><div class="selectLight" id="selectLightAutoroutes"></div></boutonGeo>
+      <boutonGeo id="boutonTGV" style="width:76px; margin: 5px 10px 10px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/TGV.png"></div><div>TGV</div><div class="selectLight" id="selectLightTGV"></div></boutonGeo>
+      <boutonGeo id="boutonTET" style="width:88px; margin: 5px 0px 10px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/TET.png"></div><div>Grandes lignes</div><div class="selectLight" id="selectLightTET"></div></boutonGeo>
+      <boutonGeo id="boutonTDQ" style="width:115px; margin: 5px 10px 0px 10px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Tdb.png"></div><div>Trains du quotidien</div><div class="selectLight" id="selectLightTDQ"></div></boutonGeo>
+      <boutonGeo id="boutonMetro" style="width:115px; margin: 5px 10px 0px 0px;position:relative;"><div style="height: 25px;"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Metro.png"></div><div>Métro parisien</div><div class="selectLight" id="selectLightMetro"></div></boutonGeo>
+    </div>
+
+  <div style="width: 60%; height: 1px; margin: 15px 20% 5px 20%; float:left;">
+      <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
+  </div>
+  <div style="font-size:14px; font-weight:bold; margin: 0px -10px 0px -10px; float:left;">Par type de service</div>
+
+  <div style="float:left;">
+    <boutonGeo id="boutonQoSTransportsVoixSMS" style="width:100px; margin: 10px 10px 0px 24px;position:relative;"><div style="height: 25px;"><img <div style="height: 25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQosVoix.png"></div><div>Voix et SMS</div><div class="selectLight" id="selectLightQoSTransportsVoixSMS"></div></boutonGeo>
+    <boutonGeo id="boutonQoSTransportsData" style="width:100px; margin: 10px 24px 0px 0px;position:relative;"><div style="height: 25px;"><img <div style="height: 25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQosData.png"></div><div>Internet mobile</div><div class="selectLight" id="selectLightQoSTransportsData"></div></boutonGeo>
+  </div>
+  <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
+      <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
+  </div>
+
+  <div id="ZoneGraphiquesTransportsVoixSMS" style="display:none;">
+    <div id="GraphiqueQoS_VoixTransports" style="width: 130px; height: 100px; float:left"></div>
+    <div id="GraphiqueQoS_SMSTransports" style="width: 130px; height: 100px; float:left"></div>
+  </div>
+  <div id="ZoneGraphiquesTransportsData" style="width: 224px; height: 126px; margin: 5px 19px 0px 19px; border:0px solid grey; float:left">
+      <div id="menuDeroulantTransports" style="margin: 2px 10px 0px 2px; float:left">
+        <select name="axe" id="SelectAutoroutes" style="width: 220px;">
+          <option value="toutesAutoroutes"> Filtrer sur une autoroute</option>
+          <option value="A1">  A1 Paris - Lille</option>
+          <option value="A4">  A4 Paris - Strasbourg</option>
+          <option value="A6">  A6 Paris - Lyon</option>
+          <option value="A7">  A7 Lyon - Marseille</option>
+          <option value="A8">  A8 Aix en Provence - Menton</option>
+          <option value="A9">  A9 Orange - Perpignan</option>
+          <option value="A10">  A10 Paris - Bordeaux</option>
+          <option value="A11">  A11 Paris - Nantes</option>
+          <option value="A13">  A13 Paris - Caen</option>
+          <option value="A31">  A31 Luxembourg - Beaune</option>
+          <option value="A61">  A61 Toulouse - Narbonne</option>
+          <option value="A62">  A62 Bordeaux - Toulouse</option>
+        </select>
+        <select name="axe" id="SelectTGV" style="width: 220px; display: none;">
+          <option value="tousTGV"> Filtrer sur une ligne TGV</option>
+          <option value="TGV-PARISLILLE">  Paris - Lille</option>
+          <option value="TGV-PARISCALAIS">  Paris - Calais</option>
+          <option value="TGV-PARISRENNES">  Paris - Rennes</option>
+          <option value="TGV-PARISNANTES">  Paris - Nantes</option>
+          <option value="TGV-PARISBORDEAUX">  Paris - Bordeaux</option>
+          <option value="TGV-PARISMARSEILLE">  Paris - Marseille</option>
+          <option value="TGV-PARISLYON">  Paris - Lyon</option>
+          <option value="TGV-PARISMULHOUSE">  Paris - Mulhouse</option>
+          <option value="TGV-PARISSTRASBOURG">  Paris - Strasbourg</option>
+          <option value="TGV-LILLEMONTPELLIER">  Lille - Montpellier</option>
+        </select>
+        <select name="axe" id="SelectTET" style="width: 220px; display: none;">
+          <option value="tousTET"> Filtrer sur un train grandes lignes</option>
+          <option value="TET-BORDEAUXMARSEILLE">  Bordeaux - Marseille</option>
+          <option value="TET-NANTESBORDEAUX">  Nantes - Bordeaux</option>
+          <option value="TET-NANTESBOURGESLYON">  Nantes - Bourges - Lyon</option>
+          <option value="TET-PARISAMIENSBOULOGNE">  Paris - Amiens - Boulogne</option>
+          <option value="TET-PARISROUENLEHAVRE">  Paris - Rouen - Le Havre</option>
+          <option value="TET-PARISCAENCHERBOURG">  Paris - Caen - Cherbourg</option>
+          <option value="TET-PARISORLEANSTOURS">  Paris - Orléans - Tours</option>
+          <option value="TET-PARISLIMOGESTOULOUSE">  Paris - Limoges - Toulouse</option>
+          <option value="TET-PARISCLERMONTFERRAND">  Paris - Clermont Ferrand</option>
+          <option value="TET-PARISTROYESBELFORT">  Paris - Troyes - Belfort</option>
+        </select>
+        <select name="axe" id="SelectTDQ" style="width: 220px; display: none;">
+          <option value="tousTDQ"> Filtrer sur un train du quotidien</option>
+          <option value="TDQ-RERA">  RER A</option>
+          <option value="TDQ-RERB">  RER B</option>
+          <option value="TDQ-RERC">  RER C</option>
+          <option value="TDQ-RERD">  RER D</option>
+          <option value="TDQ-RERE">  RER E</option>
+          <option value="TDQ-LigneH">  Ligne H - Gare du Nord Ouest</option>
+          <option value="TDQ-LigneJ">  Ligne J - Gare Saint Lazare Nord</option>
+          <option value="TDQ-LigneL">  Ligne L - Gare Saint Lazare Sud</option>
+          <option value="TDQ-LigneN">  Ligne N - Gare Montparnasse</option>
+          <option value="TDQ-LigneP">  Ligne P - Gare de l'Est</option>
+          <option value="TDQ-LigneR">  Ligne R - Gare de Lyon</option>
+          <option value="TDQ-LigneU">  Ligne U - Tangentielle</option>
+          <option value="TDQ-Paris-Chartres">  Paris - Chartres</option>
+          <option value="TDQ-Lille-Bethune">  Lille - Bethune</option>
+          <option value="TDQ-Lille-Valenciennes">  Lille - Valenciennes</option>
+          <option value="TDQ-Lille-Amiens">  Lille - Amiens</option>
+          <option value="TDQ-Rennes-StMalo">  Rennes - St Malo</option>
+          <option value="TDQ-Rennes-StBrieuc">  Rennes - St Brieuc</option>
+          <option value="TDQ-Rennes-Redon">  Rennes - Redon</option>
+          <option value="TDQ-Brest-Morlaix">  Brest - Morlaix</option>
+          <option value="TDQ-Nantes-Vannes">  Nantes-Vannes</option>
+          <option value="TDQ-Nantes-StNazaire">  Nantes-St Nazaire</option>
+          <option value="TDQ-Bordeaux-Arcachon">  Bordeaux - Arcachon</option>
+          <option value="TDQ-Toulouse-Albi">  Toulouse - Albi</option>
+          <option value="TDQ-Narbonne-Cerbere">  Narbonne - Cerbère</option>
+          <option value="TDQ-Aix-Marseille">  Aix - Marseille</option>
+          <option value="TDQ-Marseille-Toulon">  Marseille - Toulon</option>
+          <option value="TDQ-Toulon-Nice">  Toulon - Nice</option>
+          <option value="TDQ-Nice-Menton">  Nice-Menton</option>
+          <option value="TDQ-Ajaccio-Bastia">  Ajaccio - Bastia</option>
+          <option value="TDQ-Lyon-Grenoble">  Lyon - Grenoble</option>
+          <option value="TDQ-Lyon-StEtienne">  Lyon - St Etienne</option>
+          <option value="TDQ-Lyon-AmbrieuenBugey">  Lyon - Ambérieu en Bugey</option>
+          <option value="TDQ-Lyon-Macon">  Lyon - Macon</option>
+          <option value="TDQ-Annecy-Chambery">  Annecy - Chambery</option>
+          <option value="TDQ-Dijon-ChalonsurSaone">  Dijon - Chalon sur Saône</option>
+          <option value="TDQ-Strasbourg-Nancy">  Strasbourg - Nancy</option>
+          <option value="TDQ-Strasbourg-Mulhouse-SaintLouis">  Strasbourg - Mulhouse - Saint Louis</option>
+          <option value="TDQ-Nancy-Metz-Luxembourg">  Nancy - Metz - Luxembourg</option>
+        </select>
+        <select name="axe" id="SelectMetro" style="width: 220px; display: none;">
+          <option value="tousMetros"> Filtrer sur une ligne de métro</option>
+          <option value="M1">  Ligne 1</option>
+          <option value="M2">  Ligne 2</option>
+          <option value="M3">  Lignes 3 et 3 bis</option>
+          <option value="M4">  Ligne 4</option>
+          <option value="M5">  Ligne 5</option>
+          <option value="M6">  Ligne 6</option>
+          <option value="M7">  Lignes 7 et 7 bis</option>
+          <option value="M8">  Ligne 8</option>
+          <option value="M9">  Ligne 9</option>
+          <option value="M10">  Ligne 10</option>
+          <option value="M11">  Ligne 11</option>
+          <option value="M12">  Ligne 12</option>
+          <option value="M13">  Ligne 13</option>
+          <option value="M14">  Ligne 14</option>
+        </select>
+      </div>
+      <div id="GraphiqueQoS_WebTransports" style="width: 130px; height: 100px;margin: 0px 47px 10px 47px; float:left"></div>
+    </div>
+
+
+    <div id="legendeQoSTransports" style="width: 150px; text-align:center; font-weight:bold; margin: 10px 55px 0px 45px; float:left;"><span style="color:#ff8432; font-size:11px;">Orange&nbsp&nbsp&nbsp</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp&nbsp&nbsp</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp&nbsp&nbsp</span><span style="color:#32b432; font-size:11px;">Free</span></div>
+ </div>
+   <div id="infoCouvVoix">
+    <div style="font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Cartes de couverture simulée fournies par les opérateurs<br>Pour plus d'information sur les résultats, cliquez ou passez la souris sur les graphiques ci-dessus.<br></div>
+    <br>
+  <div "font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Toutes les données sont disponibles en open data sur <a href="https://www.data.gouv.fr/fr/datasets/monreseaumobile" target="_blank" data-htmlarea-external="1">www.data.gouv.fr/fr/datasets/monreseaumobile</a></div>
+    <br>
+  <div><a href="mailto:monreseaumobile@arcep.fr">Contact</a> - <a href="https://www.arcep.fr/comparer-les-operateurs-mobiles" target="_blank">En savoir plus</a> - <a href="https://www.arcep.fr/" target="_blank">www.arcep.fr</a></div>
+  </div>
+  <div id="infoCouvData">
+    <div style="font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Cartes de couverture simulée fournies par les opérateurs<br>Pour plus d'information sur les résultats, cliquez ou passez la souris sur les graphiques ci-dessus.<br></div>
+    <br>
+    <div "font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Toutes les données sont disponibles en open data sur <a href="https://www.data.gouv.fr/fr/datasets/monreseaumobile" target="_blank"data-htmlarea-external="1">www.data.gouv.fr/fr/datasets/monreseaumobile</a></div>
+    <br>
+  <div><a href="mailto:monreseaumobile@arcep.fr">Contact</a> - <a href="https://www.arcep.fr/comparer-les-operateurs-mobiles" target="_blank">En savoir plus</a> - <a href="https://www.arcep.fr/" target="_blank">www.arcep.fr</a></div>
+  </div>
+  <div id="infoQoS">
+    <div style="font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Performances mesurées par l'Arcep au T2-2016, sur un échantillon de communes ou de transports représentatifs, avec des terminaux compatibles 4G.<br>Pour plus d'information sur les résultats, cliquez ou passez la souris sur les graphiques ci-dessus.<br></div>
+    <br>
+  <div "font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Toutes les données sont disponibles en open data sur <a href="https://www.data.gouv.fr/fr/datasets/monreseaumobile" target="_blank"data-htmlarea-external="1">www.data.gouv.fr/fr/datasets/monreseaumobile</a></div>
+    <br>
+    <div><a href="mailto:monreseaumobile@arcep.fr">Contact</a> - <a href="https://www.arcep.fr/comparer-les-operateurs-mobiles" target="_blank">En savoir plus</a> - <a href="https://www.arcep.fr/" target="_blank">www.arcep.fr</a></div>
+  </div>
+  </aside>
+
+  <section id="agglos">
+    <div id="EnteteLegendeAgglos" style="width: 241px; z-index: 1; display:block;">Couverture voix et SMS</div>
+    <div id="EnteteLegendeCouvData" style="width: 241px; display:none; z-index: 1; ">Couverture Internet mobile</div>
+    <div id="legendeAgglos" style="display:block;">
+       <div style="width: 100%; height: 20px;">
+
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosOrange" name="checkboxAgglosOrange" value="value" onchange = "miseAJourCheckboxOrangeAgglos(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png" alt="" style="vertical-align: middle; width: 18px; height: 18px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left" ><label><input type="radio" id="checkboxAgglosBouygues" name="checkboxAgglosBouygues" value="value" onchange = "miseAJourCheckboxBouyguesAgglos(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png" alt="" style="vertical-align: middle; width: 21px; height: 18px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosSFR" name="checkboxAgglosSFR" value="value" onchange = "miseAJourCheckboxSFRAgglos(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png" alt="" style="vertical-align: middle; width: 18px; height: 18px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosFree" name="checkboxAgglosFree" value="value" onchange = "miseAJourCheckboxFreeAgglos(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png" alt="" style="vertical-align: middle; width: 30px; height: 17px;"/></label></div>
+      </div>
+      <div style="width: 60%; height: 1px; margin: 5px 20% 2px 20%;">
+        <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:black; float:left;"></div>
+      </div>
+      <div id="blocLegendeCouvVoix" style="text-align:center; height: 18px; font-weight: normal; line-height : 18px;">
+        <div style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 10px; background-color: #d82424; opacity: 0.8; float:left"></div>Très bonne</div>
+        <div style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 10px; background-color: #e36565; opacity: 0.8; float:left"></div>Bonne</div>
+        <div style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 10px; background-color: #efa7a7; opacity: 0.8; float:left"></div>Limitée</div>
+        <div id="boutonInfosCouvVoix" style="margin: 0px 0px 0px 10px;">i</div>
+      </div>
+    <div id="blocLegendeCouvData" style="text-align:center; height: 18x; display:none; font-weight: normal; line-height : 18px;">
+        <div id="blocLegendeData3G_Old" style="color:#000000; font-size:11px; display:none; float:left"><div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 62px; background-color: #e98686; opacity: 0.7; float:left"></div>Couverture limi tée en 3G</div>
+        <div id="blocLegendeData3G" style="color:#000000; font-size:11px; display:none; float:left">
+      <div style="color:#000000; font-size:11px; float:left"><div style="height:7px; width:7px; border: 1px solid #CECECE; margin: 5px 5px 5px 10px; background-color: #e36565; opacity: 0.5; float:left"></div>3G</div>
+      <div style="color:#000000; font-size:11px; float:left"><div style="height:7px; width:7px; border: 1px solid #CECECE; margin: 5px 5px 5px 10px; background-color: #efa7a7; opacity: 0.4; float:left"></div>3G bridée à 1Mbit/s (Free)</div>
+    </div>
+    <div id="blocLegendeData4G" style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 62px; background-color: #e36565; opacity: 0.5; float:left"></div>Couverture limitée en 4G</div>
+    <div id="boutonInfosCouvData3G" style="margin: 0px 0px 0px 10px; display:none">i</div>
+    <div id="boutonInfosCouvData4G" style="margin: 0px 0px 0px 10px;">i</div>
+   </div>
+    </div>
+  <div id="EnteteLegendeTransports" style="width: 241px; z-index: 3; display:none;">Navigation Web <span style="font-size:9px;">(chargement <10s d'une page)</span></div>
+  <div id="legendeTransports" style="display:none;">
+    <div style="width: 100%; height: 18px; margin: 8px 0px 0px 0px;">
+      <div style="width: 25%; color:#ff8432; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxOrange" name="checkboxOrange" value="value" onchange = "miseAJourCheckboxOrangeTrans(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png" alt="" style="vertical-align: middle; width: 18px; height: 18px"/></label></div>
+      <div style="width: 25%; color:#3baeb3; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxBouygues" name="checkboxBouygues" value="value" onchange = "miseAJourCheckboxBouyguesTrans(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png" alt="" style="vertical-align: middle; width: 21px; height: 18px"/></label></div>
+      <div style="width: 25%; color:#cf3232; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxSFR" name="checkboxSFR" value="value" onchange = "miseAJourCheckboxSFRTrans(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png" alt="" style="vertical-align: middle; width: 18px; height: 18px"/></label></div>
+      <div style="width: 25%; color:#32b432; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxFree" name="checkboxFree" value="value" onchange = "miseAJourCheckboxFreeTrans(this)"><img src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png" alt="" style="vertical-align: middle; width: 30px; height: 17px"/></label></div>
+    </div>
+    <div style="width: 60%; height: 1px; margin: 5px 20% 2px 20%;">
+      <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:black; float:left;"></div>
+    </div>
+    <div style="text-align:center; height: 18px; font-weight: normal; line-height : 18px;">
+    <div style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border-radius: 8px; margin: 5px 5px 5px 8px; background-color: #d82727; float:left"></div>Echec</div>
+    <div style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border-radius: 8px; margin: 5px 5px 5px 3px; background-color: #6eb500; float:left"></div>Succès en 3G</div>
+    <div style="color:#000000; font-size:11px; float:left"><div style="height:8px; width:8px; border-radius: 8px; margin: 5px 5px 5px 3px; background-color: #267521; float:left"></div>Succès en 4G</div>
+  </div>
+  </div>
+  </section>
+
+  <img id="logoPopupBienvenue" style="position: absolute; top: calc(50% - 185px); left: calc(50% - 64px); width: 100px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoArcep.png">
+  <div id="PopupBienvenue">
+    <popupBoutonFermer id="popupBoutonFermerBienvenue">X</popupBoutonFermer>
+
+    <div style="font-size:16px; text-align:center; color:#e56363; font-weight:bold; margin:0px 0px 5px 0px">Bienvenue</div>
+    <div style="text-align:jutify; font-size:11px; line-height:11px;">sur <span style="color:#e56363; font-weight:bold;">monreseaumobile.fr</span>, l'outil cartographique de l'Arcep qui vous permet de comparer les opérateurs mobiles.</div>
+    <div style="width:300px; margin:10px 0px 0px 0px; float:left;">
+      <div style="width:136px; margin:0px 0px 0px 0px; float:left;">
+        <div style="height:38px; width:38px; margin: 0px 46px 0px 46px; float:left;"><img style="height:38px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCouv.png"></div>
+        <div style="width:100%; margin: 2px 0px 2px 0px; font-weight:bold; font-size:12px; text-align:center; line-height:11px; float:left;">Couverture simulée</div>
+            <div style="text-align:center; font-size:10px; line-height:10px; color:#888; float:left;">Cartes de couverture simulée fournies par les opérateurs</div>
+
+      </div>
+      <div style="width:28px; margin:0px 0px 0px 0px; font-size:30px; text-align:center; color:#e56363; font-weight:bold;  line-height:90px; float:left;">+</div>
+      <div style="width:136px; margin:0px 0px 0px 0px; float:left;">
+            <div style="height:38px; width:38px; margin: 0px 46px 0px 46px; float:left;"><img style="height:38px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQoS.png"></div>
+             <div style="width:100%; margin: 2px 0px 2px 0px; font-weight:bold; font-size:12px; text-align:center; line-height:11px; float:left;">Qualité mesurée</div>
+            <div style="text-align:center; font-size:10px; line-height:10px; color:#888; float:left;">Qualité mesurée sur le terrain par l'Arcep avec plus de 500 000 mesures</div>
+
+      </div>
+  </div>
+
+  <div style="text-align:justify; margin:7px 0px 0px 0px; font-size:9px; font-style:italic; line-height:9px; color:#666; float:left;">L’Arcep, arbitre expert et neutre au statut d'autorité administrative indépendante, est l'architecte et le gardien des réseaux d'échanges en France (+ d'infos <a href="https://www.arcep.fr/" target="_blank">ici</a>).</div>
+
+
+
+
+  </div>
+
+  <div id='PopupInfosLegendeCouvVoix'>
+    <popupBoutonFermer id="BoutonFermerPopupInfosCouvVoix">X</popupBoutonFermer>
+    <div style="margin: 0px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #d82424; opacity: 0.7; float:left"></div><b>Très bonne couverture</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir téléphoner et échanger des SMS à l’extérieur des bâtiments, et, dans la plupart des cas, à l’intérieur des bâtiment.</div></div>
+    <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #e36565; opacity: 0.6; float:left"></div><b>Bonne couverture</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir téléphoner et échanger des SMS à l’extérieur des bâtiments dans la plupart des cas, et, dans certains cas, à l’intérieur des bâtiments.</div></div>
+    <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #efa7a7; opacity: 0.5; float:left"></div><b>Couverture limitée</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir téléphoner et échanger des SMS à l’extérieur des bâtiments dans la plupart des cas, mais probablement pas à l’intérieur des bâtiments.</div></div>
+    <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div></div>
+  <div id="clicEnSavoirPlusCouv1" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
+ </div>
+  <div id='PopupInfosLegendeCouvData3G'style="height:90px;" >
+    <popupBoutonFermer id="BoutonFermerPopupInfosCouvData3G">X</popupBoutonFermer>
+   <div style="margin: 0px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #e36565; opacity: 0.5; float:left"></div><b>Couverture limitée en 3G</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir échanger des données en 3G à l’extérieur des bâtiments dans la plupart des cas.</div></div>
+  <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div></div>
+  <div id="clicEnSavoirPlusCouv2" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
+  </div>
+  <div id='PopupInfosLegendeCouvData3GFree' >
+    <popupBoutonFermer id="BoutonFermerPopupInfosCouvData3GFree">X</popupBoutonFermer>
+    <div style="margin: 0px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #e36565; opacity: 0.5; float:left"></div><b>Couverture limitée en 3G</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir échanger des données en 3G à l’extérieur des bâtiments dans la plupart des cas.</div></div>
+    <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #efa7a7; opacity: 0.4; float:left"></div><b>3G bridée à 1Mbit/s</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir échanger des données en 3G à l’extérieur des bâtiments dans la plupart des cas, avec un débit bridé à 1Mbit/s en raison d’une limitation de l’accord d’itinérance entre Free et Orange.</div></div>
+  <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div></div>
+  <div id="clicEnSavoirPlusCouv4" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
+  </div>
+   <div id='PopupInfosLegendeCouvData4G' style="height:90px;">
+    <popupBoutonFermer id="BoutonFermerPopupInfosCouvData4G">X</popupBoutonFermer>
+    <div style="margin: 0px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:32px; border: 1px solid #CECECE; margin: 0px 5px 0px 0px; background-color: #e36565; opacity: 0.5; float:left"></div><b>Couverture limitée en 4G</b></div><div style="color:#000000; text-align:justify; font-size:11px; line-height:11px; float:left">Vous devriez pouvoir échanger des données en 4G à l’extérieur des bâtiments dans la plupart des cas.</div></div>
+    <div style="margin: 10px 0px 0px 0px; float:left"><div style="color:#000000; font-size:12px; float:left"><div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div></div>
+  <div id="clicEnSavoirPlusCouv3" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
+  </div>
+  <div id='PopupInfosInfosComplementairesCouverture'>
+    <popupBoutonFermer id="BoutonFermerPopupInfosInfosComplementairesCouverture">X</popupBoutonFermer>
+    <div style="margin: 0px 0px 0px 0px; text-align:justify; font-size:11px; line-height:11px; float:left">Les informations sur la couverture sont délivrées à titre indicatif et n’ont pas valeur contractuelle. Les zones de couverture sont simulées de manière informatique, il est donc possible que certaines imprécisions existent.<br><br>De plus, la couverture peut varier dans le temps, en raison de nombreux facteurs : la saison, les conditions météorologiques, le nombre d’utilisateurs, l’apparition d’un obstacle….<br><br>Enfin, la couverture à l’intérieur des bâtiments peut être altérée en fonction des matériaux de construction utilisés, la présence de fenêtres et la localisation du téléphone à l’intérieur du bâtiment. La carte reflète ainsi une estimation moyenne de la couverture à l’intérieur des bâtiments, qui peut, dans certains cas, être moins bonne.<br><br>La disponibilité du service peut être fortement affectée par le type et la sensibilité du terminal utilisé. Les cartes sont à cet égard simulées pour une sensibilité de terminal moyenne. </div>
+  </div>
+
+   <div id="timerS" style="font-size:60px; font-weight: bold; position: absolute; z-index: 5; top: 10px; left: 290px; color:#de3737; line-height: 80px; text-align: center; width: 80px; height: 80px; border-radius: 45px; border: 4px solid #555555; background-color: #FFF; display:none;"></div>
+   <div id="BOUM" style="font-size:80px; font-weight: bold; position: absolute; z-index: 5; display:none;"><img style="height:160px;" src="https://media.giphy.com/media/v60i3qrc9hni0/giphy.gif"></div>
+</div>
+
+<div class="scripts">
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
+  <script src="https://code.highcharts.com/modules/solid-gauge.src.js"></script>
+  <script>
+var zoomTransition = 6;
+var flagGeocoder = 0;
+var strate = "national";
+var carteCouverture = "voix";
+var carteCouvertureAvant = "voix";
+var technoCarteCouverture = "4G";
+var technoCarteCouvertureAvant = "4G";
+var strateTransports = "autoroutes";
+var sousStrateTransports = "toutesAutoroutes";
+var MCCMNCCouv;
+var MCCMNCCouvAvant;
+var MCCMNC;
+var PopupInfosLegendeCouvVoixEstFerme = 0;
+var PopupsInfosLegendeCouvDataSontFermes = 0;
+var affiche2G = 0;
+var affiche3G = 0;
+var affiche4G = 1;
+var uniteCouv = "Couverture_en_territoire";
+var couvertureQosAvant = "couverture";
+var couvertureQos = "couverture";
+var agglosTransportsAvant = "transports";
+var agglosTransports = "transports";
+var transportsVoixDataAvant = "data";
+var transportsVoixData = "data";
+var nomCommune = "";
+
+var dataRaw = {
+  'couvertureTechno': {
+
+
+
+    'CL': {
+      'Couverture_en_territoire': {
+        'Bouygues_Telecom' :16,
+        'Free_Mobile' :8,
+        'Orange' :5,
+        'SFR' :18,
+      },
+      'Couverture_en_population': {
+        'Bouygues_Telecom' :4,
+        'Free_Mobile' :1,
+        'Orange' :1,
+        'SFR' :4,
+      },
+    },
+    'BC': {
+      'Couverture_en_territoire': {
+        'Bouygues_Telecom' :24,
+        'Free_Mobile' :38,
+        'Orange' :38,
+        'SFR' :32,
+      },
+      'Couverture_en_population': {
+        'Bouygues_Telecom' :12,
+        'Free_Mobile' :14,
+        'Orange' :14,
+        'SFR' :19,
+      },
+    },
+    'TBC': {
+      'Couverture_en_territoire': {
+        'Bouygues_Telecom' :49,
+        'Free_Mobile' :52,
+        'Orange' :55,
+        'SFR' :45,
+      },
+      'Couverture_en_population': {
+        'Bouygues_Telecom' :82,
+        'Free_Mobile' :83,
+        'Orange' :84,
+        'SFR' :75,
+      },
+    },
+  },
+
+    'couverture3G4G':{
+    '3G': {
+      'Couverture_en_territoire': {
+      'ReseauPropre':{
+        'Bouygues_Telecom' :85,
+        'Free_Mobile' :54,
+        'Orange' :96,
+        'SFR' :93,
+      },
+      'Iti':{
+        'Bouygues_Telecom' :0,
+        'Free_Mobile' :29,
+        'Orange' :0,
+        'SFR' :0,
+      },
+      },
+
+      'Couverture_en_population': {
+      'ReseauPropre':{
+        'Bouygues_Telecom' :98,
+        'Free_Mobile' :89,
+        'Orange' :99,
+        'SFR' :99,
+      },
+      'Iti':{
+        'Bouygues_Telecom' :0,
+        'Free_Mobile' :10,
+        'Orange' :0,
+        'SFR' :0,
+      },
+      },
+    },
+
+
+    '4G': {
+      'Couverture_en_territoire': {
+      'ReseauPropre':{
+        'Bouygues_Telecom' :58,
+        'Free_Mobile' :44,
+        'Orange' :55,
+        'SFR' :59,
+      },
+      'Iti':{
+        'Bouygues_Telecom' :0,
+        'Free_Mobile' :0,
+        'Orange' :0,
+        'SFR' :0,
+      },
+      },
+
+      'Couverture_en_population': {
+      'ReseauPropre':{
+        'Bouygues_Telecom' :88,
+        'Free_Mobile' :80,
+        'Orange' :89,
+        'SFR' :88,
+      },
+      'Iti':{
+        'Bouygues_Telecom' :0,
+        'Free_Mobile' :0,
+        'Orange' :0,
+        'SFR' :0,
+      },
+      },
+    },
+  },
+
+
+
+
+'appelsVocaux': {
+    'titre': 'Appels maintenus pendant 2 minutes et de qualité parfaite',
+        'national': {
+            'Bouygues_Telecom' :92,
+            'Free_Mobile' :91,
+            'Orange' :96,
+            'SFR' :93,
+        },
+        'dense': {
+            'Bouygues_Telecom' :96,
+            'Free_Mobile' :95,
+            'Orange' :99,
+            'SFR' :98,
+        },
+        'intermediaire': {
+            'Bouygues_Telecom' :95,
+            'Free_Mobile' :96,
+            'Orange' :98,
+            'SFR' :96,
+        },
+        'rural': {
+            'Bouygues_Telecom' :85,
+            'Free_Mobile' :84,
+            'Orange' :91,
+            'SFR' :85,
+        },
+        'tgv': {
+            'Bouygues_Telecom' :70,
+            'Free_Mobile' :77,
+            'Orange' :87,
+            'SFR' :78,
+        },
+        'tet': {
+            'Bouygues_Telecom' :76,
+            'Free_Mobile' :72,
+            'Orange' :81,
+            'SFR' :76,
+        },
+        'autoroutes': {
+            'Bouygues_Telecom' :89,
+            'Free_Mobile' :81,
+            'Orange' :93,
+            'SFR' :89,
+        },
+        'tdq': {
+            'Bouygues_Telecom' :77,
+            'Free_Mobile' :77,
+            'Orange' :83,
+            'SFR' :78,
+        },
+        'metro': {
+            'Bouygues_Telecom' :63,
+            'Free_Mobile' :66,
+            'Orange' :70,
+            'SFR' :74,
+        },
+    },
+'SMS': {
+    'titre': 'SMS recus en moins de 10 secondes',
+        'national': {
+            'Bouygues_Telecom' :90,
+            'Free_Mobile' :92,
+            'Orange' :94,
+            'SFR' :90,
+        },
+        'dense': {
+            'Bouygues_Telecom' :96,
+            'Free_Mobile' :95,
+            'Orange' :97,
+            'SFR' :97,
+        },
+        'intermediaire': {
+            'Bouygues_Telecom' :93,
+            'Free_Mobile' :92,
+            'Orange' :96,
+            'SFR' :93,
+        },
+        'rural': {
+            'Bouygues_Telecom' :80,
+            'Free_Mobile' :88,
+            'Orange' :88,
+            'SFR' :81,
+        },
+        'tgv': {
+            'Bouygues_Telecom' :64,
+            'Free_Mobile' :62,
+            'Orange' :82,
+            'SFR' :72,
+        },
+        'tet': {
+            'Bouygues_Telecom' :69,
+            'Free_Mobile' :67,
+            'Orange' :76,
+            'SFR' :77,
+        },
+        'autoroutes': {
+            'Bouygues_Telecom' :79,
+            'Free_Mobile' :75,
+            'Orange' :89,
+            'SFR' :88,
+        },
+        'tdq': {
+            'Bouygues_Telecom' :82,
+            'Free_Mobile' :74,
+            'Orange' :87,
+            'SFR' :83,
+        },
+        'metro': {
+            'Bouygues_Telecom' :79,
+            'Free_Mobile' :85,
+            'Orange' :86,
+            'SFR' :71,
+        },
+    },
+'video': {
+    'titre': 'Vidéos visionnées pendant 2 minutes et de qualité parfaite',
+        'national': {
+            'Bouygues_Telecom' :67,
+            'Free_Mobile' :45,
+            'Orange' :81,
+            'SFR' :67,
+        },
+        'dense': {
+            'Bouygues_Telecom' :91,
+            'Free_Mobile' :61,
+            'Orange' :96,
+            'SFR' :85,
+        },
+        'intermediaire': {
+            'Bouygues_Telecom' :73,
+            'Free_Mobile' :51,
+            'Orange' :92,
+            'SFR' :70,
+        },
+        'rural': {
+            'Bouygues_Telecom' :39,
+            'Free_Mobile' :24,
+            'Orange' :58,
+            'SFR' :45,
+        },
+    },
+'debitsDl': {
+    'titre': 'Débit moyen téléchargement',
+        'national': {
+            'Bouygues_Telecom' :18272,
+            'Free_Mobile' :12045,
+            'Orange' :28497,
+            'SFR' :12195,
+        },
+        'dense': {
+            'Bouygues_Telecom' :32110,
+            'Free_Mobile' :18761,
+            'Orange' :47669,
+            'SFR' :21060,
+        },
+        'intermediaire': {
+            'Bouygues_Telecom' :17434,
+            'Free_Mobile' :14248,
+            'Orange' :28870,
+            'SFR' :10736,
+        },
+        'rural': {
+            'Bouygues_Telecom' :5534,
+            'Free_Mobile' :3544,
+            'Orange' :9489,
+            'SFR' :4844,
+        },
+    },
+'debitsUl': {
+    'titre': 'Débit moyen envoi',
+        'national': {
+            'Bouygues_Telecom' :5856,
+            'Free_Mobile' :3722,
+            'Orange' :7861,
+            'SFR' :4572,
+        },
+        'dense': {
+            'Bouygues_Telecom' :9782,
+            'Free_Mobile' :6243,
+            'Orange' :12987,
+            'SFR' :7221,
+        },
+        'intermediaire': {
+            'Bouygues_Telecom' :6092,
+            'Free_Mobile' :3941,
+            'Orange' :8596,
+            'SFR' :4824,
+        },
+        'rural': {
+            'Bouygues_Telecom' :1821,
+            'Free_Mobile' :1071,
+            'Orange' :2215,
+            'SFR' :1763,
+        },
+    },
+'web': {
+    'titre': 'Pages web chargées en moins de 10 secondes',
+        'national': {
+            'Bouygues_Telecom' :79,
+            'Free_Mobile' :69,
+            'Orange' :87,
+            'SFR' :82,
+        },
+        'dense': {
+            'Bouygues_Telecom' :96,
+            'Free_Mobile' :81,
+            'Orange' :97,
+            'SFR' :95,
+        },
+        'intermediaire': {
+            'Bouygues_Telecom' :84,
+            'Free_Mobile' :76,
+            'Orange' :94,
+            'SFR' :85,
+        },
+        'rural': {
+            'Bouygues_Telecom' :59,
+            'Free_Mobile' :51,
+            'Orange' :71,
+            'SFR' :66,
+        },
+        'tgv': {
+            'tousTGV': {
+                'Bouygues_Telecom' :45,
+                'Free_Mobile' :34,
+                'Orange' :67,
+                'SFR' :48,
+            },
+            'TGV-PARISCALAIS': {
+                'Bouygues_Telecom' :42,
+                'Free_Mobile' :44,
+                'Orange' :80,
+                'SFR' :42,
+            },
+            'TGV-PARISNANTES': {
+                'Bouygues_Telecom' :60,
+                'Free_Mobile' :33,
+                'Orange' :69,
+                'SFR' :52,
+            },
+            'TGV-PARISMARSEILLE': {
+                'Bouygues_Telecom' :34,
+                'Free_Mobile' :40,
+                'Orange' :70,
+                'SFR' :51,
+            },
+            'TGV-PARISSTRASBOURG': {
+                'Bouygues_Telecom' :48,
+                'Free_Mobile' :32,
+                'Orange' :50,
+                'SFR' :46,
+            },
+            'TGV-PARISRENNES': {
+                'Bouygues_Telecom' :55,
+                'Free_Mobile' :42,
+                'Orange' :54,
+                'SFR' :54,
+            },
+            'TGV-PARISLILLE': {
+                'Bouygues_Telecom' :43,
+                'Free_Mobile' :29,
+                'Orange' :80,
+                'SFR' :46,
+            },
+            'TGV-PARISLYON': {
+                'Bouygues_Telecom' :34,
+                'Free_Mobile' :31,
+                'Orange' :93,
+                'SFR' :47,
+            },
+            'TGV-PARISMULHOUSE': {
+                'Bouygues_Telecom' :39,
+                'Free_Mobile' :29,
+                'Orange' :55,
+                'SFR' :46,
+            },
+            'TGV-PARISBORDEAUX': {
+                'Bouygues_Telecom' :49,
+                'Free_Mobile' :32,
+                'Orange' :44,
+                'SFR' :43,
+            },
+            'TGV-LILLEMONTPELLIER': {
+                'Bouygues_Telecom' :47,
+                'Free_Mobile' :35,
+                'Orange' :79,
+                'SFR' :57,
+            },
+        },
+        'tet': {
+            'tousTET': {
+                'Bouygues_Telecom' :64,
+                'Free_Mobile' :41,
+                'Orange' :70,
+                'SFR' :61,
+            },
+            'TET-BORDEAUXMARSEILLE': {
+                'Bouygues_Telecom' :75,
+                'Free_Mobile' :42,
+                'Orange' :75,
+                'SFR' :67,
+            },
+            'TET-PARISROUENLEHAVRE': {
+                'Bouygues_Telecom' :78,
+                'Free_Mobile' :44,
+                'Orange' :79,
+                'SFR' :73,
+            },
+            'TET-NANTESBORDEAUX': {
+                'Bouygues_Telecom' :67,
+                'Free_Mobile' :59,
+                'Orange' :75,
+                'SFR' :63,
+            },
+            'TET-NANTESBOURGESLYON': {
+                'Bouygues_Telecom' :65,
+                'Free_Mobile' :47,
+                'Orange' :67,
+                'SFR' :62,
+            },
+            'TET-PARISTROYESBELFORT': {
+                'Bouygues_Telecom' :56,
+                'Free_Mobile' :43,
+                'Orange' :66,
+                'SFR' :55,
+            },
+            'TET-PARISAMIENSBOULOGNE': {
+                'Bouygues_Telecom' :78,
+                'Free_Mobile' :51,
+                'Orange' :85,
+                'SFR' :64,
+            },
+            'TET-PARISCLERMONTFERRAND': {
+                'Bouygues_Telecom' :56,
+                'Free_Mobile' :32,
+                'Orange' :59,
+                'SFR' :50,
+            },
+            'TET-PARISCAENCHERBOURG': {
+                'Bouygues_Telecom' :45,
+                'Free_Mobile' :36,
+                'Orange' :60,
+                'SFR' :52,
+            },
+            'TET-PARISORLEANSTOURS': {
+                'Bouygues_Telecom' :85,
+                'Free_Mobile' :53,
+                'Orange' :92,
+                'SFR' :72,
+            },
+            'TET-PARISLIMOGESTOULOUSE': {
+                'Bouygues_Telecom' :53,
+                'Free_Mobile' :27,
+                'Orange' :50,
+                'SFR' :45,
+            },
+        },
+        'autoroutes': {
+            'toutesAutoroutes': {
+                'Bouygues_Telecom' :78,
+                'Free_Mobile' :44,
+                'Orange' :83,
+                'SFR' :77,
+            },
+            'A1': {
+                'Bouygues_Telecom' :80,
+                'Free_Mobile' :55,
+                'Orange' :93,
+                'SFR' :68,
+            },
+            'A4': {
+                'Bouygues_Telecom' :73,
+                'Free_Mobile' :46,
+                'Orange' :84,
+                'SFR' :61,
+            },
+            'A6': {
+                'Bouygues_Telecom' :72,
+                'Free_Mobile' :47,
+                'Orange' :82,
+                'SFR' :76,
+            },
+            'A7': {
+                'Bouygues_Telecom' :81,
+                'Free_Mobile' :46,
+                'Orange' :84,
+                'SFR' :82,
+            },
+            'A8': {
+                'Bouygues_Telecom' :77,
+                'Free_Mobile' :40,
+                'Orange' :78,
+                'SFR' :78,
+            },
+            'A9': {
+                'Bouygues_Telecom' :89,
+                'Free_Mobile' :38,
+                'Orange' :89,
+                'SFR' :82,
+            },
+            'A10': {
+                'Bouygues_Telecom' :87,
+                'Free_Mobile' :51,
+                'Orange' :84,
+                'SFR' :76,
+            },
+            'A11': {
+                'Bouygues_Telecom' :58,
+                'Free_Mobile' :35,
+                'Orange' :77,
+                'SFR' :66,
+            },
+            'A13': {
+                'Bouygues_Telecom' :79,
+                'Free_Mobile' :47,
+                'Orange' :83,
+                'SFR' :83,
+            },
+            'A31': {
+                'Bouygues_Telecom' :70,
+                'Free_Mobile' :34,
+                'Orange' :69,
+                'SFR' :69,
+            },
+            'A61': {
+                'Bouygues_Telecom' :82,
+                'Free_Mobile' :34,
+                'Orange' :80,
+                'SFR' :85,
+            },
+            'A62': {
+                'Bouygues_Telecom' :79,
+                'Free_Mobile' :61,
+                'Orange' :87,
+                'SFR' :78,
+            },
+        },
+        'tdq': {
+            'tousTDQ': {
+                'Bouygues_Telecom' :73,
+                'Free_Mobile' :46,
+                'Orange' :80,
+                'SFR' :71,
+            },
+            'TDQ-RERA': {
+                'Bouygues_Telecom' :57,
+                'Free_Mobile' :24,
+                'Orange' :67,
+                'SFR' :56,
+            },
+            'TDQ-RERB': {
+                'Bouygues_Telecom' :75,
+                'Free_Mobile' :52,
+                'Orange' :82,
+                'SFR' :72,
+            },
+            'TDQ-RERC': {
+                'Bouygues_Telecom' :83,
+                'Free_Mobile' :46,
+                'Orange' :88,
+                'SFR' :82,
+            },
+            'TDQ-RERD': {
+                'Bouygues_Telecom' :81,
+                'Free_Mobile' :54,
+                'Orange' :92,
+                'SFR' :78,
+            },
+            'TDQ-RERE': {
+                'Bouygues_Telecom' :83,
+                'Free_Mobile' :50,
+                'Orange' :89,
+                'SFR' :80,
+            },
+            'TDQ-LigneH': {
+                'Bouygues_Telecom' :84,
+                'Free_Mobile' :62,
+                'Orange' :96,
+                'SFR' :82,
+            },
+            'TDQ-LigneJ': {
+                'Bouygues_Telecom' :94,
+                'Free_Mobile' :61,
+                'Orange' :97,
+                'SFR' :90,
+            },
+            'TDQ-LigneL': {
+                'Bouygues_Telecom' :75,
+                'Free_Mobile' :60,
+                'Orange' :91,
+                'SFR' :84,
+            },
+            'TDQ-LigneN': {
+                'Bouygues_Telecom' :85,
+                'Free_Mobile' :52,
+                'Orange' :96,
+                'SFR' :81,
+            },
+            'TDQ-LigneP': {
+                'Bouygues_Telecom' :71,
+                'Free_Mobile' :48,
+                'Orange' :87,
+                'SFR' :76,
+            },
+            'TDQ-LigneR': {
+                'Bouygues_Telecom' :71,
+                'Free_Mobile' :32,
+                'Orange' :91,
+                'SFR' :72,
+            },
+            'TDQ-LigneU': {
+                'Bouygues_Telecom' :92,
+                'Free_Mobile' :70,
+                'Orange' :94,
+                'SFR' :92,
+            },
+            'TDQ-Paris-Chartres': {
+                'Bouygues_Telecom' :64,
+                'Free_Mobile' :34,
+                'Orange' :74,
+                'SFR' :64,
+            },
+            'TDQ-Ajaccio-Bastia': {
+                'Bouygues_Telecom' :55,
+                'Free_Mobile' :31,
+                'Orange' :47,
+                'SFR' :59,
+            },
+            'TDQ-Bordeaux-Arcachon': {
+                'Bouygues_Telecom' :78,
+                'Free_Mobile' :47,
+                'Orange' :81,
+                'SFR' :75,
+            },
+            'TDQ-Brest-Morlaix': {
+                'Bouygues_Telecom' :55,
+                'Free_Mobile' :44,
+                'Orange' :67,
+                'SFR' :57,
+            },
+            'TDQ-Dijon-ChalonsurSaone': {
+                'Bouygues_Telecom' :69,
+                'Free_Mobile' :75,
+                'Orange' :93,
+                'SFR' :64,
+            },
+            'TDQ-Annecy-Chambery': {
+                'Bouygues_Telecom' :61,
+                'Free_Mobile' :63,
+                'Orange' :67,
+                'SFR' :64,
+            },
+            'TDQ-Lille-Amiens': {
+                'Bouygues_Telecom' :68,
+                'Free_Mobile' :34,
+                'Orange' :73,
+                'SFR' :69,
+            },
+            'TDQ-Lille-Bethune': {
+                'Bouygues_Telecom' :58,
+                'Free_Mobile' :47,
+                'Orange' :98,
+                'SFR' :81,
+            },
+            'TDQ-Lille-Valenciennes': {
+                'Bouygues_Telecom' :73,
+                'Free_Mobile' :58,
+                'Orange' :98,
+                'SFR' :69,
+            },
+            'TDQ-Lyon-AmbrieuenBugey': {
+                'Bouygues_Telecom' :93,
+                'Free_Mobile' :54,
+                'Orange' :97,
+                'SFR' :86,
+            },
+            'TDQ-Lyon-Grenoble': {
+                'Bouygues_Telecom' :68,
+                'Free_Mobile' :46,
+                'Orange' :79,
+                'SFR' :68,
+            },
+            'TDQ-Lyon-Macon': {
+                'Bouygues_Telecom' :84,
+                'Free_Mobile' :63,
+                'Orange' :93,
+                'SFR' :80,
+            },
+            'TDQ-Lyon-StEtienne': {
+                'Bouygues_Telecom' :86,
+                'Free_Mobile' :46,
+                'Orange' :84,
+                'SFR' :74,
+            },
+            'TDQ-Aix-Marseille': {
+                'Bouygues_Telecom' :90,
+                'Free_Mobile' :36,
+                'Orange' :86,
+                'SFR' :79,
+            },
+            'TDQ-Marseille-Toulon': {
+                'Bouygues_Telecom' :87,
+                'Free_Mobile' :60,
+                'Orange' :85,
+                'SFR' :81,
+            },
+            'TDQ-Nancy-Metz-Luxembourg': {
+                'Bouygues_Telecom' :85,
+                'Free_Mobile' :51,
+                'Orange' :92,
+                'SFR' :68,
+            },
+            'TDQ-Nantes-StNazaire': {
+                'Bouygues_Telecom' :75,
+                'Free_Mobile' :67,
+                'Orange' :85,
+                'SFR' :79,
+            },
+            'TDQ-Nantes-Vannes': {
+                'Bouygues_Telecom' :80,
+                'Free_Mobile' :54,
+                'Orange' :80,
+                'SFR' :69,
+            },
+            'TDQ-Narbonne-Cerbere': {
+                'Bouygues_Telecom' :89,
+                'Free_Mobile' :34,
+                'Orange' :87,
+                'SFR' :63,
+            },
+            'TDQ-Nice-Menton': {
+                'Bouygues_Telecom' :53,
+                'Free_Mobile' :31,
+                'Orange' :68,
+                'SFR' :54,
+            },
+            'TDQ-Rennes-Redon': {
+                'Bouygues_Telecom' :55,
+                'Free_Mobile' :42,
+                'Orange' :57,
+                'SFR' :59,
+            },
+            'TDQ-Rennes-StBrieuc': {
+                'Bouygues_Telecom' :74,
+                'Free_Mobile' :40,
+                'Orange' :74,
+                'SFR' :75,
+            },
+            'TDQ-Rennes-StMalo': {
+                'Bouygues_Telecom' :64,
+                'Free_Mobile' :56,
+                'Orange' :72,
+                'SFR' :77,
+            },
+            'TDQ-Strasbourg-Mulhouse-SaintLouis': {
+                'Bouygues_Telecom' :73,
+                'Free_Mobile' :48,
+                'Orange' :92,
+                'SFR' :78,
+            },
+            'TDQ-Strasbourg-Nancy': {
+                'Bouygues_Telecom' :68,
+                'Free_Mobile' :47,
+                'Orange' :72,
+                'SFR' :54,
+            },
+            'TDQ-Toulon-Nice': {
+                'Bouygues_Telecom' :85,
+                'Free_Mobile' :50,
+                'Orange' :74,
+                'SFR' :70,
+            },
+            'TDQ-Toulouse-Albi': {
+                'Bouygues_Telecom' :74,
+                'Free_Mobile' :56,
+                'Orange' :77,
+                'SFR' :73,
+            },
+        },
+        'metro': {
+            'tousMetros': {
+                'tous':16,
+            },
+            'M1': {
+                'tous':59,
+            },
+            'M2': {
+                'tous':23,
+            },
+            'M3': {
+                'tous':1,
+            },
+            'M4': {
+                'tous':4,
+            },
+            'M5': {
+                'tous':16,
+            },
+            'M6': {
+                'tous':43,
+            },
+            'M7': {
+                'tous':1,
+            },
+            'M8': {
+                'tous':9,
+            },
+            'M9': {
+                'tous':2,
+            },
+            'M10': {
+                'tous':3,
+            },
+            'M11': {
+                'tous':1,
+            },
+            'M12': {
+                'tous':7,
+            },
+            'M13': {
+                'tous':12,
+            },
+            'M14': {
+                'tous':1,
+            },
+        },
+    },
+};
+
+
+MiseAjourIHM("4G");
+MiseAjourIHM("national");
+MiseAjourIHM("autoroutes");
+
+activeBoutonCouverture();
+activeBoutonCarteVoix();
+activeBouton4G();
+activeBoutonTransports();
+activeBoutonNational();
+activeBoutonQoSTransportsData();
+activeBoutonAutoroutes();
+
+
+
+
+if (!mapboxgl.supported()) {
+  alert('Votre navigateur Internet ne permet pas d\'afficher cette page. Veuillez le mettre à jour.');
+} else {
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic3RlcGhhbmVkZWJveXNzb24iLCJhIjoiY2lvN3A1eGQ4MDA3M3Z5a3AzNzQzMmJsZCJ9.u_6ia9oYkGwdRpjQ1R8_qg';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/stephanedeboysson/cixuos482006j2slg51a945r8',
+    center: [3, 46.5],
+    zoom: 5,
+    maxZoom: 15,
+    minZoom: 5,
+    maxBounds : [-12,39,18,53],
+  attributionControl: false,
+  });
+}
+
+
+// disable map rotation
+//map.dragRotate.disable();
+//map.touchZoomRotate.disableRotation();
+
+// Add geocoder
+var geocoder = new MapboxGeocoder({accessToken: mapboxgl.accessToken, country: 'fr', types:'place,locality,postcode,address',});
+geocoder.options.placeholder = "Rechercher votre adresse";
+map.addControl(geocoder);
+
+// Add geolocate control to the map.
+map.addControl(new mapboxgl.GeolocateControl());
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+
+// Add attributions
+map.addControl(new mapboxgl.AttributionControl(), 'bottom-left');
+
+// Add scale
+map.addControl(new mapboxgl.ScaleControl({
+    maxWidth: 80,
+    unit: 'metric'
+}));
+
+map.on('load', function () {
+  map.addSource('single-point', {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": []
+    }
+  });
+  map.addSource('3d-buildings', {
+    type: 'vector',
+    url: 'mapbox://mapbox.mapbox-streets-v7'
+  });
+  map.addSource('Transports', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.bqq8lchg'
+  });
+  map.addSource('Sites', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.2oma6qi3'
+  });
+
+
+
+
+  map.addSource('BC_Orange', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.1itlprfq'
+  });
+
+  map.addSource('CL_Orange', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.ayv1e9ma'
+  });
+
+  map.addSource('TBC_Orange', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.byh030uw'
+  });
+
+
+
+  map.addSource('BC_Bouygues', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.d2cg6m3r'
+  });
+
+  map.addSource('CL_Bouygues', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.bja9et4r'
+  });
+
+  map.addSource('TBC_Bouygues', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.2ojpr35i'
+  });
+
+
+  map.addSource('BC_SFR', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.3ugfuhda'
+  });
+
+  map.addSource('CL_SFR', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.8qr2go6r'
+  });
+
+  map.addSource('TBC_SFR', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.55trxcxo'
+  });
+
+
+
+
+  map.addSource('BC_Free', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.2k878f8z'
+  });
+
+  map.addSource('CL_Free', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.871i0ezg'
+  });
+
+  map.addSource('TBC_Free', {
+  type: 'vector',
+  url: 'mapbox://stephanedeboysson.9f327gzv'
+  });
+
+
+
+  map.addSource('3G_Orange', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.5y8y2hfk'
+  });
+  map.addSource('4G_Orange', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.du0x0q43'
+  });
+  map.addSource('3G_Bouygues', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.dslt35a9'
+  });
+  map.addSource('4G_Bouygues', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.dz19onm7'
+  });
+  map.addSource('3G_SFR', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.678g6zc3'
+  });
+  map.addSource('4G_SFR', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.38ppw3l4'
+  });
+  map.addSource('3G_Free', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.4aq76l46'
+  });
+  map.addSource('3G_Free_bridee', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.9wlkaxfh'
+  });
+  map.addSource('4G_Free', {
+    type: 'vector',
+    url: 'mapbox://stephanedeboysson.77oejp8f'
+  });
+
+
+
+
+  map.addLayer({
+        'id': '3d-buildings',
+        'source': '3d-buildings',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+            'fill-extrusion-color': '#777',
+            'fill-extrusion-height': {
+                'type': 'identity',
+                'property': 'height'
+            },
+            'fill-extrusion-base': {
+                'type': 'identity',
+                'property': 'min_height'
+            },
+            'fill-extrusion-opacity': .7
+        }
+  },'place_label_other');
+
+  map.addLayer({
+    "id": "point",
+    "source": "single-point",
+    "type": "circle",
+    "paint": {
+      "circle-radius": 10,
+      "circle-color": "#4c4c4c"
+    }
+  });
+ map.addLayer({
+    "id": "Sites",
+    "type": "symbol",
+  "minzoom": 10,
+    "source": "Sites",
+    "source-layer": "2017-01_sites-58ec8q",
+  "layout": {
+      "icon-image": "triangle-15",
+    },
+  //"filter": ["==", "Operateur", 20801],
+  //"filter": ["==", "Operateur", MCCMNCCouv],
+  });
+
+
+
+
+
+
+
+  map.addLayer({
+    "id": "TBC_Orange",
+    "type": "fill",
+    "source": "TBC_Orange",
+    "source-layer": "ORA_TBCgeojson",
+    "paint": {
+      "fill-color": '#d82424',
+      'fill-opacity': 0.7,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "BC_Orange",
+    "type": "fill",
+    "source": "BC_Orange",
+    "source-layer": "ORA_BCgeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.6,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+  map.addLayer({
+    "id": "CL_Orange",
+    "type": "fill",
+    "source": "CL_Orange",
+    "source-layer": "ORA_CLgeojson",
+    "paint": {
+      "fill-color": '#efa7a7',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "TBC_Bouygues",
+    "type": "fill",
+    "source": "TBC_Bouygues",
+    "source-layer": "BYT_TBCgeojson",
+    "paint": {
+      "fill-color": '#d82424',
+      'fill-opacity': 0.7,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "BC_Bouygues",
+    "type": "fill",
+    "source": "BC_Bouygues",
+    "source-layer": "BYT_BCgeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.6,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+  map.addLayer({
+    "id": "CL_Bouygues",
+    "type": "fill",
+    "source": "CL_Bouygues",
+    "source-layer": "BYT_CLgeojson",
+    "paint": {
+      "fill-color": '#efa7a7',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+
+  map.addLayer({
+    "id": "TBC_SFR",
+    "type": "fill",
+    "source": "TBC_SFR",
+    "source-layer": "SFR_TBCgeojson",
+    "paint": {
+      "fill-color": '#d82424',
+      'fill-opacity': 0.7,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "BC_SFR",
+    "type": "fill",
+    "source": "BC_SFR",
+    "source-layer": "SFR_BCgeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.6,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+  map.addLayer({
+    "id": "CL_SFR",
+    "type": "fill",
+    "source": "CL_SFR",
+    "source-layer": "SFR_CLgeojson",
+    "paint": {
+      "fill-color": '#efa7a7',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+
+  map.addLayer({
+    "id": "TBC_Free",
+    "type": "fill",
+    "source": "TBC_Free",
+    "source-layer": "Free_TBCgeojson",
+    "paint": {
+      "fill-color": '#d82424',
+      'fill-opacity': 0.7,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "BC_Free",
+    "type": "fill",
+    "source": "BC_Free",
+    "source-layer": "Free_BCgeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.6,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+  map.addLayer({
+    "id": "CL_Free",
+    "type": "fill",
+    "source": "CL_Free",
+    "source-layer": "Free_CLgeojson",
+    "paint": {
+      "fill-color": '#efa7a7',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+    map.addLayer({
+    "id": "3G_Orange",
+    "type": "fill",
+    "source": "3G_Orange",
+    "source-layer": "ORA_3Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+  map.addLayer({
+    "id": "4G_Orange",
+    "type": "fill",
+    "source": "4G_Orange",
+    "source-layer": "ORA_4Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+  map.addLayer({
+    "id": "3G_Bouygues",
+    "type": "fill",
+    "source": "3G_Bouygues",
+    "source-layer": "BYT_3Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+  map.addLayer({
+    "id": "4G_Bouygues",
+    "type": "fill",
+    "source": "4G_Bouygues",
+    "source-layer": "BYT_4Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+  map.addLayer({
+    "id": "3G_SFR",
+    "type": "fill",
+    "source": "3G_SFR",
+    "source-layer": "SFR_3Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+  map.addLayer({
+    "id": "4G_SFR",
+    "type": "fill",
+    "source": "4G_SFR",
+    "source-layer": "SFR_4Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+  map.addLayer({
+    "id": "3G_Free",
+    "type": "fill",
+    "source": "3G_Free",
+    "source-layer": "Free_3Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "3G_Free_bridee",
+    "type": "fill",
+    "source": "3G_Free_bridee",
+    "source-layer": "Free_3G_bridegeojson",
+    "paint": {
+      "fill-color": '#efa7a7',
+      'fill-opacity': 0.4,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "4G_Free",
+    "type": "fill",
+    "source": "4G_Free",
+    "source-layer": "Free_4Ggeojson",
+    "paint": {
+      "fill-color": '#e36565',
+      'fill-opacity': 0.5,
+    "fill-outline-color":  'rgba(255, 255, 255, 0)',
+    },
+  },'place_label_other');
+
+
+  map.addLayer({
+    "id": "transports",
+    "type": "circle",
+    "source": "Transports",
+    "source-layer": "QosTransports2016_-_V2",
+    'paint':{
+      'circle-radius': {
+        'base': 2,
+        'stops': [[4, 2.5], [12, 8]],
+      },
+      "circle-blur": 1,
+      'circle-color': {
+        property: 'BILAN2-OD',
+        type: 'categorical',
+        stops: [
+      ["ECHEC-HR", '#d82727'],
+      ["2G", '#d82727'],
+      ["3G", '#8AE300'],
+      ["4G", '#3b913b']]
+      }
+    },
+    //"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", 20801]],
+	//"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", MCCMNCCouv]],
+  });
+
+
+  map.setLayoutProperty('transports', 'visibility', 'none');
+
+  map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+  map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+  map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+  map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+  map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+  map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+  map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+  map.setLayoutProperty('BC_Free', 'visibility', 'none');
+  map.setLayoutProperty('CL_Free', 'visibility', 'none');
+
+  map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+  map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+  map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+  map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+  map.setLayoutProperty('4G_Free', 'visibility', 'none');
+  randomOperateur();
+
+});
+
+
+map.on('click', function (e) {
+    var features = map.queryRenderedFeatures(e.point);
+
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    if(features[0].properties.TypeCouv == "TBC") {
+      var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML("<span style='color:#d82424;'>Très bonne couverture</span>").addTo(map);
+    }
+    if(features[0].properties.TypeCouv == "BC") {
+      var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML("<span style='color:#e36565;'>Bonne couverture</span>").addTo(map);
+    }
+    if(features[0].properties.TypeCouv == "CL") {
+      var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML("<span style='color:#efa7a7;'>Couverture limitée</span>").addTo(map);
+    }
+
+});
+
+map.on('dblclick', function (e) {
+  var z = map.getZoom()
+  var features = map.queryRenderedFeatures(e.point);
+  if(features[0].layer.id == "water_pattern") {
+    var img = $('<img>');
+    img.attr('src', "http://i.imgur.com/GRsnzIk.gif");
+    var x = e.originalEvent.clientX || e.point.x;
+    var y = e.originalEvent.clientY || e.point.y;
+    img.attr('style', "position:absolute;top:"+ (y- 50) + "px;left:"+ (x - 50) +"px;width: 140px;");
+    img.appendTo('body');
+    setTimeout(function() {
+      img.remove();
+    }, 2700);
+   map.setZoom(z)
+  }
+});
+
+// Create a popup, but don't add it to the map yet.
+var popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['Sites'] });
+  // Change the cursor style as a UI indicator.
+  map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+
+    if (!features.length) {
+        popup.remove();
+        return;
+    }
+
+    var feature = features[0];
+
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    popup.setLngLat(feature.geometry.coordinates)
+        .setHTML(getIconeOperateur()+"<br>Emetteur "+getTechnosInstalleesSite(feature.properties.C4G, feature.properties.C3G, feature.properties.C2G))
+
+        .addTo(map);
+});
+
+geocoder.on('result', function(ev) {
+  map.getSource('single-point').setData(ev.result.geometry);
+});
+
+
+
+document.getElementById("SelectAutoroutes").onchange = function() {
+  MiseAjourIHM(strateTransports);
+  setTransportsFilter();
+};
+document.getElementById("SelectTGV").onchange = function() {
+  MiseAjourIHM(strateTransports);
+  setTransportsFilter();
+};
+document.getElementById("SelectTET").onchange = function() {
+  MiseAjourIHM(strateTransports);
+  setTransportsFilter();
+};
+document.getElementById("SelectTDQ").onchange = function() {
+  MiseAjourIHM(strateTransports);
+  setTransportsFilter();
+};
+document.getElementById("SelectMetro").onchange = function() {
+  MiseAjourIHM(strateTransports);
+  setTransportsFilter();
+};
+
+
+function convertirStrateEnTexte(strate) {
+  if (strate == "dense") {
+    return "dense";
+  }
+  if (strate == "intermediaire") {
+    return "intermédiaire";
+  }
+  if (strate == "rural") {
+    return "rurale";
+  }
+};
+
+function randomOperateur() {
+  var randOp = Math.floor(Math.random() * 4);
+  if (randOp == 0) {
+    MCCMNCCouv = 20801;
+	MCCMNC = 20801;
+    miseAJourCheckboxOrangeAgglos();
+	miseAJourCheckboxOrangeTrans();
+  }
+  if (randOp == 1) {
+    MCCMNCCouv = 20810;
+	MCCMNC = 20810;
+    miseAJourCheckboxSFRAgglos();
+	miseAJourCheckboxSFRTrans();
+  }
+  if (randOp == 2) {
+    MCCMNCCouv = 20815;
+	MCCMNC = 20815;
+    miseAJourCheckboxFreeAgglos();
+	miseAJourCheckboxFreeTrans();
+  }
+  if (randOp == 3) {
+    MCCMNCCouv = 20820;
+	MCCMNC = 20820;
+    miseAJourCheckboxBouyguesAgglos();
+	miseAJourCheckboxBouyguesTrans();
+  }
+};
+
+function afficherCouches() {
+  if((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
+    map.setLayoutProperty('Sites', 'visibility', 'visible');
+  if(carteCouverture == "voix"){
+      if(MCCMNCCouv == 20801){
+        map.setLayoutProperty('TBC_Orange', 'visibility', 'visible');
+    map.setLayoutProperty('BC_Orange', 'visibility', 'visible');
+    map.setLayoutProperty('CL_Orange', 'visibility', 'visible');
+    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+    map.setLayoutProperty('BC_Free', 'visibility', 'none');
+    map.setLayoutProperty('CL_Free', 'visibility', 'none');
+
+      }
+      if(MCCMNCCouv == 20810){
+        map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('TBC_SFR', 'visibility', 'visible');
+
+    map.setLayoutProperty('BC_SFR', 'visibility', 'visible');
+    map.setLayoutProperty('CL_SFR', 'visibility', 'visible');
+    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+    map.setLayoutProperty('BC_Free', 'visibility', 'none');
+    map.setLayoutProperty('CL_Free', 'visibility', 'none');
+      }
+      if(MCCMNCCouv == 20815){
+      map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+      map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+      map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+
+
+      map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+      map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+      map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+
+      map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+      map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+      map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+
+      map.setLayoutProperty('TBC_Free', 'visibility', 'visible');
+      map.setLayoutProperty('BC_Free', 'visibility', 'visible');
+      map.setLayoutProperty('CL_Free', 'visibility', 'visible');
+      }
+      if(MCCMNCCouv == 20820){
+      map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+      map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+      map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+
+
+
+      map.setLayoutProperty('TBC_Bouygues', 'visibility', 'visible');
+      map.setLayoutProperty('BC_Bouygues', 'visibility', 'visible');
+      map.setLayoutProperty('CL_Bouygues', 'visibility', 'visible');
+
+      map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+      map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+      map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+
+      map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+      map.setLayoutProperty('BC_Free', 'visibility', 'none');
+      map.setLayoutProperty('CL_Free', 'visibility', 'none');
+
+      }
+      map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+      map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+      map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+      map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+      map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+      map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+      map.setLayoutProperty('3G_Free', 'visibility', 'none');
+    map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+      map.setLayoutProperty('4G_Free', 'visibility', 'none');
+    }
+    if(carteCouverture == "data"){
+      map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+
+
+    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+    map.setLayoutProperty('BC_Free', 'visibility', 'none');
+    map.setLayoutProperty('CL_Free', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+    if(MCCMNCCouv == 20801){
+    if(technoCarteCouverture == "3G"){
+      map.setLayoutProperty('3G_Orange', 'visibility', 'visible');
+      map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+    }
+    if(technoCarteCouverture == "4G"){
+      map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+      map.setLayoutProperty('4G_Orange', 'visibility', 'visible');
+    }
+    map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('3G_Free', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+    map.setLayoutProperty('4G_Free', 'visibility', 'none');
+      }
+      if(MCCMNCCouv == 20810){
+    map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+    map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+    map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+    if(technoCarteCouverture == "3G"){
+      map.setLayoutProperty('3G_SFR', 'visibility', 'visible');
+      map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+    }
+    if(technoCarteCouverture == "4G"){
+      map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+      map.setLayoutProperty('4G_SFR', 'visibility', 'visible');
+    }
+    map.setLayoutProperty('3G_Free', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+    map.setLayoutProperty('4G_Free', 'visibility', 'none');
+      }
+      if(MCCMNCCouv == 20815){
+    map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+    map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+    if(technoCarteCouverture == "3G"){
+      map.setLayoutProperty('3G_Free', 'visibility', 'visible');
+    map.setLayoutProperty('3G_Free_bridee', 'visibility', 'visible');
+      map.setLayoutProperty('4G_Free', 'visibility', 'none');
+    }
+    if(technoCarteCouverture == "4G"){
+      map.setLayoutProperty('3G_Free', 'visibility', 'none');
+    map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+      map.setLayoutProperty('4G_Free', 'visibility', 'visible');
+    }
+    map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+      }
+      if(MCCMNCCouv == 20820){
+    map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+    map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+    if(technoCarteCouverture == "3G"){
+      map.setLayoutProperty('3G_Bouygues', 'visibility', 'visible');
+      map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+    }
+    if(technoCarteCouverture == "4G"){
+      map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+      map.setLayoutProperty('4G_Bouygues', 'visibility', 'visible');
+    }
+    map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('3G_Free', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+    map.setLayoutProperty('4G_Free', 'visibility', 'none');
+      }
+    }
+    map.setLayoutProperty('transports', 'visibility', 'none');
+  }
+  if(couvertureQos == "QoS" && agglosTransports == "agglos" && (agglosTransportsAvant == "transports" || couvertureQosAvant == "couverture")){
+    map.setLayoutProperty('Sites', 'visibility', 'none');
+  map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+
+
+    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+    map.setLayoutProperty('BC_Free', 'visibility', 'none');
+    map.setLayoutProperty('CL_Free', 'visibility', 'none');
+
+  map.setLayoutProperty('transports', 'visibility', 'none');
+  map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+  map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+  map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+  map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+  map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+  map.setLayoutProperty('4G_Free', 'visibility', 'none');
+  }
+
+  if((couvertureQos == "QoS" && agglosTransports == "transports" && (agglosTransportsAvant == "agglos"  || couvertureQosAvant == "couverture") || transportsVoixDataAvant != transportsVoixData)) {
+    map.setLayoutProperty('Sites', 'visibility', 'none');
+    map.setLayoutProperty('TBC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('BC_Orange', 'visibility', 'none');
+    map.setLayoutProperty('CL_Orange', 'visibility', 'none');
+
+
+    map.setLayoutProperty('TBC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('BC_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('CL_Bouygues', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('BC_SFR', 'visibility', 'none');
+    map.setLayoutProperty('CL_SFR', 'visibility', 'none');
+
+    map.setLayoutProperty('TBC_Free', 'visibility', 'none');
+    map.setLayoutProperty('BC_Free', 'visibility', 'none');
+    map.setLayoutProperty('CL_Free', 'visibility', 'none');
+
+    map.setLayoutProperty('transports', 'visibility', 'none');
+    map.setLayoutProperty('3G_Orange', 'visibility', 'none');
+    map.setLayoutProperty('4G_Orange', 'visibility', 'none');
+    map.setLayoutProperty('3G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('4G_Bouygues', 'visibility', 'none');
+    map.setLayoutProperty('3G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('4G_SFR', 'visibility', 'none');
+    map.setLayoutProperty('3G_Free', 'visibility', 'none');
+  map.setLayoutProperty('3G_Free_bridee', 'visibility', 'none');
+    map.setLayoutProperty('4G_Free', 'visibility', 'none');
+    if(transportsVoixData == "data"){
+      map.setLayoutProperty('transports', 'visibility', 'visible');
+    }
+    if(transportsVoixData == "voix"){
+      map.setLayoutProperty('transports', 'visibility', 'none');
+    }
+  }
+
+  carteCouvertureAvant = carteCouverture;
+  technoCarteCouvertureAvant = technoCarteCouverture;
+  couvertureQosAvant = couvertureQos;
+  agglosTransportsAvant = agglosTransports;
+  transportsVoixDataAvant = transportsVoixData;
+  MCCMNCCouvAvant = MCCMNCCouv;
+};
+
+
+function activeBoutonCouverture() {
+  $(boutonQoS).removeClass('active');
+  $(boutonCouverture).addClass('active');
+  $(selectLightQoS).removeClass('active');
+  $(selectLightCouverture).addClass('active');
+};
+function activeBoutonQoS() {
+  $(boutonQoS).addClass('active');
+  $(boutonCouverture).removeClass('active');
+  $(selectLightQoS).addClass('active');
+  $(selectLightCouverture).removeClass('active');
+};
+
+function activeBoutonAgglos() {
+  $(boutonAgglos).addClass('active');
+  $(boutonTransports).removeClass('active');
+  $(selectLightAgglos).addClass('active');
+  $(selectLightTransports).removeClass('active');
+};
+function activeBoutonTransports() {
+  $(boutonAgglos).removeClass('active');
+  $(boutonTransports).addClass('active');
+  $(selectLightAgglos).removeClass('active');
+  $(selectLightTransports).addClass('active');
+};
+function activeBoutonQoSTransportsVoixSMS() {
+  $(boutonQoSTransportsVoixSMS).addClass('active');
+  $(boutonQoSTransportsData).removeClass('active');
+  $(selectLightQoSTransportsVoixSMS).addClass('active');
+  $(selectLightQoSTransportsData).removeClass('active');
+};
+function activeBoutonQoSTransportsData() {
+  $(boutonQoSTransportsVoixSMS).removeClass('active');
+  $(boutonQoSTransportsData).addClass('active');
+  $(selectLightQoSTransportsVoixSMS).removeClass('active');
+  $(selectLightQoSTransportsData).addClass('active');
+};
+function activeBoutonCarteVoix() {
+  $(boutonCarteVoix).addClass('active');
+  $(boutonCarteData).removeClass('active');
+
+  $(selectLightCarteVoix).addClass('active');
+  $(selectLightCarteData).removeClass('active');
+};
+function activeBoutonCarteData() {
+  $(boutonCarteVoix).removeClass('active');
+  $(boutonCarteData).addClass('active');
+
+  $(selectLightCarteVoix).removeClass('active');
+  $(selectLightCarteData).addClass('active');
+};
+
+function activeBouton3G() {
+  $(bouton3G).addClass('active');
+  $(bouton4G).removeClass('active');
+
+  $(selectLight3G).addClass('active');
+  $(selectLight4G).removeClass('active');
+};
+function activeBouton4G() {
+  $(bouton3G).removeClass('active');
+  $(bouton4G).addClass('active');
+
+  $(selectLight3G).removeClass('active');
+  $(selectLight4G).addClass('active');
+};
+
+function activeBoutonNational() {
+  $(boutonNational).addClass('active');
+  $(boutonRural).removeClass('active');
+  $(boutonIntermediaire).removeClass('active');
+  $(boutonDense).removeClass('active');
+
+  $(selectLightNational).addClass('active');
+  $(selectLightRural).removeClass('active');
+  $(selectLightIntermediaire).removeClass('active');
+  $(selectLightDense).removeClass('active');
+};
+function activeBoutonRural() {
+  $(boutonNational).removeClass('active');
+  $(boutonRural).addClass('active');
+  $(boutonIntermediaire).removeClass('active');
+  $(boutonDense).removeClass('active');
+
+  $(selectLightNational).removeClass('active');
+  $(selectLightRural).addClass('active');
+  $(selectLightIntermediaire).removeClass('active');
+  $(selectLightDense).removeClass('active');
+};
+function activeBoutonIntermediaire() {
+  $(boutonNational).removeClass('active');
+  $(boutonRural).removeClass('active');
+  $(boutonIntermediaire).addClass('active');
+  $(boutonDense).removeClass('active');
+
+  $(selectLightNational).removeClass('active');
+  $(selectLightRural).removeClass('active');
+  $(selectLightIntermediaire).addClass('active');
+  $(selectLightDense).removeClass('active');
+};
+function activeBoutonDense() {
+  $(boutonNational).removeClass('active');
+  $(boutonRural).removeClass('active');
+  $(boutonIntermediaire).removeClass('active');
+  $(boutonDense).addClass('active');
+
+  $(selectLightNational).removeClass('active');
+  $(selectLightRural).removeClass('active');
+  $(selectLightIntermediaire).removeClass('active');
+  $(selectLightDense).addClass('active');
+};
+
+function activeBoutonAutoroutes() {
+  $(boutonAutoroutes).addClass('active');
+  $(boutonTGV).removeClass('active');
+  $(boutonTET).removeClass('active');
+  $(boutonTDQ).removeClass('active');
+  $(boutonMetro).removeClass('active');
+
+  $(selectLightAutoroutes).addClass('active');
+  $(selectLightTGV).removeClass('active');
+  $(selectLightTET).removeClass('active');
+  $(selectLightTDQ).removeClass('active');
+  $(selectLightMetro).removeClass('active');
+};
+function activeBoutonTGV() {
+  $(boutonAutoroutes).removeClass('active');
+  $(boutonTGV).addClass('active');
+  $(boutonTET).removeClass('active');
+  $(boutonTDQ).removeClass('active');
+  $(boutonMetro).removeClass('active');
+
+  $(selectLightAutoroutes).removeClass('active');
+  $(selectLightTGV).addClass('active');
+  $(selectLightTET).removeClass('active');
+  $(selectLightTDQ).removeClass('active');
+  $(selectLightMetro).removeClass('active');
+};
+function activeBoutonTET() {
+  $(boutonAutoroutes).removeClass('active');
+  $(boutonTGV).removeClass('active');
+  $(boutonTET).addClass('active');
+  $(boutonTDQ).removeClass('active');
+  $(boutonMetro).removeClass('active');
+
+  $(selectLightAutoroutes).removeClass('active');
+  $(selectLightTGV).removeClass('active');
+  $(selectLightTET).addClass('active');
+  $(selectLightTDQ).removeClass('active');
+  $(selectLightMetro).removeClass('active');
+};
+function activeBoutonTDQ() {
+  $(boutonAutoroutes).removeClass('active');
+  $(boutonTGV).removeClass('active');
+  $(boutonTET).removeClass('active');
+  $(boutonTDQ).addClass('active');
+  $(boutonMetro).removeClass('active');
+
+  $(selectLightAutoroutes).removeClass('active');
+  $(selectLightTGV).removeClass('active');
+  $(selectLightTET).removeClass('active');
+  $(selectLightTDQ).addClass('active');
+  $(selectLightMetro).removeClass('active');
+};
+function activeBoutonMetro() {
+  $(boutonAutoroutes).removeClass('active');
+  $(boutonTGV).removeClass('active');
+  $(boutonTET).removeClass('active');
+  $(boutonTDQ).removeClass('active');
+  $(boutonMetro).addClass('active');
+
+  $(selectLightAutoroutes).removeClass('active');
+  $(selectLightTGV).removeClass('active');
+  $(selectLightTET).removeClass('active');
+  $(selectLightTDQ).removeClass('active');
+  $(selectLightMetro).addClass('active');
+};
+
+
+$( "#boutonCouverture" ).click(function() {
+  if(couvertureQosAvant != "couverture"){
+    activeBoutonCouverture();
+    couvertureQos = "couverture";
+    afficherCouches();
+
+    document.getElementById('containerboutonAggloTransports').style.display='none';
+    document.getElementById('ZoneGraphiquesCouv').style.display='block';
+    document.getElementById('ZoneGraphiquesQoS').style.display='none';
+    document.getElementById('ZoneGraphiquesTransports').style.display='none';
+    if(carteCouverture == "voix"){
+      document.getElementById('EnteteLegendeAgglos').style.display='block';
+      if(!PopupInfosLegendeCouvVoixEstFerme && window.innerWidth>910){document.getElementById('PopupInfosLegendeCouvVoix').style.display='block';}
+      document.getElementById('EnteteLegendeCouvData').style.display='none';
+      document.getElementById('infoCouvVoix').style.display='block';
+      document.getElementById('infoCouvData').style.display='none';
+    }
+    if(carteCouverture == "data"){
+      document.getElementById('EnteteLegendeAgglos').style.display='none';
+      if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "3G"){
+		if(MCCMNCCouv == 20815) {document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='block';}
+		else {document.getElementById('PopupInfosLegendeCouvData3G').style.display='block';}}
+    if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "4G"){document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';}
+      document.getElementById('EnteteLegendeCouvData').style.display='block';
+      document.getElementById('infoCouvVoix').style.display='none';
+      document.getElementById('infoCouvData').style.display='block';
+    }
+
+    document.getElementById('legendeAgglos').style.display='block';
+    document.getElementById('EnteteLegendeTransports').style.display='none';
+    document.getElementById('legendeTransports').style.display='none';
+    document.getElementById('infoQoS').style.display='none';
+  document.getElementById('masquerMap').style.display='none';
+  }
+});
+$( "#boutonQoS" ).click(function() {
+  if(couvertureQosAvant != "QoS"){
+    activeBoutonQoS();
+    couvertureQos = "QoS";
+    afficherCouches();
+
+  if(agglosTransports == "agglos" || (agglosTransports == "transports" && transportsVoixData == "voix")) {
+    document.getElementById('masquerMap').style.display='block';
+    document.getElementById('EnteteLegendeTransports').style.display='none';
+    document.getElementById('legendeTransports').style.display='none';
+  }
+  if(agglosTransports == "transports" && transportsVoixData == "data") {
+    document.getElementById('masquerMap').style.display='none';
+    document.getElementById('EnteteLegendeTransports').style.display='block';
+    document.getElementById('legendeTransports').style.display='block';
+  }
+
+    document.getElementById('containerboutonAggloTransports').style.display='block';
+    document.getElementById('ZoneGraphiquesCouv').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvVoix').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData3G').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData4G').style.display='none';
+    if(agglosTransports == "agglos"){
+      document.getElementById('ZoneGraphiquesQoS').style.display='block';
+      document.getElementById('ZoneGraphiquesTransports').style.display='none';
+    }
+    if(agglosTransports == "transports"){
+      document.getElementById('ZoneGraphiquesQoS').style.display='none';
+      document.getElementById('ZoneGraphiquesTransports').style.display='block';
+
+    }
+    document.getElementById('EnteteLegendeAgglos').style.display='none';
+    document.getElementById('EnteteLegendeCouvData').style.display='none';
+    document.getElementById('legendeAgglos').style.display='none';
+    document.getElementById('infoCouvVoix').style.display='none';
+    document.getElementById('infoCouvData').style.display='none';
+    document.getElementById('infoQoS').style.display='block';
+
+  }
+});
+$( "#boutonAgglos" ).click(function() {
+  if(agglosTransportsAvant != "agglos"){
+    activeBoutonAgglos();
+    agglosTransports = "agglos";
+    afficherCouches();
+
+    document.getElementById('ZoneGraphiquesQoS').style.display='block';
+    document.getElementById('ZoneGraphiquesTransports').style.display='none';
+    document.getElementById('EnteteLegendeAgglos').style.display='none';
+    document.getElementById('legendeAgglos').style.display='none';
+    document.getElementById('EnteteLegendeTransports').style.display='none';
+    document.getElementById('legendeTransports').style.display='none';
+  document.getElementById('masquerMap').style.display='block';
+
+  }
+});
+$( "#boutonTransports" ).click(function() {
+  if(agglosTransportsAvant != "transports"){
+    activeBoutonTransports();
+    agglosTransports = "transports";
+    afficherCouches();
+    document.getElementById('ZoneGraphiquesQoS').style.display='none';
+    document.getElementById('ZoneGraphiquesTransports').style.display='block';
+    document.getElementById('EnteteLegendeAgglos').style.display='none';
+    document.getElementById('legendeAgglos').style.display='none';
+
+    if(transportsVoixData == "data"){
+   document.getElementById('masquerMap').style.display='none';
+     document.getElementById('EnteteLegendeTransports').style.display='block';
+     document.getElementById('legendeTransports').style.display='block';
+    }else{
+     document.getElementById('masquerMap').style.display='block';
+     document.getElementById('EnteteLegendeTransports').style.display='none';
+     document.getElementById('legendeTransports').style.display='none';
+    }
+  }
+});
+$( "#boutonQoSTransportsVoixSMS" ).click(function() {
+    activeBoutonQoSTransportsVoixSMS();
+    transportsVoixData = "voix";
+    afficherCouches();
+    document.getElementById('ZoneGraphiquesQoS').style.display='none';
+    document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display='block';
+    document.getElementById('ZoneGraphiquesTransportsData').style.display='none';
+    document.getElementById('EnteteLegendeTransports').style.display='none';
+    document.getElementById('legendeTransports').style.display='none';
+    document.getElementById('masquerMap').style.display='block';
+});
+$( "#boutonQoSTransportsData" ).click(function() {
+    activeBoutonQoSTransportsData();
+    transportsVoixData = "data";
+    afficherCouches();
+    document.getElementById('ZoneGraphiquesQoS').style.display='none';
+    document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display='none';
+    document.getElementById('ZoneGraphiquesTransportsData').style.display='block';
+    document.getElementById('EnteteLegendeTransports').style.display='block';
+     document.getElementById('legendeTransports').style.display='block';
+    document.getElementById('masquerMap').style.display='none';
+});
+
+$( "#popupBoutonFermerBienvenue" ).click(function() {
+  document.getElementById('PopupBienvenue').style.display='none';
+  document.getElementById('logoPopupBienvenue').style.display='none';
+});
+$( "#BoutonFermerPopupInfosCouvVoix" ).click(function() {
+  document.getElementById('PopupInfosLegendeCouvVoix').style.display='none';
+  PopupInfosLegendeCouvVoixEstFerme = 1;
+});
+$( "#BoutonFermerPopupInfosCouvData3G" ).click(function() {
+  document.getElementById('PopupInfosLegendeCouvData3G').style.display='none';
+
+  PopupsInfosLegendeCouvDataSontFermes = 1;
+});
+
+$( "#BoutonFermerPopupInfosCouvData3GFree" ).click(function() {
+
+  document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='none';
+  PopupsInfosLegendeCouvDataSontFermes = 1;
+});
+
+$( "#BoutonFermerPopupInfosCouvData4G" ).click(function() {
+  document.getElementById('PopupInfosLegendeCouvData4G').style.display='none';
+  PopupsInfosLegendeCouvDataSontFermes = 1;
+});
+$( "#BoutonFermerPopupInfosInfosComplementairesCouverture" ).click(function() {
+  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display='none';
+});
+$( "#clicEnSavoirPlusCouv1" ).click(function() {
+  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display='block';
+});
+$( "#clicEnSavoirPlusCouv2" ).click(function() {
+  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display='block';
+});
+$( "#clicEnSavoirPlusCouv3" ).click(function() {
+  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display='block';
+});
+
+$( "#clicEnSavoirPlusCouv4" ).click(function() {
+  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display='block';
+});
+
+$( "#boutonCarteVoix" ).click(function() {
+  if(carteCouvertureAvant != "voix"){
+    activeBoutonCarteVoix() ;
+    carteCouverture = "voix";
+    afficherCouches();
+
+
+  document.getElementById('ZoneGraphiquesCouvVoix').style.display='block';
+  document.getElementById('ZoneGraphiquesCouvData').style.display='none';
+  document.getElementById('blocLegendeCouvVoix').style.display='block';
+  document.getElementById('blocLegendeCouvData').style.display='none';
+  document.getElementById('EnteteLegendeAgglos').style.display='block';
+  document.getElementById('EnteteLegendeCouvData').style.display='none';
+  if(!PopupInfosLegendeCouvVoixEstFerme && window.innerWidth>910){document.getElementById('PopupInfosLegendeCouvVoix').style.display='block';}
+  document.getElementById('PopupInfosLegendeCouvData3G').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData4G').style.display='none';
+  document.getElementById('infoCouvVoix').style.display='block';
+  document.getElementById('infoCouvData').style.display='none';
+
+  document.getElementById('bouton3G').style.display='none';
+  document.getElementById('bouton4G').style.display='none';
+  }
+});
+$( "#boutonCarteData" ).click(function() {
+  if(carteCouvertureAvant != "data"){
+    activeBoutonCarteData() ;
+    carteCouverture = "data";
+    afficherCouches();
+
+  document.getElementById('ZoneGraphiquesCouvVoix').style.display='none';
+  document.getElementById('ZoneGraphiquesCouvData').style.display='block';
+  document.getElementById('blocLegendeCouvVoix').style.display='none';
+  document.getElementById('blocLegendeCouvData').style.display='block';
+  document.getElementById('EnteteLegendeAgglos').style.display='none';
+  document.getElementById('EnteteLegendeCouvData').style.display='block';
+  document.getElementById('PopupInfosLegendeCouvVoix').style.display='none';
+    if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "3G"){
+		if(MCCMNCCouv == 20815) {document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='block';}
+		else {document.getElementById('PopupInfosLegendeCouvData3G').style.display='block';}}
+  if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "4G"){document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';}
+  document.getElementById('infoCouvVoix').style.display='none';
+  document.getElementById('infoCouvData').style.display='block';
+
+  document.getElementById('bouton3G').style.display='block';
+  document.getElementById('bouton4G').style.display='block';
+  }
+});
+
+$( "#bouton3G" ).click(function() {
+  activeBouton3G() ;
+  technoCarteCouverture = "3G";
+  document.getElementById('boutonInfosCouvData3G').style.display='block';
+
+  document.getElementById('boutonInfosCouvData4G').style.display='none';
+  document.getElementById('blocLegendeData3G_Old').style.display='none';
+  document.getElementById('blocLegendeData3G').style.display='block';
+  document.getElementById('blocLegendeData4G').style.display='none';
+  document.getElementById('GraphiqueCouvPopulation3G').style.display='block';
+  document.getElementById('GraphiqueCouvSurface3G').style.display='block';
+  document.getElementById('GraphiqueCouvPopulation4G').style.display='none';
+  document.getElementById('GraphiqueCouvSurface4G').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvVoix').style.display='none';
+  if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910){
+		if(MCCMNCCouv == 20815) {document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='block';}
+		else {document.getElementById('PopupInfosLegendeCouvData3G').style.display='block';}}
+  document.getElementById('PopupInfosLegendeCouvData4G').style.display='none';
+
+  afficherCouches();
+});
+$( "#bouton4G" ).click(function() {
+  activeBouton4G() ;
+  technoCarteCouverture = "4G";
+  document.getElementById('boutonInfosCouvData3G').style.display='none';
+
+  document.getElementById('boutonInfosCouvData4G').style.display='block';
+  document.getElementById('blocLegendeData3G').style.display='none';
+  document.getElementById('blocLegendeData3G_Old').style.display='none';
+  document.getElementById('blocLegendeData4G').style.display='block';
+  document.getElementById('GraphiqueCouvPopulation3G').style.display='none';
+  document.getElementById('GraphiqueCouvSurface3G').style.display='none';
+  document.getElementById('GraphiqueCouvPopulation4G').style.display='block';
+  document.getElementById('GraphiqueCouvSurface4G').style.display='block';
+  document.getElementById('PopupInfosLegendeCouvVoix').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData3G').style.display='none';
+  document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='none';
+  if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910){document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';}
+
+  afficherCouches();
+});
+$( "#boutonNational" ).click(function() {
+  activeBoutonNational() ;
+  strate = "national";
+  MiseAjourIHM(strate);
+});
+$( "#boutonRural" ).click(function() {
+  activeBoutonRural();
+  strate = "rural";
+  MiseAjourIHM(strate);
+});
+$( "#boutonIntermediaire" ).click(function() {
+  activeBoutonIntermediaire()
+  strate = "intermediaire";
+  MiseAjourIHM(strate);
+});
+$( "#boutonDense" ).click(function() {
+  activeBoutonDense()
+  strate = "dense";
+  MiseAjourIHM(strate);
+});
+
+$( "#boutonAutoroutes" ).click(function() {
+  activeBoutonAutoroutes() ;
+  strateTransports = "autoroutes";
+  MiseAjourIHM(strateTransports);
+  MiseAjourCheckboxOperateursMetro();
+  document.getElementById('SelectAutoroutes').style.display='block';
+  document.getElementById('SelectTGV').style.display='none';
+  document.getElementById('SelectTET').style.display='none';
+  document.getElementById('SelectTDQ').style.display='none';
+  document.getElementById('SelectMetro').style.display='none';
+  setTransportsFilter();
+});
+$( "#boutonTGV" ).click(function() {
+  activeBoutonTGV() ;
+  strateTransports = "tgv";
+  MiseAjourIHM(strateTransports);
+  MiseAjourCheckboxOperateursMetro();
+  document.getElementById('SelectAutoroutes').style.display='none';
+  document.getElementById('SelectTGV').style.display='block';
+  document.getElementById('SelectTET').style.display='none';
+  document.getElementById('SelectTDQ').style.display='none';
+  document.getElementById('SelectMetro').style.display='none';
+  setTransportsFilter();
+});
+$( "#boutonTET" ).click(function() {
+  activeBoutonTET() ;
+  strateTransports = "tet";
+  MiseAjourIHM(strateTransports);
+  MiseAjourCheckboxOperateursMetro();
+  document.getElementById('SelectAutoroutes').style.display='none';
+  document.getElementById('SelectTGV').style.display='none';
+  document.getElementById('SelectTET').style.display='block';
+  document.getElementById('SelectTDQ').style.display='none';
+  document.getElementById('SelectMetro').style.display='none';
+  setTransportsFilter();
+});
+$( "#boutonTDQ" ).click(function() {
+  activeBoutonTDQ() ;
+  strateTransports = "tdq";
+  MiseAjourIHM(strateTransports);
+  MiseAjourCheckboxOperateursMetro();
+  document.getElementById('SelectAutoroutes').style.display='none';
+  document.getElementById('SelectTGV').style.display='none';
+  document.getElementById('SelectTET').style.display='none';
+  document.getElementById('SelectTDQ').style.display='block';
+  document.getElementById('SelectMetro').style.display='none';
+  setTransportsFilter();
+});
+$( "#boutonMetro" ).click(function() {
+  activeBoutonMetro() ;
+  strateTransports = "metro";
+  MiseAjourIHM(strateTransports);
+  MiseAjourCheckboxOperateursMetro();
+  document.getElementById('SelectAutoroutes').style.display='none';
+  document.getElementById('SelectTGV').style.display='none';
+  document.getElementById('SelectTET').style.display='none';
+  document.getElementById('SelectTDQ').style.display='none';
+  document.getElementById('SelectMetro').style.display='block';
+  setTransportsFilter();
+});
+$( "#boutonInfosCouvVoix" ).click(function() {
+  document.getElementById('PopupInfosLegendeCouvVoix').style.display='block';
+});
+$( "#boutonInfosCouvData3G" ).click(function() {
+		if(MCCMNCCouv == 20815) {document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='block';}
+		else {document.getElementById('PopupInfosLegendeCouvData3G').style.display='block';}
+		PopupsInfosLegendeCouvDataSontFermes = 0;
+});
+$( "#boutonInfosCouvData4G" ).click(function() {
+  document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';
+  PopupsInfosLegendeCouvDataSontFermes = 0;
+});
+
+
+function MiseAjourCheckboxOperateursMetro() {
+  if(strateTransports == 'metro'){
+    document.getElementById("checkboxOrange").checked = true;
+    document.getElementById("checkboxBouygues").checked = true;
+    document.getElementById("checkboxSFR").checked = true;
+    document.getElementById("checkboxFree").checked = true;
+
+    document.getElementById("checkboxOrange").disabled = true;
+    document.getElementById("checkboxBouygues").disabled = true;
+    document.getElementById("checkboxSFR").disabled = true;
+    document.getElementById("checkboxFree").disabled = true;
+  }
+  else{
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+
+    document.getElementById("checkboxOrange").disabled = false;
+    document.getElementById("checkboxBouygues").disabled = false;
+    document.getElementById("checkboxSFR").disabled = false;
+    document.getElementById("checkboxFree").disabled = false;
+
+    /*if(MCCMNC == 20801){document.getElementById("checkboxOrange").checked = true;}
+    if(MCCMNC == 20820){document.getElementById("checkboxBouygues").checked = true;}
+    if(MCCMNC == 20810){document.getElementById("checkboxSFR").checked = true;}
+    if(MCCMNC == 20815){document.getElementById("checkboxFree").checked = true;}*/
+
+	if(MCCMNCCouv == 20801){document.getElementById("checkboxOrange").checked = true;}
+    if(MCCMNCCouv == 20820){document.getElementById("checkboxBouygues").checked = true;}
+    if(MCCMNCCouv == 20810){document.getElementById("checkboxSFR").checked = true;}
+    if(MCCMNCCouv == 20815){document.getElementById("checkboxFree").checked = true;}
+  }
+
+};
+
+function setTransportsFilter(){
+  if(sousStrateTransports == "toutesAutoroutes" || sousStrateTransports == "tousTGV" || sousStrateTransports == "tousTDQ" || sousStrateTransports == "tousTET" || sousStrateTransports == "tousMetros"){
+    if(strateTransports != 'metro'){
+    //map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "MCC-MNC", MCCMNC]]);
+	map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "MCC-MNC", MCCMNCCouv]]);
+  }
+  else{
+    map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()]]);
+  }
+  }
+  else{
+  if(strateTransports != 'metro'){
+    //map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "SOUS-STRATE", sousStrateTransports],["==", "MCC-MNC", MCCMNC]]);
+	map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "SOUS-STRATE", sousStrateTransports],["==", "MCC-MNC", MCCMNCCouv]]);
+  }
+  else{
+    map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "SOUS-STRATE", sousStrateTransports]]);
+  }
+  }
+};
+
+function setSitesCouvFilter(){
+  map.setFilter("Sites", ["==", "Operateur", MCCMNCCouv]);
+};
+function miseAJourLegendeCouverture(element)
+{
+	if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "3G"){
+		if(MCCMNCCouv == 20815) {
+		document.getElementById('PopupInfosLegendeCouvData3G').style.display='none';
+		document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='block';
+		}
+		else {
+		document.getElementById('PopupInfosLegendeCouvData3GFree').style.display='none';
+		document.getElementById('PopupInfosLegendeCouvData3G').style.display='block';
+		}}
+	//if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "4G"){document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';}
+
+};
+
+function miseAJourCheckboxOrangeAgglos(element) {
+  document.getElementById("checkboxAgglosOrange").checked = true;
+  document.getElementById("checkboxAgglosBouygues").checked = false;
+  document.getElementById("checkboxAgglosSFR").checked = false;
+  document.getElementById("checkboxAgglosFree").checked = false;
+
+	document.getElementById("checkboxOrange").checked = true;
+	document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20801;
+  afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+  miseAJourLegendeCouverture();
+};
+function miseAJourCheckboxBouyguesAgglos(element) {
+  document.getElementById("checkboxAgglosOrange").checked = false;
+  document.getElementById("checkboxAgglosBouygues").checked = true;
+  document.getElementById("checkboxAgglosSFR").checked = false;
+  document.getElementById("checkboxAgglosFree").checked = false;
+
+  document.getElementById("checkboxOrange").checked = false;
+	document.getElementById("checkboxBouygues").checked = true;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20820;
+  afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+  miseAJourLegendeCouverture();
+};
+function miseAJourCheckboxSFRAgglos(element) {
+  document.getElementById("checkboxAgglosOrange").checked = false;
+  document.getElementById("checkboxAgglosBouygues").checked = false;
+  document.getElementById("checkboxAgglosSFR").checked = true;
+  document.getElementById("checkboxAgglosFree").checked = false;
+
+	document.getElementById("checkboxOrange").checked = false;
+	document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = true;
+    document.getElementById("checkboxFree").checked = false;
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20810;
+  afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+  miseAJourLegendeCouverture();
+};
+function miseAJourCheckboxFreeAgglos(element) {
+  document.getElementById("checkboxAgglosOrange").checked = false;
+  document.getElementById("checkboxAgglosBouygues").checked = false;
+  document.getElementById("checkboxAgglosSFR").checked = false;
+  document.getElementById("checkboxAgglosFree").checked = true;
+
+	document.getElementById("checkboxOrange").checked = false;
+	document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = true;
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20815;
+  afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+  miseAJourLegendeCouverture();
+};
+
+
+function miseAJourCheckboxOrangeTrans(element) {
+  document.getElementById("checkboxAgglosOrange").checked = true;
+  document.getElementById("checkboxAgglosBouygues").checked = false;
+  document.getElementById("checkboxAgglosSFR").checked = false;
+  document.getElementById("checkboxAgglosFree").checked = false;
+
+	document.getElementById("checkboxOrange").checked = true;
+	document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20801;
+  //afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+};
+function miseAJourCheckboxBouyguesTrans(element) {
+  document.getElementById("checkboxAgglosOrange").checked = false;
+  document.getElementById("checkboxAgglosBouygues").checked = true;
+  document.getElementById("checkboxAgglosSFR").checked = false;
+  document.getElementById("checkboxAgglosFree").checked = false;
+
+  document.getElementById("checkboxOrange").checked = false;
+	document.getElementById("checkboxBouygues").checked = true;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20820;
+  //afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+};
+function miseAJourCheckboxSFRTrans(element) {
+  document.getElementById("checkboxAgglosOrange").checked = false;
+  document.getElementById("checkboxAgglosBouygues").checked = false;
+  document.getElementById("checkboxAgglosSFR").checked = true;
+  document.getElementById("checkboxAgglosFree").checked = false;
+
+	document.getElementById("checkboxOrange").checked = false;
+	document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = true;
+    document.getElementById("checkboxFree").checked = false;
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20810;
+  //afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+};
+
+function miseAJourCheckboxFreeTrans(element) {
+  document.getElementById("checkboxAgglosOrange").checked = false;
+  document.getElementById("checkboxAgglosBouygues").checked = false;
+  document.getElementById("checkboxAgglosSFR").checked = false;
+  document.getElementById("checkboxAgglosFree").checked = true;
+
+	document.getElementById("checkboxOrange").checked = false;
+	document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = true;
+
+  //desactiver cartes autres opérateurs
+  MCCMNCCouv = 20815;
+  //afficherCouches();
+  setSitesCouvFilter();
+  setTransportsFilter();
+};
+
+
+/*function miseAJourCheckboxOrangeTrans(element) {
+  document.getElementById("checkboxOrange").checked = true;
+  /*if(MCCMNC != 20801){
+    MCCMNC = 20801;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+    setTransportsFilter();
+  }
+  if(MCCMNCCouv != 20801){
+    MCCMNCCouv = 20801;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+    setTransportsFilter();
+  }
+};
+function miseAJourCheckboxBouyguesTrans(element) {
+  document.getElementById("checkboxBouygues").checked = true;
+  /*if(MCCMNC != 20820){
+    MCCMNC = 20820;
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+    setTransportsFilter();
+  }
+   if(MCCMNCCouv != 20820){
+    MCCMNCCouv = 20820;
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+    setTransportsFilter();
+  }
+};
+function miseAJourCheckboxSFRTrans(element) {
+  document.getElementById("checkboxSFR").checked = true;
+  /*if(MCCMNC != 20810){
+    MCCMNC = 20810;
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+    setTransportsFilter();
+  }
+  if(MCCMNCCouv != 20810){
+    MCCMNCCouv = 20810;
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxFree").checked = false;
+    setTransportsFilter();
+  }
+};
+function miseAJourCheckboxFreeTrans(element) {
+  document.getElementById("checkboxFree").checked = true;
+  /*if(MCCMNC != 20815){
+    MCCMNC = 20815;
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    setTransportsFilter();
+  }
+  if(MCCMNCCouv != 20815){
+    MCCMNCCouv = 20815;
+    document.getElementById("checkboxOrange").checked = false;
+    document.getElementById("checkboxBouygues").checked = false;
+    document.getElementById("checkboxSFR").checked = false;
+    setTransportsFilter();
+  }
+};*/
+
+
+function sousTitreVariableGraphMetro() {
+  if (strateTransports=='metro') {
+  return '<div style="font: 13px Arial; text-align:center; font-weight:bold;">Moyenne : '+ dataRaw.web[strateTransports][sousStrateTransports].tous +'%<br><span style="font-size:9px; font-weight:normal;">Performances par opérateurs en 2017</span></div>';
+  }
+  return '';
+};
+
+
+function getCouleurOperateur(ope){
+  if (ope == "Orange") {
+    return "#ff8432";
+  }
+  if (ope == "Bouygues") {
+    return "#3baeb3";
+  }
+  if (ope == "SFR") {
+    return "#cf3232";
+  }
+  if (ope == "Free") {
+    return "#32b432";
+  }
+};
+
+function getTechnosInstalleesSite(C4G,C3G,C2G){
+  if (C2G == 0 && C3G == 0 && C4G == 0) {return "";}
+  if (C2G == 1 && C3G == 0 && C4G == 0) {return "2G";}
+  if (C2G == 0 && C3G == 1 && C4G == 0) {return "3G";}
+  if (C2G == 1 && C3G == 1 && C4G == 0) {return "2G/3G";}
+  if (C2G == 0 && C3G == 0 && C4G == 1) {return "4G";}
+  if (C2G == 1 && C3G == 0 && C4G == 1) {return "2G/4G";}
+  if (C2G == 0 && C3G == 1 && C4G == 1) {return "3G/4G";}
+  if (C2G == 1 && C3G == 1 && C4G == 1) {return "2G/3G/4G";}
+};
+
+function getIconeOperateur(){
+  if (MCCMNCCouv == 20801) {return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png' alt='' style='position:absolute; top:9px; left:calc(50% - 9px); width: 18px; height: 18px;'/>";}
+  if (MCCMNCCouv == 20820) {return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png' alt='' style='position:absolute; top:9px; left:calc(50% - 10px); width: 21px; height: 18px;'/>";}
+  if (MCCMNCCouv == 20810) {return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png' alt='' style='position:absolute; top:9px; left:calc(50% - 9px); width: 18px; height: 18px;'/>";}
+  if (MCCMNCCouv == 20815) {return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png' alt='' style='position:absolute; top:10px; left:calc(50% - 15px); width: 30px; height: 17px;'/>";}
+};
+
+
+
+
+function MiseAjourIHM(features) {
+
+  if(features == "2G" || features == "3G" || features == "4G"){
+    new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population"));
+  new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire"));
+  new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population","Couverture_en_population","3G"));
+  new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface","Couverture_en_territoire","3G"));
+
+  new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population","Couverture_en_population","4G"));
+  new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface","Couverture_en_territoire","4G"));
+
+
+    return 1;
+  }
+
+  if(features == "national" || features == "rural" || features == "intermediaire" || features == "dense"){
+
+    new Highcharts.Chart(GraphiqueQoS_Voix(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_SMS(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_Web(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_DebitsDl(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_DebitsUl(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_Video(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+
+    return 1;
+  }
+
+  if(features == "tgv" || features == "tet" || features == "tdq" || features == "metro" || features == "autoroutes"){
+
+    if(features == "tgv"){sousStrateTransports = document.getElementById("SelectTGV").value;}
+    if(features == "tet"){sousStrateTransports = document.getElementById("SelectTET").value;}
+    if(features == "tdq"){sousStrateTransports = document.getElementById("SelectTDQ").value;}
+    if(features == "metro"){sousStrateTransports = document.getElementById("SelectMetro").value;}
+    if(features == "autoroutes"){sousStrateTransports = document.getElementById("SelectAutoroutes").value;}
+
+  //document.getElementById('output').innerHTML = JSON.stringify(sousStrateTransports);
+
+  if(features != "metro"){
+    new Highcharts.Chart(GraphiqueQoS_VoixTransports(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_SMSTransports(features),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+    new Highcharts.Chart(GraphiqueQoS_WebTransports(features,sousStrateTransports),function(chart) {for (var i = 0; i < 4; i++) {if(chart.series[i].data[0].y < 47) {chart.series[i].data[0].dataLabel.attr({y:24});}}});
+  }else{
+    new Highcharts.Chart(GraphiqueQoS_VoixTransports(features));
+    new Highcharts.Chart(GraphiqueQoS_SMSTransports(features));
+    new Highcharts.Chart(GraphiqueQoS_WebTransports(features,sousStrateTransports));
+  }
+
+  return 1;
+}
+};
+
+function GraphiqueCouvCumul(texteLeg,inUnite) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueCouv'+texteLeg,
+      margin: [25, 20, 16, 10],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      widthAdjust: 140,
+      x:-7,
+      y:97,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">'+texteLeg+'</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      formatter: function(){
+        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.x) +'">'+this.x+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">'+texteLeg+' sous '+this.series.name+' </div>';
+      },
+      followPointer: true,
+    useHTML: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+    categories: ['Orange', 'Bouygues', 'SFR', 'Free'],
+      labels: {
+        enabled:false,
+      },
+    },
+
+
+    plotOptions: {
+      column: {
+    stacking: 'normal',
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+    groupPadding: 0.05,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+      inside: false,
+          y :-15,
+      crop: false,
+      overflow: 'none',
+      padding:0,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+      if(this.series.name == 'couverture limitée'){
+        if(this.total>99)
+          return '> 99 %';
+        if(this.total > 0)
+          return this.total + ' %';
+      }
+      }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false,
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+  {
+    name: 'couverture limitée',
+      data: [{y:dataRaw.couvertureTechno.CL[inUnite].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ffdac1'], [1, '#ffdac1']],}},{y:dataRaw.couvertureTechno.CL[inUnite].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cce2e3'], [1, '#cce2e3']],}},{y:dataRaw.couvertureTechno.CL[inUnite].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ebc1c1'], [1, '#ebc1c1']],}},{y:dataRaw.couvertureTechno.CL[inUnite].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#c1e8c1'], [1, '#c1e8c1']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+    name: 'bonne couverture',
+      data: [{y:dataRaw.couvertureTechno.BC[inUnite].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ffa366'], [1, '#ffa366']],}},{y:dataRaw.couvertureTechno.BC[inUnite].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#81b8ba'], [1, '#81b8ba']],}},{y:dataRaw.couvertureTechno.BC[inUnite].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#cf6666'], [1, '#cf6666']],}},{y:dataRaw.couvertureTechno.BC[inUnite].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#66c766'], [1, '#66c766']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+  {
+    name: 'très bonne couverture',
+      data: [{y:dataRaw.couvertureTechno.TBC[inUnite].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#FF6600'], [1, '#FF6600']],}},{y:dataRaw.couvertureTechno.TBC[inUnite].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#2e898d'], [1, '#2e898d']],}},{y:dataRaw.couvertureTechno.TBC[inUnite].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#af0000'], [1, '#af0000']],}},{y:dataRaw.couvertureTechno.TBC[inUnite].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#00a200'], [1, '#00a200']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+
+
+
+function GraphiqueCouvCumul_3G4G(texteLeg,inUnite,inTechno) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueCouv'+texteLeg+inTechno,
+      margin: [25, 20, 16, 10],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      widthAdjust: 140,
+      x:-7,
+      y:97,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">'+texteLeg+'</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      formatter: function(){
+        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.x) +'">'+this.x+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">'+texteLeg+' sous '+this.series.name+' </div>';
+      },
+      followPointer: true,
+    useHTML: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+    categories: ['Orange', 'Bouygues', 'SFR', 'Free'],
+      labels: {
+        enabled:false,
+      },
+    },
+
+
+    plotOptions: {
+      column: {
+    stacking: 'normal',
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+    groupPadding: 0.05,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+      inside: false,
+          y :-15,
+      crop: false,
+      overflow: 'none',
+      padding:0,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+      if(this.series.name == 'couverture '+inTechno+' bridée à 1Mbit/s'){
+        if(this.total>99)
+          return '> 99 %';
+        if(this.total > 0)
+          return this.total + ' %';
+      }
+      }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false,
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+  {
+    name: 'couverture '+inTechno+' bridée à 1Mbit/s',
+      data: [{y:dataRaw.couverture3G4G[inTechno][inUnite].Iti.Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ffdac1'], [1, '#ffdac1']],}},{y:dataRaw.couverture3G4G[inTechno][inUnite].Iti.Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cce2e3'], [1, '#cce2e3']],}},{y:dataRaw.couverture3G4G[inTechno][inUnite].Iti.SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ebc1c1'], [1, '#ebc1c1']],}},{y:dataRaw.couverture3G4G[inTechno][inUnite].Iti.Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#c1e8c1'], [1, '#c1e8c1']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+    name: 'couverture '+inTechno,
+      data: [{y:dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ffa366'], [1, '#ffa366']],}},{y:dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#81b8ba'], [1, '#81b8ba']],}},{y:dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#cf6666'], [1, '#cf6666']],}},{y:dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#66c766'], [1, '#66c766']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+
+
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+
+
+
+
+function GraphiqueQoS_Voix(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_Voix',
+      margin: [18, 20, 16, 10],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x:-7,
+      y:87,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      formatter: function(){
+        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes avec une qualité parfaite</div>';
+      },
+      followPointer: true,
+    useHTML: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y :16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.appelsVocaux[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.appelsVocaux[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.appelsVocaux[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_VoixTransports(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_VoixTransports',
+      margin: [18, 20, 16, 10],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      y:87,
+      x:-7,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y :16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.appelsVocaux[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.appelsVocaux[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.appelsVocaux[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_SMS(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_SMS',
+      margin: [18, 10, 16, 20],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x:5,
+      y:87,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 95px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">SMS reçus en moins de 10 secondes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y :16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.SMS[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.SMS[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.SMS[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.SMS[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_SMSTransports(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_SMSTransports',
+      margin: [18, 10, 16, 20],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x:5,
+      y:87,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 95px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">SMS reçus en moins de 10 secondes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y :16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.SMS[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.SMS[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.SMS[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.SMS[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+
+function GraphiqueQoS_Web(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_Web',
+      margin: [18, 20, 16, 10],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x:-7,
+      y:87,
+      widthAdjust: 140,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y :16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.web[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.web[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.web[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.web[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_WebTransports(inStrate,sousStrateTransports) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_WebTransports',
+      margin: [18, 15, 16, 15],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      y:87,
+      widthAdjust: 140,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
+    },
+
+  subtitle: {
+    text: sousTitreVariableGraphMetro(),
+    align: 'center',
+    verticalAlign: 'middle',
+    x: 0,
+    y: -15,
+    widthAdjust: -10,
+    style: {
+    fontSize: '11px',
+    color: '#FFFFFF',
+    },
+    useHTML: true,
+  },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y :16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.web[inStrate][sousStrateTransports].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.web[inStrate][sousStrateTransports].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.web[inStrate][sousStrateTransports].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.web[inStrate][sousStrateTransports].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_DebitsDl(inStrate) {
+  var options = {
+    chart: {
+      type: 'solidgauge',
+      renderTo: 'GraphiqueQoS_DebitsDl',
+      margin: [0, 10, 5, 0],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x:-7,
+      y:87,
+      widthAdjust: 140,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Débit descendant</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+Highcharts.numberFormat(this.y/1000,0)+'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Débit moyen constaté lors de téléchargements de fichiers</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    pane: {
+      center: ['50%', '85%'],
+      size: '85%',
+      startAngle: -90,
+      endAngle: 90,
+      background: {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        innerRadius: '40%',
+        shape: 'arc'
+      }
+    },
+
+
+    plotOptions: {
+      solidgauge: {
+        dataLabels: {
+          enabled :false,
+        },
+      },
+    },
+
+    yAxis: {
+      min: 0,
+      max: 50000,
+      tickWidth: 0,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.debitsDl[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'100%',
+      radius: '85%',
+      dataLabels: {
+    align: 'left',
+        style: {
+          color : '#ff8432',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: -50,
+        y: -75,
+      }
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.debitsDl[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'85%',
+      radius: '70%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#3baeb3',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: -50,
+        y: -62,
+      }
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.debitsDl[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'70%',
+      radius: '55%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#cf3232',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: 50,
+        y: -75,
+      }
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.debitsDl[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'55%',
+      radius: '40%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#32b432',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: 50,
+        y: -62,
+      }
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_DebitsUl(inStrate) {
+  var options = {
+    chart: {
+      type: 'solidgauge',
+      renderTo: 'GraphiqueQoS_DebitsUl',
+      margin: [0, 0, 5, 10],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      widthAdjust: 140,
+      x:5,
+      y:87,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Débit montant</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+Highcharts.numberFormat(this.y/1000,0)+'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Débit moyen constaté lors de l\'envoi de fichiers</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    pane: {
+      center: ['50%', '85%'],
+      size: '85%',
+      startAngle: -90,
+      endAngle: 90,
+      background: {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        innerRadius: '40%',
+        shape: 'arc'
+      }
+    },
+
+
+    plotOptions: {
+      solidgauge: {
+        dataLabels: {
+          enabled :false,
+        },
+      },
+    },
+
+    yAxis: {
+      min: 0,
+      max: 50000,
+      tickWidth: 0,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.debitsUl[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'100%',
+      radius: '85%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#ff8432',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: -50,
+        y: -75,
+      }
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.debitsUl[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'85%',
+      radius: '70%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#3baeb3',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: -50,
+        y: -62,
+      }
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.debitsUl[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'70%',
+      radius: '55%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#cf3232',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: 50,
+        y: -75,
+      }
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.debitsUl[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+      innerRadius:'55%',
+      radius: '40%',
+      dataLabels: {
+        align: 'left',
+        style: {
+          color : '#32b432',
+          //textShadow: '0px 0px 2px #BDBDBD',
+      textOutline: '0px 0px #000000',
+          fontSize: '10px',
+        },
+        allowOverlap: true,
+    borderWidth: 0,
+    padding: 0,
+        formatter:function(){
+          return Highcharts.numberFormat(this.y/1000,0) + ' Mb/s';
+        },
+        enabled: true,
+        x: 50,
+        y: -62,
+      }
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+function GraphiqueQoS_Video(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoS_Video',
+      margin: [18, 10, 16, 20],
+      backgroundColor:'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x:5,
+      y:87,
+      widthAdjust: 140,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Vidéo en ligne</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function(){
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:'+ getCouleurOperateur(this.series.name) +'">'+this.series.name+' : '+this.y+'%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Vidéos de 2 minutes avec une qualité parfaite</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled:false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth:0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels:{
+          enabled:true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y : 16,
+          //crop:false,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter:function(){
+            if(this.y>99)
+              return '> 99 %';
+            if(this.y > 0)
+              return this.y + ' %';
+          }
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [
+    {
+      name: 'Orange',
+      data: [{y:dataRaw.video[inStrate].Orange,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#ff8432'], [1, '#FF6600']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{y:dataRaw.video[inStrate].Bouygues_Telecom,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1}, stops: [[0, '#3baeb3'], [1, '#2e898d']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{y:dataRaw.video[inStrate].SFR,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#cf3232'], [1, '#af0000']],}}],
+      legendItemClick:false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{y:dataRaw.video[inStrate].Free_Mobile,color: {linearGradient: { x1: 1, x2: 1, y1: 0, y2: 1},  stops: [[0, '#32b432'], [1, '#00A200']],}}],
+      legendItemClick:false,
+      animation: false,
+    }
+    ],
+
+    credits: {
+      enabled: false,
+    },
+  }
+  return options;
+};
+
+
+
+//Haut, haut, bas, bas, gauche, droite, gauche, droite, B, A
+var kb = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+//superman
+var ks = [83,85,80,69,82,77,65,78];
+n = 0;
+i = 0;
+var timer;
+$(document).keydown(function (e) {
+    if (e.keyCode === ks[n++]) {
+        if (n === ks.length) {
+            n = 0;
+
+      document.getElementById('timerS').style.display='block';
+
+      map.addSource('testFree', {'type': 'geojson', 'data': {'type': 'Feature','geometry': {'type': 'Polygon','coordinates': [[[2.3214,48.8717],[2.3218,48.8715],[2.3218,48.8713],[2.3214,48.8711],[2.321,48.8711],[2.3206,48.8713],[2.3206,48.8715],[2.321,48.8717],[2.3214,48.8717]]]}}});
+      map.addSource('testBouygues', {'type': 'geojson','data': {'type': 'Feature','geometry': {'type': 'Polygon','coordinates': [[[2.2895,48.8673],[2.2899,48.8671],[2.2899,48.8669],[2.2895,48.8667],[2.2891,48.8667],[2.2887,48.8669],[2.2887,48.8671],[2.2891,48.8673],[2.2895,48.8673]]]}}});
+      map.addSource('testOrange', {'type': 'geojson','data': {'type': 'Feature','geometry': {'type': 'Polygon','coordinates': [[[2.2938,48.8334],[2.2942,48.8332],[2.2942,48.833],[2.2938,48.8328],[2.2934,48.8328],[2.293,48.833],[2.293,48.8332],[2.2934,48.8334],[2.2938,48.8334]]]}}});
+      map.addSource('testSFR', {'type': 'geojson','data': {'type': 'Feature','geometry': {'type': 'Polygon','coordinates': [[[2.2859,48.8512],[2.2863,48.851],[2.2863,48.8508],[2.2859,48.8506],[2.2855,48.8506],[2.2851,48.8508],[2.2851,48.851],[2.2855,48.8512],[2.2859,48.8512]]]}}});
+      map.addLayer({'id': 'testFree','type': 'fill-extrusion','source': 'testFree','layout': {},'paint': {'fill-extrusion-color': '#32b432','fill-extrusion-height': 300,'fill-extrusion-base': 0,'fill-extrusion-opacity': 0.6}});
+      map.addLayer({'id': 'testBouygues','type': 'fill-extrusion','source': 'testBouygues','layout': {},'paint': {'fill-extrusion-color': '#3baeb3','fill-extrusion-height': 300,'fill-extrusion-base': 0,'fill-extrusion-opacity': 0.6}});
+      map.addLayer({'id': 'testOrange','type': 'fill-extrusion','source': 'testOrange','layout': {},'paint': {'fill-extrusion-color': '#ff8432','fill-extrusion-height': 300,'fill-extrusion-base': 0,'fill-extrusion-opacity': 0.6}});
+      map.addLayer({'id': 'testSFR','type': 'fill-extrusion','source': 'testSFR','layout': {},'paint': {'fill-extrusion-color': '#cf3232','fill-extrusion-height': 300,'fill-extrusion-base': 0,'fill-extrusion-opacity': 0.6}});
+
+      var superMan = $('<img>');
+      superMan.attr('id', "superMan");
+      superMan.attr('src', "https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/superman.png");
+      var x = 300;
+      var y = 0;
+      superMan.attr('style', "position:absolute;bottom:"+ (y - 0) + "px; margin-bottom:-38px; margin-left: auto; margin-right: auto; left: 100px; right: 0; width: 400px;");
+      superMan.appendTo('body');
+
+      map.setPitch(80);
+      map.setBearing(270);
+      map.setZoom(15);
+      map.setCenter([2.3380, 48.8719]);
+
+
+      map.keyboard.disable();
+      map.getCanvas().focus();
+        map.getCanvas().addEventListener('keydown', function(e) {
+        e.preventDefault();
+        if (e.which === 37) { // left
+          document.getElementById("superMan").style.transform = "rotate(-10deg)";
+          map.setBearing(map.getBearing() - 6);
+          map.panBy([-80, 0], {easing:easingLinear, duration: 0});
+          map.panBy([0, -100], {easing:easingLinear, duration: 500});
+        } else if (e.which === 39) { // right
+          document.getElementById("superMan").style.transform = "rotate(10deg)";
+          map.setBearing(map.getBearing() + 6);
+          map.panBy([80, 0], {easing:easingLinear, duration: 0});
+          map.panBy([-0, -100], {easing:easingLinear, duration: 500});
+        }
+        }, true);
+
+      timer = setInterval('decompte()',500);
+
+            return false;
+        }
+    }
+  else if (e.keyCode === kb[i++]) {
+        if (i === kb.length) {
+            i = 0;
+            var doABarrelRoll = function(){var a="-webkit-",b='transform:rotate(3turn);',c='transition:4s;';document.head.innerHTML+='<style>#map{'+a+b+a+c+b+c+'}'}
+            doABarrelRoll();
+
+            return false;
+        }
+    }
+
+    else {
+        n = 0;
+    i=0;
+    }
+});
+
+
+var compte = 30;
+var xSuper;
+var ySuper;
+var distanceFree, distanceBouygues, distanceSFR, distanceOrange;
+function decompte()
+{
+  document.getElementById('BOUM').style.display='none';
+
+  document.getElementById("superMan").style.transform = "rotate(0deg)";
+  map.panBy([0, -200], {easing:easingLinear, duration: 500});
+    document.getElementById("timerS").innerHTML = Math.round(compte/2);
+    if(compte == 0 || compte < 0) {compte = 0;clearInterval(timer);}compte--;
+
+  xSuper = document.getElementById("superMan").getBoundingClientRect().right-document.getElementById("superMan").getBoundingClientRect().left;
+  ySuper = document.getElementById("superMan").getBoundingClientRect().top;
+
+  //distance
+  distanceFree = Math.sqrt(Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lng-2.3213,2)+Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lat-48.8712,2));
+  distanceBouygues = Math.sqrt(Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lng-2.2892,2)+Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lat-48.8669,2));
+  distanceSFR = Math.sqrt(Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lng-2.2857,2)+Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lat-48.8508,2));
+  distanceOrange = Math.sqrt(Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lng-2.2936,2)+Math.pow(map.unproject({"x":xSuper,"y":ySuper}).lat-48.8330,2));
+
+  //console.log(distanceFree);
+  if(distanceFree < 0.003){document.getElementById('BOUM').style.left = (xSuper+300)+'px'; document.getElementById('BOUM').style.top = (ySuper-220)+'px';document.getElementById('BOUM').style.display='block';map.setLayoutProperty('testFree', 'visibility', 'none');}
+  if(distanceBouygues < 0.003){document.getElementById('BOUM').style.left = (xSuper+300)+'px'; document.getElementById('BOUM').style.top = (ySuper-220)+'px';document.getElementById('BOUM').style.display='block';map.setLayoutProperty('testBouygues', 'visibility', 'none');}
+  if(distanceSFR < 0.003){document.getElementById('BOUM').style.left = (xSuper+300)+'px'; document.getElementById('BOUM').style.top = (ySuper-220)+'px';document.getElementById('BOUM').style.display='block';map.setLayoutProperty('testSFR', 'visibility', 'none');}
+  if(distanceOrange < 0.003){document.getElementById('BOUM').style.left = (xSuper+300)+'px'; document.getElementById('BOUM').style.top = (ySuper-220)+'px';document.getElementById('BOUM').style.display='block';map.setLayoutProperty('testOrange', 'visibility', 'none');}
+}
+function easingLinear(t) {
+        return t;
+}
+
+
+
+
+$( "#toggleHUD" ).click(function() {
+    if ($(this).css("left") == "5px") {
+      $("aside").show();
+      $("#agglos,.mapboxgl-ctrl").hide();
+      $(this).text("❰")
+      $(this).css("left", "287px")
+    }
+    else {
+      $("aside").hide();
+      $("#agglos, .mapboxgl-ctrl").show();
+      $(this).text("☰")
+      $(this).css("left", "5px")
+    }
+});
+
+window.addEventListener('orientationchange', function() {
+    if ($(window).width() > "910") {
+      $("aside, #agglos, .mapboxgl-ctrl").show();;
+      $("#toggleHUD" ).text("❰")
+      $("#toggleHUD" ).css("left", "287px")
+    }
+});
+
+  </script>
+</div>
+
+
+<script src="https://monreseaumobile.fr/fileadmin/js/GoogleAnalytics.js" type="text/javascript"></script>
+
+</body>
+</html>
