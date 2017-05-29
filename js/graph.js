@@ -1,21 +1,36 @@
-function MiseAjourIHM(features) {
-  console.log("MiseAjourIHM : " + features);
+var chartsCollection = [];
 
-  if (features == "2G" || features == "3G" || features == "4G") {
-    new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population"));
-    new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire"));
+function removeAllCharts(){
+  for (var i = (chartsCollection.length - 1) ; i >= 0; i--) {
+    chartsCollection[i].destroy();
+    chartsCollection.pop();
+  }
+}
 
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "3G"));
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "3G"));
+function chartsGenerator(features) {
+  console.log("chartsGenerator : " + features);
+  console.log("Before removeAllCharts : " + chartsCollection.length);
+  removeAllCharts();
+    switch (features) {
+      case "2G":
+        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population")));
+        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
+      break;
 
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "4G"));
-    new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "4G"));
-    return 1;
+      case "3G":
+        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "3G")));
+        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "3G")));
+      break;
+
+      case "4G":
+        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "4G")));
+        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "4G")));
+      break;
   }
 
   if (features == "national" || features == "rural" || features == "intermediaire" || features == "dense") {
 
-    new Highcharts.Chart(GraphiqueQoS_Voix(features), function(chart) {
+    var chartVoice = new Highcharts.Chart(GraphiqueQoS_Voix(features), function(chart) {
       for (var i = 0; i < 4; i++) {
         if (chart.series[i].data[0].y < 47) {
           chart.series[i].data[0].dataLabel.attr({
@@ -24,7 +39,7 @@ function MiseAjourIHM(features) {
         }
       }
     });
-    new Highcharts.Chart(GraphiqueQoS_SMS(features), function(chart) {
+    var chartSms = new Highcharts.Chart(GraphiqueQoS_SMS(features), function(chart) {
       for (var i = 0; i < 4; i++) {
         if (chart.series[i].data[0].y < 47) {
           chart.series[i].data[0].dataLabel.attr({
@@ -33,7 +48,7 @@ function MiseAjourIHM(features) {
         }
       }
     });
-    new Highcharts.Chart(GraphiqueQoS_Web(features), function(chart) {
+    var chartWeb = new Highcharts.Chart(GraphiqueQoS_Web(features), function(chart) {
       for (var i = 0; i < 4; i++) {
         if (chart.series[i].data[0].y < 47) {
           chart.series[i].data[0].dataLabel.attr({
@@ -42,7 +57,7 @@ function MiseAjourIHM(features) {
         }
       }
     });
-    new Highcharts.Chart(GraphiqueQoS_DebitsDl(features), function(chart) {
+    var chartDwl = new Highcharts.Chart(GraphiqueQoS_DebitsDl(features), function(chart) {
       for (var i = 0; i < 4; i++) {
         if (chart.series[i].data[0].y < 47) {
           chart.series[i].data[0].dataLabel.attr({
@@ -51,7 +66,7 @@ function MiseAjourIHM(features) {
         }
       }
     });
-    new Highcharts.Chart(GraphiqueQoS_DebitsUl(features), function(chart) {
+    var chartUpl = new Highcharts.Chart(GraphiqueQoS_DebitsUl(features), function(chart) {
       for (var i = 0; i < 4; i++) {
         if (chart.series[i].data[0].y < 47) {
           chart.series[i].data[0].dataLabel.attr({
@@ -60,7 +75,7 @@ function MiseAjourIHM(features) {
         }
       }
     });
-    new Highcharts.Chart(GraphiqueQoS_Video(features), function(chart) {
+    var chartVideo = new Highcharts.Chart(GraphiqueQoS_Video(features), function(chart) {
       for (var i = 0; i < 4; i++) {
         if (chart.series[i].data[0].y < 47) {
           chart.series[i].data[0].dataLabel.attr({
@@ -70,6 +85,12 @@ function MiseAjourIHM(features) {
       }
     });
 
+    chartsCollection.push(chartVoice);
+    chartsCollection.push(chartSms);
+    chartsCollection.push(chartWeb);
+    chartsCollection.push(chartDwl);
+    chartsCollection.push(chartUpl);
+    chartsCollection.push(chartVideo);
     return 1;
   }
 
@@ -84,7 +105,7 @@ function MiseAjourIHM(features) {
           }
         }
       });
-      new Highcharts.Chart(GraphiqueQoS_SMSTransports(features), function(chart) {
+      var chartSmsTrans = new Highcharts.Chart(GraphiqueQoS_SMSTransports(features), function(chart) {
         for (var i = 0; i < 4; i++) {
           if (chart.series[i].data[0].y < 47) {
             chart.series[i].data[0].dataLabel.attr({
@@ -93,7 +114,7 @@ function MiseAjourIHM(features) {
           }
         }
       });
-      new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports), function(chart) {
+      var chartWebTrans = new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports), function(chart) {
         for (var i = 0; i < 4; i++) {
           if (chart.series[i].data[0].y < 47) {
             chart.series[i].data[0].dataLabel.attr({
@@ -102,15 +123,16 @@ function MiseAjourIHM(features) {
           }
         }
       });
+      chartsCollection.push(chartSmsTrans);
+      chartsCollection.push(chartWebTrans);
     } else {
-      new Highcharts.Chart(GraphiqueQoS_VoixTransports(features));
-      new Highcharts.Chart(GraphiqueQoS_SMSTransports(features));
-      new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueQoS_VoixTransports(features)));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueQoS_SMSTransports(features)));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports)));
     }
-
     return 1;
   }
-};
+}
 
 function GraphiqueCouvCumul(texteLeg, inUnite) {
   var options = {
@@ -173,7 +195,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             fontSize: '9px',
           },
           formatter: function() {
-            if (this.series.name == 'couverture limit�e') {
+            if (this.series.name == 'couverture limitée') {
               if (this.total > 99)
                 return '> 99 %';
               if (this.total > 0)
@@ -199,7 +221,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
     },
 
     series: [{
-        name: 'couverture limit�e',
+        name: 'couverture limitée',
         data: [{
           y: dataRaw.couvertureTechno.CL[inUnite].Orange,
           color: {
@@ -392,7 +414,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
   var options = {
@@ -457,7 +479,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             fontSize: '9px',
           },
           formatter: function() {
-            if (this.series.name == 'couverture ' + inTechno + ' brid�e � 1Mbit/s') {
+            if (this.series.name == 'couverture ' + inTechno + ' bridée à 1Mbit/s') {
               if (this.total > 99)
                 return '> 99 %';
               if (this.total > 0)
@@ -483,7 +505,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
     },
 
     series: [{
-        name: 'couverture ' + inTechno + ' brid�e � 1Mbit/s',
+        name: 'couverture ' + inTechno + ' bridée à 1Mbit/s',
         data: [{
           y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Orange,
           color: {
@@ -612,7 +634,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_Voix(inStrate) {
   var options = {
@@ -634,7 +656,7 @@ function GraphiqueQoS_Voix(inStrate) {
       enabled: true,
       hideDelay: 0,
       formatter: function() {
-        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes avec une qualit� parfaite</div>';
+        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes avec une qualité parfaite</div>';
       },
       followPointer: true,
       useHTML: true,
@@ -781,7 +803,7 @@ function GraphiqueQoS_Voix(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_VoixTransports(inStrate) {
   var options = {
@@ -950,7 +972,7 @@ function GraphiqueQoS_VoixTransports(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_SMS(inStrate) {
   var options = {
@@ -1119,7 +1141,7 @@ function GraphiqueQoS_SMS(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_SMSTransports(inStrate) {
   var options = {
@@ -1288,7 +1310,7 @@ function GraphiqueQoS_SMSTransports(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_Web(inStrate) {
   var options = {
@@ -1312,7 +1334,7 @@ function GraphiqueQoS_Web(inStrate) {
       hideDelay: 0,
       useHTML: true,
       formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web charg�es en moins de 10 secondes</div>';
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
       },
       followPointer: true,
       borderColor: 'gray',
@@ -1458,7 +1480,7 @@ function GraphiqueQoS_Web(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
   var options = {
@@ -1495,7 +1517,7 @@ function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
       hideDelay: 0,
       useHTML: true,
       formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web charg�es en moins de 10 secondes</div>';
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
       },
       followPointer: true,
       borderColor: 'gray',
@@ -1641,7 +1663,7 @@ function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_DebitsDl(inStrate) {
   var options = {
@@ -1657,7 +1679,7 @@ function GraphiqueQoS_DebitsDl(inStrate) {
       x: -7,
       y: 87,
       widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">D�bit descendant</span>',
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Débit descendant</span>',
     },
 
     tooltip: {
@@ -1665,7 +1687,7 @@ function GraphiqueQoS_DebitsDl(inStrate) {
       hideDelay: 0,
       useHTML: true,
       formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + Highcharts.numberFormat(this.y / 1000, 0) + 'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">D�bit moyen constat� lors de t�l�chargements de fichiers</div>';
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + Highcharts.numberFormat(this.y / 1000, 0) + 'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Débit moyen constaté lors de téléchargements de fichiers</div>';
       },
       followPointer: true,
       borderColor: 'gray',
@@ -1885,7 +1907,7 @@ function GraphiqueQoS_DebitsDl(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_DebitsUl(inStrate) {
   var options = {
@@ -1901,7 +1923,7 @@ function GraphiqueQoS_DebitsUl(inStrate) {
       widthAdjust: 140,
       x: 5,
       y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">D�bit montant</span>',
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Débit montant</span>',
     },
 
     tooltip: {
@@ -1909,7 +1931,7 @@ function GraphiqueQoS_DebitsUl(inStrate) {
       hideDelay: 0,
       useHTML: true,
       formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + Highcharts.numberFormat(this.y / 1000, 0) + 'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">D�bit moyen constat� lors de l\'envoi de fichiers</div>';
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + Highcharts.numberFormat(this.y / 1000, 0) + 'Mb/s</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Débit moyen constaté lors de l\'envoi de fichiers</div>';
       },
       followPointer: true,
       borderColor: 'gray',
@@ -2129,7 +2151,7 @@ function GraphiqueQoS_DebitsUl(inStrate) {
     },
   }
   return options;
-};
+}
 
 function GraphiqueQoS_Video(inStrate) {
   var options = {
@@ -2145,7 +2167,7 @@ function GraphiqueQoS_Video(inStrate) {
       x: 5,
       y: 87,
       widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Vid�o en ligne</span>',
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Vidéo en ligne</span>',
     },
 
     tooltip: {
@@ -2153,7 +2175,7 @@ function GraphiqueQoS_Video(inStrate) {
       hideDelay: 0,
       useHTML: true,
       formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Vid�os de 2 minutes avec une qualit� parfaite</div>';
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Vidéos de 2 minutes avec une qualité parfaite</div>';
       },
       followPointer: true,
       borderColor: 'gray',
@@ -2300,4 +2322,4 @@ function GraphiqueQoS_Video(inStrate) {
     },
   }
   return options;
-};
+}

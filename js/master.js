@@ -1,5 +1,3 @@
-var zoomTransition = 6;
-var flagGeocoder = 0;
 var strate = "national";
 var carteCouverture = "voix";
 var carteCouvertureAvant = "voix";
@@ -12,10 +10,6 @@ var MCCMNCCouvAvant;
 var MCCMNC;
 var PopupInfosLegendeCouvVoixEstFerme = 0;
 var PopupsInfosLegendeCouvDataSontFermes = 0;
-var affiche2G = 0;
-var affiche3G = 0;
-var affiche4G = 1;
-var uniteCouv = "Couverture_en_territoire";
 var couvertureQosAvant = "couverture";
 var couvertureQos = "couverture";
 var agglosTransportsAvant = "transports";
@@ -23,9 +17,7 @@ var agglosTransports = "transports";
 var transportsVoixDataAvant = "data";
 var transportsVoixData = "data";
 
-MiseAjourIHM("4G");
-MiseAjourIHM("national");
-MiseAjourIHM("autoroutes");
+chartsGenerator("2G");
 
 activeBoutonCouverture();
 activeBoutonCarteVoix();
@@ -37,7 +29,8 @@ activeBoutonAutoroutes();
 
 if (!mapboxgl.supported()) {
   alert("Votre navigateur Internet ne permet pas d\'afficher cette page. Veuillez le mettre à jour.");
-} else {
+}
+else {
   mapboxgl.accessToken = mapBoxToken;
   var map = new mapboxgl.Map({
     container: 'map',
@@ -197,7 +190,7 @@ map.on('load', function() {
         'type': 'identity',
         'property': 'min_height'
       },
-      'fill-extrusion-opacity': .7
+      'fill-extrusion-opacity': 0.7
     }
   }, 'place_label_other');
   map.addLayer({
@@ -559,7 +552,7 @@ map.on('click', function(e) {
   }
 });
 map.on('dblclick', function(e) {
-  var z = map.getZoom()
+  var z = map.getZoom();
   var features = map.queryRenderedFeatures(e.point);
   if (features[0].layer.id == "water_pattern") {
     var img = $('<img>');
@@ -571,7 +564,7 @@ map.on('dblclick', function(e) {
     setTimeout(function() {
       img.remove();
     }, 2700);
-    map.setZoom(z)
+    map.setZoom(z);
   }
 });
 // Create a popup, but don't add it to the map yet.
@@ -612,11 +605,11 @@ function convertirStrateEnTexte(strate) {
   if (strate == "rural") {
     return "rurale";
   }
-};
+}
 
 function randomOperateur() {
   var randOp = Math.floor(Math.random() * 4);
-  if (randOp == 0) {
+  if (randOp === 0) {
     MCCMNCCouv = 20801;
     MCCMNC = 20801;
     miseAJourCheckboxOrangeAgglos();
@@ -640,7 +633,7 @@ function randomOperateur() {
     miseAJourCheckboxBouyguesAgglos();
     miseAJourCheckboxBouyguesTrans();
   }
-};
+}
 
 function afficherCouches() {
   if ((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
@@ -670,41 +663,33 @@ function afficherCouches() {
     }
     if (carteCouverture == "data") {
       setAllLayersInvisible();
-      if (MCCMNCCouv == 20801) {
-        if (technoCarteCouverture == "3G") {
-          setLayerVisible("3G_Orange");
-        }
-        if (technoCarteCouverture == "4G") {
-          setLayerVisible("4G_Orange");
-        }
+      if (MCCMNCCouv == 20801 && technoCarteCouverture == "3G") {
+        setLayerVisible("3G_Orange");
       }
-      if (MCCMNCCouv == 20810) {
-        setAllLayersInvisible();
-        if (technoCarteCouverture == "3G") {
-          setLayerVisible("3G_SFR");
-        }
-        if (technoCarteCouverture == "4G") {
-          setLayerVisible("4G_SFR");
-        }
+      if (MCCMNCCouv == 20801 && technoCarteCouverture == "4G") {
+        setLayerVisible("4G_Orange");
       }
-      if (MCCMNCCouv == 20815) {
-        setAllLayersInvisible();
-        if (technoCarteCouverture == "3G") {
-          setLayerVisible("3G_Free");
-          setLayerVisible("3G_Free_bridee");
-        }
-        if (technoCarteCouverture == "4G") {
-          setLayerVisible("4G_Free");
-        }
+
+      if (MCCMNCCouv == 20810 && technoCarteCouverture == "3G") {
+        setLayerVisible("3G_SFR");
       }
-      if (MCCMNCCouv == 20820) {
-        setAllLayersInvisible();
-        if (technoCarteCouverture == "3G") {
-          setLayerVisible("3G_Bouygues");
-        }
-        if (technoCarteCouverture == "4G") {
-          setLayerVisible("4G_Bouygues");
-        }
+      if (MCCMNCCouv == 20810 && technoCarteCouverture == "4G") {
+        setLayerVisible("4G_SFR");
+      }
+
+      if (MCCMNCCouv == 20815 && technoCarteCouverture == "3G") {
+        setLayerVisible("3G_Free");
+        setLayerVisible("3G_Free_bridee");
+      }
+      if (MCCMNCCouv == 20815 && technoCarteCouverture == "4G") {
+        setLayerVisible("4G_Free");
+      }
+
+      if (MCCMNCCouv == 20820 && technoCarteCouverture == "3G") {
+        setLayerVisible("3G_Bouygues");
+      }
+      if (MCCMNCCouv == 20820 && technoCarteCouverture == "4G") {
+        setLayerVisible("4G_Bouygues");
       }
     }
   }
@@ -726,7 +711,7 @@ function afficherCouches() {
   agglosTransportsAvant = agglosTransports;
   transportsVoixDataAvant = transportsVoixData;
   MCCMNCCouvAvant = MCCMNCCouv;
-};
+}
 
 /*
 function afficherCouches() {
@@ -824,70 +809,70 @@ function activeBoutonCouverture() {
   unactiveButton(selectLightQoS);
   activeButton(selectLightCouverture);
   activeButton(boutonCouverture);
-};
+}
 
 function activeBoutonQoS() {
   unactiveButton(boutonCouverture);
   unactiveButton(selectLightCouverture);
   activeButton(boutonQoS);
   activeButton(selectLightQoS);
-};
+}
 
 function activeBoutonAgglos() {
   unactiveButton(boutonTransports);
   unactiveButton(selectLightTransports);
   activeButton(boutonAgglos);
   activeButton(selectLightAgglos);
-};
+}
 
 function activeBoutonTransports() {
   unactiveButton(boutonAgglos);
   unactiveButton(selectLightAgglos);
   activeButton(boutonTransports);
   activeButton(selectLightTransports);
-};
+}
 
 function activeBoutonQoSTransportsVoixSMS() {
   unactiveButton(boutonQoSTransportsData);
   unactiveButton(selectLightQoSTransportsData);
   activeButton(boutonQoSTransportsVoixSMS);
   activeButton(selectLightQoSTransportsVoixSMS);
-};
+}
 
 function activeBoutonQoSTransportsData() {
   unactiveButton(boutonQoSTransportsVoixSMS);
   unactiveButton(selectLightQoSTransportsVoixSMS);
   activeButton(boutonQoSTransportsData);
   activeButton(selectLightQoSTransportsData);
-};
+}
 
 function activeBoutonCarteVoix() {
   unactiveButton(selectLightCarteData);
   unactiveButton(boutonCarteData);
   activeButton(selectLightCarteVoix);
   activeButton(boutonCarteVoix);
-};
+}
 
 function activeBoutonCarteData() {
   unactiveButton(boutonCarteVoix);
   unactiveButton(selectLightCarteVoix);
   activeButton(boutonCarteData);
   activeButton(selectLightCarteData);
-};
+}
 
 function activeBouton3G() {
   unactiveButton(bouton4G);
   unactiveButton(selectLight4G);
   activeButton(bouton3G);
   activeButton(selectLight3G);
-};
+}
 
 function activeBouton4G() {
   unactiveButton(bouton3G);
   unactiveButton(selectLight3G);
   activeButton(selectLight4G);
   activeButton(bouton4G);
-};
+}
 
 function activeBoutonNational() {
   unactiveButton(boutonRural);
@@ -898,7 +883,7 @@ function activeBoutonNational() {
   unactiveButton(selectLightDense);
   activeButton(selectLightNational);
   activeButton(boutonNational);
-};
+}
 
 function activeBoutonRural() {
   unactiveButton(boutonNational);
@@ -909,7 +894,7 @@ function activeBoutonRural() {
   unactiveButton(selectLightDense);
   activeButton(selectLightRural);
   activeButton(boutonRural);
-};
+}
 
 function activeBoutonIntermediaire() {
   unactiveButton(boutonNational);
@@ -920,7 +905,7 @@ function activeBoutonIntermediaire() {
   unactiveButton(selectLightDense);
   activeButton(boutonIntermediaire);
   activeButton(selectLightIntermediaire);
-};
+}
 
 function activeBoutonDense() {
   unactiveButton(boutonNational);
@@ -931,7 +916,7 @@ function activeBoutonDense() {
   unactiveButton(selectLightIntermediaire);
   activeButton(boutonDense);
   activeButton(selectLightDense);
-};
+}
 
 function activeBoutonAutoroutes() {
   unactiveButton(boutonTGV);
@@ -944,7 +929,7 @@ function activeBoutonAutoroutes() {
   unactiveButton(selectLightMetro);
   activeButton(boutonAutoroutes);
   activeButton(selectLightAutoroutes);
-};
+}
 
 function activeBoutonTGV() {
   unactiveButton(boutonAutoroutes);
@@ -957,7 +942,7 @@ function activeBoutonTGV() {
   unactiveButton(selectLightMetro);
   activeButton(selectLightTGV);
   activeButton(boutonTGV);
-};
+}
 
 function activeBoutonTET() {
   unactiveButton(boutonAutoroutes);
@@ -970,7 +955,7 @@ function activeBoutonTET() {
   unactiveButton(selectLightMetro);
   activeButton(boutonTET);
   activeButton(selectLightTET);
-};
+}
 
 function activeBoutonTDQ() {
   unactiveButton(boutonAutoroutes);
@@ -983,7 +968,7 @@ function activeBoutonTDQ() {
   unactiveButton(selectLightMetro);
   activeButton(boutonTDQ);
   activeButton(selectLightTDQ);
-};
+}
 
 function activeBoutonMetro() {
   unactiveButton(boutonAutoroutes);
@@ -996,11 +981,12 @@ function activeBoutonMetro() {
   unactiveButton(selectLightTDQ);
   activeButton(boutonMetro);
   activeButton(selectLightMetro);
-};
+}
 
 $("#boutonCouverture").click(function() {
   if (couvertureQosAvant != "couverture") {
     activeBoutonCouverture();
+    chartsGenerator("2G");
     couvertureQos = "couverture";
     afficherCouches();
     document.getElementById('containerboutonAggloTransports').style.display = 'none';
@@ -1042,6 +1028,7 @@ $("#boutonCouverture").click(function() {
 $("#boutonQoS").click(function() {
   if (couvertureQosAvant != "QoS") {
     activeBoutonQoS();
+    chartsGenerator(strateTransports);
 
     createDataList(strateTransports);
 
@@ -1082,6 +1069,7 @@ $("#boutonQoS").click(function() {
 $("#boutonAgglos").click(function() {
   if (agglosTransportsAvant != "agglos") {
     activeBoutonAgglos();
+    chartsGenerator(strate);
     agglosTransports = "agglos";
     afficherCouches();
     document.getElementById('ZoneGraphiquesQoS').style.display = 'block';
@@ -1173,6 +1161,7 @@ $("#clicEnSavoirPlusCouv4").click(function() {
 $("#boutonCarteVoix").click(function() {
   if (carteCouvertureAvant != "voix") {
     activeBoutonCarteVoix();
+    chartsGenerator("2G");
     carteCouverture = "voix";
     afficherCouches();
 
@@ -1197,6 +1186,7 @@ $("#boutonCarteVoix").click(function() {
 $("#boutonCarteData").click(function() {
   if (carteCouvertureAvant != "data") {
     activeBoutonCarteData();
+    chartsGenerator(technoCarteCouverture);
     carteCouverture = "data";
     afficherCouches();
     document.getElementById('ZoneGraphiquesCouvVoix').style.display = 'none';
@@ -1223,8 +1213,9 @@ $("#boutonCarteData").click(function() {
   }
 });
 $("#bouton3G").click(function() {
-  activeBouton3G();
   technoCarteCouverture = "3G";
+  activeBouton3G();
+  chartsGenerator(technoCarteCouverture);
   document.getElementById('boutonInfosCouvData3G').style.display = 'block';
   document.getElementById('boutonInfosCouvData4G').style.display = 'none';
   document.getElementById('blocLegendeData3G_Old').style.display = 'none';
@@ -1246,8 +1237,9 @@ $("#bouton3G").click(function() {
   afficherCouches();
 });
 $("#bouton4G").click(function() {
-  activeBouton4G();
   technoCarteCouverture = "4G";
+  activeBouton4G();
+  chartsGenerator(technoCarteCouverture);
   document.getElementById('boutonInfosCouvData3G').style.display = 'none';
   document.getElementById('boutonInfosCouvData4G').style.display = 'block';
   document.getElementById('blocLegendeData3G').style.display = 'none';
@@ -1268,29 +1260,29 @@ $("#bouton4G").click(function() {
 $("#boutonNational").click(function() {
   activeBoutonNational();
   strate = "national";
-  MiseAjourIHM(strate);
+  chartsGenerator(strate);
 });
 $("#boutonRural").click(function() {
   activeBoutonRural();
   strate = "rural";
-  MiseAjourIHM(strate);
+  chartsGenerator(strate);
 });
 $("#boutonIntermediaire").click(function() {
   activeBoutonIntermediaire()
   strate = "intermediaire";
-  MiseAjourIHM(strate);
+  chartsGenerator(strate);
 });
 $("#boutonDense").click(function() {
   activeBoutonDense()
   strate = "dense";
-  MiseAjourIHM(strate);
+  chartsGenerator(strate);
 });
 $("#boutonAutoroutes").click(function() {
   activeBoutonAutoroutes();
   strateTransports = "autoroutes";
   sousStrateTransports = "toutesAutoroutes";
   createDataList(strateTransports);
-  MiseAjourIHM(strateTransports);
+  chartsGenerator(strateTransports);
   MiseAjourCheckboxOperateursMetro();
   setTransportsFilter();
 });
@@ -1299,7 +1291,7 @@ $("#boutonTGV").click(function() {
   strateTransports = "tgv";
   sousStrateTransports = "tousTGV";
   createDataList(strateTransports);
-  MiseAjourIHM(strateTransports);
+  chartsGenerator(strateTransports);
   MiseAjourCheckboxOperateursMetro();
   setTransportsFilter();
 });
@@ -1308,7 +1300,7 @@ $("#boutonTET").click(function() {
   strateTransports = "tet";
   sousStrateTransports = "tousTET";
   createDataList(strateTransports);
-  MiseAjourIHM(strateTransports);
+  chartsGenerator(strateTransports);
   MiseAjourCheckboxOperateursMetro();
   setTransportsFilter();
 });
@@ -1317,7 +1309,7 @@ $("#boutonTDQ").click(function() {
   strateTransports = "tdq";
   sousStrateTransports = "tousTDQ";
   createDataList(strateTransports);
-  MiseAjourIHM(strateTransports);
+  chartsGenerator(strateTransports);
   MiseAjourCheckboxOperateursMetro();
   setTransportsFilter();
 });
@@ -1326,7 +1318,7 @@ $("#boutonMetro").click(function() {
   strateTransports = "metro";
   sousStrateTransports = "tousMetros";
   createDataList(strateTransports);
-  MiseAjourIHM(strateTransports);
+  chartsGenerator(strateTransports);
   MiseAjourCheckboxOperateursMetro();
   setTransportsFilter();
 });
@@ -1356,7 +1348,8 @@ function MiseAjourCheckboxOperateursMetro() {
     document.getElementById("checkboxBouygues").disabled = true;
     document.getElementById("checkboxSFR").disabled = true;
     document.getElementById("checkboxFree").disabled = true;
-  } else {
+  }
+  else {
     document.getElementById("checkboxOrange").checked = false;
     document.getElementById("checkboxBouygues").checked = false;
     document.getElementById("checkboxSFR").checked = false;
@@ -1365,10 +1358,6 @@ function MiseAjourCheckboxOperateursMetro() {
     document.getElementById("checkboxBouygues").disabled = false;
     document.getElementById("checkboxSFR").disabled = false;
     document.getElementById("checkboxFree").disabled = false;
-    /*if(MCCMNC == 20801){document.getElementById("checkboxOrange").checked = true;}
-    if(MCCMNC == 20820){document.getElementById("checkboxBouygues").checked = true;}
-    if(MCCMNC == 20810){document.getElementById("checkboxSFR").checked = true;}
-    if(MCCMNC == 20815){document.getElementById("checkboxFree").checked = true;}*/
     if (MCCMNCCouv == 20801) {
       document.getElementById("checkboxOrange").checked = true;
     }
@@ -1382,7 +1371,7 @@ function MiseAjourCheckboxOperateursMetro() {
       document.getElementById("checkboxFree").checked = true;
     }
   }
-};
+}
 
 function setTransportsFilter() {
   if (sousStrateTransports == "toutesAutoroutes" || sousStrateTransports == "tousTGV" || sousStrateTransports == "tousTDQ" || sousStrateTransports == "tousTET" || sousStrateTransports == "tousMetros") {
@@ -1407,11 +1396,11 @@ function setTransportsFilter() {
       ]);
     }
   }
-};
+}
 
 function setSitesCouvFilter() {
   map.setFilter("Sites", ["==", "Operateur", MCCMNCCouv]);
-};
+}
 
 function miseAJourLegendeCouverture(element) {
   if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910 && technoCarteCouverture == "3G") {
@@ -1424,7 +1413,7 @@ function miseAJourLegendeCouverture(element) {
     }
   }
   //if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "4G"){document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';}
-};
+}
 
 function miseAJourCheckboxOrangeAgglos(element) {
   document.getElementById("checkboxAgglosOrange").checked = true;
@@ -1442,7 +1431,7 @@ function miseAJourCheckboxOrangeAgglos(element) {
   setSitesCouvFilter();
   setTransportsFilter();
   miseAJourLegendeCouverture();
-};
+}
 
 function miseAJourCheckboxBouyguesAgglos(element) {
   document.getElementById("checkboxAgglosOrange").checked = false;
@@ -1459,7 +1448,7 @@ function miseAJourCheckboxBouyguesAgglos(element) {
   setSitesCouvFilter();
   setTransportsFilter();
   miseAJourLegendeCouverture();
-};
+}
 
 function miseAJourCheckboxSFRAgglos(element) {
   document.getElementById("checkboxAgglosOrange").checked = false;
@@ -1476,7 +1465,7 @@ function miseAJourCheckboxSFRAgglos(element) {
   setSitesCouvFilter();
   setTransportsFilter();
   miseAJourLegendeCouverture();
-};
+}
 
 function miseAJourCheckboxFreeAgglos(element) {
   document.getElementById("checkboxAgglosOrange").checked = false;
@@ -1493,7 +1482,7 @@ function miseAJourCheckboxFreeAgglos(element) {
   setSitesCouvFilter();
   setTransportsFilter();
   miseAJourLegendeCouverture();
-};
+}
 
 function miseAJourCheckboxOrangeTrans(element) {
   document.getElementById("checkboxAgglosOrange").checked = true;
@@ -1510,7 +1499,7 @@ function miseAJourCheckboxOrangeTrans(element) {
   //afficherCouches();
   setSitesCouvFilter();
   setTransportsFilter();
-};
+}
 
 function miseAJourCheckboxBouyguesTrans(element) {
   document.getElementById("checkboxAgglosOrange").checked = false;
@@ -1526,7 +1515,7 @@ function miseAJourCheckboxBouyguesTrans(element) {
   //afficherCouches();
   setSitesCouvFilter();
   setTransportsFilter();
-};
+}
 
 function miseAJourCheckboxSFRTrans(element) {
   document.getElementById("checkboxAgglosOrange").checked = false;
@@ -1542,7 +1531,7 @@ function miseAJourCheckboxSFRTrans(element) {
   //afficherCouches();
   setSitesCouvFilter();
   setTransportsFilter();
-};
+}
 
 function miseAJourCheckboxFreeTrans(element) {
   document.getElementById("checkboxAgglosOrange").checked = false;
@@ -1558,83 +1547,14 @@ function miseAJourCheckboxFreeTrans(element) {
   //afficherCouches();
   setSitesCouvFilter();
   setTransportsFilter();
-};
-
-/*function miseAJourCheckboxOrangeTrans(element) {
-document.getElementById("checkboxOrange").checked = true;
-/*if(MCCMNC != 20801){
-  MCCMNC = 20801;
-  document.getElementById("checkboxBouygues").checked = false;
-  document.getElementById("checkboxSFR").checked = false;
-  document.getElementById("checkboxFree").checked = false;
-  setTransportsFilter();
 }
-if(MCCMNCCouv != 20801){
-  MCCMNCCouv = 20801;
-  document.getElementById("checkboxBouygues").checked = false;
-  document.getElementById("checkboxSFR").checked = false;
-  document.getElementById("checkboxFree").checked = false;
-  setTransportsFilter();
-}
-};
-function miseAJourCheckboxBouyguesTrans(element) {
-document.getElementById("checkboxBouygues").checked = true;
-/*if(MCCMNC != 20820){
-  MCCMNC = 20820;
-  document.getElementById("checkboxOrange").checked = false;
-  document.getElementById("checkboxSFR").checked = false;
-  document.getElementById("checkboxFree").checked = false;
-  setTransportsFilter();
-}
- if(MCCMNCCouv != 20820){
-  MCCMNCCouv = 20820;
-  document.getElementById("checkboxOrange").checked = false;
-  document.getElementById("checkboxSFR").checked = false;
-  document.getElementById("checkboxFree").checked = false;
-  setTransportsFilter();
-}
-};
-function miseAJourCheckboxSFRTrans(element) {
-document.getElementById("checkboxSFR").checked = true;
-/*if(MCCMNC != 20810){
-  MCCMNC = 20810;
-  document.getElementById("checkboxOrange").checked = false;
-  document.getElementById("checkboxBouygues").checked = false;
-  document.getElementById("checkboxFree").checked = false;
-  setTransportsFilter();
-}
-if(MCCMNCCouv != 20810){
-  MCCMNCCouv = 20810;
-  document.getElementById("checkboxOrange").checked = false;
-  document.getElementById("checkboxBouygues").checked = false;
-  document.getElementById("checkboxFree").checked = false;
-  setTransportsFilter();
-}
-};
-function miseAJourCheckboxFreeTrans(element) {
-document.getElementById("checkboxFree").checked = true;
-/*if(MCCMNC != 20815){
-  MCCMNC = 20815;
-  document.getElementById("checkboxOrange").checked = false;
-  document.getElementById("checkboxBouygues").checked = false;
-  document.getElementById("checkboxSFR").checked = false;
-  setTransportsFilter();
-}
-if(MCCMNCCouv != 20815){
-  MCCMNCCouv = 20815;
-  document.getElementById("checkboxOrange").checked = false;
-  document.getElementById("checkboxBouygues").checked = false;
-  document.getElementById("checkboxSFR").checked = false;
-  setTransportsFilter();
-}
-};*/
 
 function sousTitreVariableGraphMetro() {
   if (strateTransports == 'metro') {
     return '<div style="font: 13px Arial; text-align:center; font-weight:bold;">Moyenne : ' + dataRaw.web[strateTransports][sousStrateTransports].tous + '%<br><span style="font-size:9px; font-weight:normal;">Performances par opérateurs en 2017</span></div>';
   }
   return '';
-};
+}
 
 function getCouleurOperateur(ope) {
   if (ope == "Orange") {
@@ -1649,34 +1569,34 @@ function getCouleurOperateur(ope) {
   if (ope == "Free") {
     return "#32b432";
   }
-};
+}
 
 function getTechnosInstalleesSite(C4G, C3G, C2G) {
-  if (C2G == 0 && C3G == 0 && C4G == 0) {
+  if (C2G === 0 && C3G === 0 && C4G === 0) {
     return "";
   }
-  if (C2G == 1 && C3G == 0 && C4G == 0) {
+  if (C2G == 1 && C3G === 0 && C4G === 0) {
     return "2G";
   }
-  if (C2G == 0 && C3G == 1 && C4G == 0) {
+  if (C2G === 0 && C3G == 1 && C4G === 0) {
     return "3G";
   }
-  if (C2G == 1 && C3G == 1 && C4G == 0) {
+  if (C2G == 1 && C3G == 1 && C4G === 0) {
     return "2G/3G";
   }
-  if (C2G == 0 && C3G == 0 && C4G == 1) {
+  if (C2G === 0 && C3G === 0 && C4G == 1) {
     return "4G";
   }
-  if (C2G == 1 && C3G == 0 && C4G == 1) {
+  if (C2G == 1 && C3G === 0 && C4G == 1) {
     return "2G/4G";
   }
-  if (C2G == 0 && C3G == 1 && C4G == 1) {
+  if (C2G === 0 && C3G == 1 && C4G == 1) {
     return "3G/4G";
   }
   if (C2G == 1 && C3G == 1 && C4G == 1) {
     return "2G/3G/4G";
   }
-};
+}
 
 function getIconeOperateur() {
   if (MCCMNCCouv == 20801) {
@@ -1691,26 +1611,26 @@ function getIconeOperateur() {
   if (MCCMNCCouv == 20815) {
     return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png' alt='' style='position:absolute; top:10px; left:calc(50% - 15px); width: 30px; height: 17px;'/>";
   }
-};
+}
 
 $("#toggleHUD").click(function() {
   if ($(this).css("left") == "5px") {
     $("aside").show();
     $("#agglos,.mapboxgl-ctrl").hide();
-    $(this).text("❰")
-    $(this).css("left", "287px")
+    $(this).text("❰");
+    $(this).css("left", "287px");
   } else {
     $("aside").hide();
     $("#agglos, .mapboxgl-ctrl").show();
-    $(this).text("☰")
-    $(this).css("left", "5px")
+    $(this).text("☰");
+    $(this).css("left", "5px");
   }
 });
 window.addEventListener('orientationchange', function() {
   if ($(window).width() > "910") {
-    $("aside, #agglos, .mapboxgl-ctrl").show();;
-    $("#toggleHUD").text("❰")
-    $("#toggleHUD").css("left", "287px")
+    $("aside, #agglos, .mapboxgl-ctrl").show();
+    $("#toggleHUD").text("❰");
+    $("#toggleHUD").css("left", "287px");
   }
 });
 
@@ -1764,7 +1684,7 @@ function resetInput(selector){
 }
 
 function getSelectedRoute(){
-  if (document.getElementById("autocompleteRoute").value != "") {
+  if (document.getElementById("autocompleteRoute").value !== "") {
     var selectedValue = document.getElementById("autocompleteRoute").value;
 
     var obj = JSON.parse(listeVoies);
@@ -1789,7 +1709,7 @@ function getSelectedRoute(){
     for (var i = 0; i < listeStrateTransports.length; i++) {
       if (selectedValue == listeStrateTransports[i].value) {
         sousStrateTransports = listeStrateTransports[i].key;
-        MiseAjourIHM(strateTransports);
+        chartsGenerator(strateTransports);
         setTransportsFilter();
       }
     }
@@ -1861,7 +1781,7 @@ function addMbLayer(value){
           'type': 'identity',
           'property': 'min_height'
         },
-        'fill-extrusion-opacity': .7
+        'fill-extrusion-opacity': 0.7
       }
     }, 'place_label_other');
   }
