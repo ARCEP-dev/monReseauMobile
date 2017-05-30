@@ -1153,18 +1153,14 @@ function closePopup(e) {
   e.target.parentNode.style.display = 'none';
 }
 
-$("#clicEnSavoirPlusCouv1").click(function() {
+//addEventListener on each clicEnSavoirPlusCouv class elements
+for (var i = 0; i < document.getElementsByClassName("clicEnSavoirPlusCouv").length; i++) {
+  document.getElementsByClassName("clicEnSavoirPlusCouv")[i].addEventListener("click", displayPopupInfo);
+}
+
+function displayPopupInfo() {
   document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
-});
-$("#clicEnSavoirPlusCouv2").click(function() {
-  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
-});
-$("#clicEnSavoirPlusCouv3").click(function() {
-  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
-});
-$("#clicEnSavoirPlusCouv4").click(function() {
-  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
-});
+}
 
 $("#boutonCarteVoix").click(function() {
   if(boutonCarteVoix.status != "active"){
@@ -1285,14 +1281,14 @@ $("#boutonRural").click(function() {
 });
 $("#boutonIntermediaire").click(function() {
   if(boutonIntermediaire.status != "active"){
-    activeBoutonIntermediaire()
+    activeBoutonIntermediaire();
     strate = "intermediaire";
     chartsGenerator(strate);
   }
 });
 $("#boutonDense").click(function() {
   if(boutonDense.status != "active"){
-    activeBoutonDense()
+    activeBoutonDense();
     strate = "dense";
     chartsGenerator(strate);
   }
@@ -1410,7 +1406,6 @@ function MiseAjourCheckboxOperateursMetro() {
 function setTransportsFilter() {
   if (sousStrateTransports == "toutesAutoroutes" || sousStrateTransports == "tousTGV" || sousStrateTransports == "tousTDQ" || sousStrateTransports == "tousTET" || sousStrateTransports == "tousMetros") {
     if (strateTransports != 'metro') {
-      //map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "MCC-MNC", MCCMNC]]);
       map.setFilter("transports", ["all", ["==", "STRATE", strateTransports.toUpperCase()],
         ["==", "MCC-MNC", MCCMNCCouv]
       ]);
@@ -1419,7 +1414,6 @@ function setTransportsFilter() {
     }
   } else {
     if (strateTransports != 'metro') {
-      //map.setFilter("transports", ["all",["==", "STRATE", strateTransports.toUpperCase()],["==", "SOUS-STRATE", sousStrateTransports],["==", "MCC-MNC", MCCMNC]]);
       map.setFilter("transports", ["all", ["==", "STRATE", strateTransports.toUpperCase()],
         ["==", "SOUS-STRATE", sousStrateTransports],
         ["==", "MCC-MNC", MCCMNCCouv]
@@ -1659,6 +1653,7 @@ $("#toggleHUD").click(function() {
     $(this).css("left", "5px");
   }
 });
+
 window.addEventListener('orientationchange', function() {
   if ($(window).width() > "910") {
     $("aside, #agglos, .mapboxgl-ctrl").show();
