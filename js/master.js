@@ -8,8 +8,6 @@ var sousStrateTransports = "toutesAutoroutes";
 var MCCMNCCouv;
 var MCCMNCCouvAvant;
 var MCCMNC;
-var PopupInfosLegendeCouvVoixEstFerme = 0;
-var PopupsInfosLegendeCouvDataSontFermes = 0;
 var couvertureQosAvant = "couverture";
 var couvertureQos = "couverture";
 var agglosTransportsAvant = "transports";
@@ -983,8 +981,15 @@ function activeBoutonMetro() {
   activeButton(selectLightMetro);
 }
 
-$("#boutonCouverture").click(function() {
-  if (couvertureQosAvant != "couverture") {
+document.getElementById("boutonCouverture").addEventListener("click", genMenuCouverture);
+document.getElementById("boutonQoS").addEventListener("click", genMenuQoS);
+document.getElementById("boutonAgglos").addEventListener("click", genMenuAgg);
+document.getElementById("boutonTransports").addEventListener("click", genMenuTransports);
+document.getElementById("boutonQoSTransportsVoixSMS").addEventListener("click", genMenuQoSTransportsVoixSMS);
+document.getElementById("boutonQoSTransportsData").addEventListener("click", genMenuQoSTransportsData);
+
+function genMenuCouverture(){
+  if (boutonCouverture.status != "active") {
     activeBoutonCouverture();
     chartsGenerator("2G");
     couvertureQos = "couverture";
@@ -995,7 +1000,7 @@ $("#boutonCouverture").click(function() {
     document.getElementById('ZoneGraphiquesTransports').style.display = 'none';
     if (carteCouverture == "voix") {
       document.getElementById('EnteteLegendeAgglos').style.display = 'block';
-      if (!PopupInfosLegendeCouvVoixEstFerme && window.innerWidth > 910) {
+      if (window.innerWidth > 910) {
         document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'block';
       }
       document.getElementById('EnteteLegendeCouvData').style.display = 'none';
@@ -1004,14 +1009,14 @@ $("#boutonCouverture").click(function() {
     }
     if (carteCouverture == "data") {
       document.getElementById('EnteteLegendeAgglos').style.display = 'none';
-      if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910 && technoCarteCouverture == "3G") {
+      if (window.innerWidth > 910 && technoCarteCouverture == "3G") {
         if (MCCMNCCouv == 20815) {
           document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'block';
         } else {
           document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'block';
         }
       }
-      if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910 && technoCarteCouverture == "4G") {
+      if (window.innerWidth > 910 && technoCarteCouverture == "4G") {
         document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
       }
       document.getElementById('EnteteLegendeCouvData').style.display = 'block';
@@ -1024,9 +1029,9 @@ $("#boutonCouverture").click(function() {
     document.getElementById('infoQoS').style.display = 'none';
     document.getElementById('masquerMap').style.display = 'none';
   }
-});
-$("#boutonQoS").click(function() {
-  if (couvertureQosAvant != "QoS") {
+}
+function genMenuQoS() {
+  if (boutonQoS.status != "active") {
     activeBoutonQoS();
     chartsGenerator(strateTransports);
 
@@ -1065,9 +1070,9 @@ $("#boutonQoS").click(function() {
     document.getElementById('infoCouvData').style.display = 'none';
     document.getElementById('infoQoS').style.display = 'block';
   }
-});
-$("#boutonAgglos").click(function() {
-  if (agglosTransportsAvant != "agglos") {
+}
+function genMenuAgg() {
+  if (boutonAgglos.status != "active") {
     activeBoutonAgglos();
     chartsGenerator(strate);
     agglosTransports = "agglos";
@@ -1080,9 +1085,9 @@ $("#boutonAgglos").click(function() {
     document.getElementById('legendeTransports').style.display = 'none';
     document.getElementById('masquerMap').style.display = 'block';
   }
-});
-$("#boutonTransports").click(function() {
-  if (agglosTransportsAvant != "transports") {
+}
+function genMenuTransports() {
+  if (boutonTransports.status != "active") {
     activeBoutonTransports();
     agglosTransports = "transports";
     afficherCouches();
@@ -1100,52 +1105,54 @@ $("#boutonTransports").click(function() {
       document.getElementById('legendeTransports').style.display = 'none';
     }
   }
-});
-$("#boutonQoSTransportsVoixSMS").click(function() {
-  activeBoutonQoSTransportsVoixSMS();
-  transportsVoixData = "voix";
-  afficherCouches();
-  document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
-  document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display = 'block';
-  document.getElementById('ZoneGraphiquesTransportsData').style.display = 'none';
-  document.getElementById('EnteteLegendeTransports').style.display = 'none';
-  document.getElementById('legendeTransports').style.display = 'none';
-  document.getElementById('masquerMap').style.display = 'block';
-});
-$("#boutonQoSTransportsData").click(function() {
-  activeBoutonQoSTransportsData();
-  transportsVoixData = "data";
-  afficherCouches();
-  document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
-  document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display = 'none';
-  document.getElementById('ZoneGraphiquesTransportsData').style.display = 'block';
-  document.getElementById('EnteteLegendeTransports').style.display = 'block';
-  document.getElementById('legendeTransports').style.display = 'block';
-  document.getElementById('masquerMap').style.display = 'none';
-});
-$("#popupBoutonFermerBienvenue").click(function() {
-  document.getElementById('PopupBienvenue').style.display = 'none';
-  document.getElementById('logoPopupBienvenue').style.display = 'none';
-});
-$("#BoutonFermerPopupInfosCouvVoix").click(function() {
-  document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
-  PopupInfosLegendeCouvVoixEstFerme = 1;
-});
-$("#BoutonFermerPopupInfosCouvData3G").click(function() {
-  document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'none';
-  PopupsInfosLegendeCouvDataSontFermes = 1;
-});
-$("#BoutonFermerPopupInfosCouvData3GFree").click(function() {
-  document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'none';
-  PopupsInfosLegendeCouvDataSontFermes = 1;
-});
-$("#BoutonFermerPopupInfosCouvData4G").click(function() {
-  document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'none';
-  PopupsInfosLegendeCouvDataSontFermes = 1;
-});
-$("#BoutonFermerPopupInfosInfosComplementairesCouverture").click(function() {
-  document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'none';
-});
+}
+function genMenuQoSTransportsVoixSMS() {
+  if(boutonQoSTransportsVoixSMS.status != "active"){
+    activeBoutonQoSTransportsVoixSMS();
+    transportsVoixData = "voix";
+    afficherCouches();
+    document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
+    document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display = 'block';
+    document.getElementById('ZoneGraphiquesTransportsData').style.display = 'none';
+    document.getElementById('EnteteLegendeTransports').style.display = 'none';
+    document.getElementById('legendeTransports').style.display = 'none';
+    document.getElementById('masquerMap').style.display = 'block';
+  }
+}
+function genMenuQoSTransportsData() {
+  if(boutonQoSTransportsData.status != "active"){
+    activeBoutonQoSTransportsData();
+    transportsVoixData = "data";
+    afficherCouches();
+    document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
+    document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display = 'none';
+    document.getElementById('ZoneGraphiquesTransportsData').style.display = 'block';
+    document.getElementById('EnteteLegendeTransports').style.display = 'block';
+    document.getElementById('legendeTransports').style.display = 'block';
+    document.getElementById('masquerMap').style.display = 'none';
+  }
+}
+
+document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", deletePopup);
+document.getElementById("BoutonFermerPopupInfosCouvVoix").addEventListener("click", closePopup);
+document.getElementById("BoutonFermerPopupInfosCouvData3G").addEventListener("click", closePopup);
+document.getElementById("BoutonFermerPopupInfosCouvData3GFree").addEventListener("click", closePopup);
+document.getElementById("BoutonFermerPopupInfosCouvData4G").addEventListener("click", closePopup);
+document.getElementById("BoutonFermerPopupInfosInfosComplementairesCouverture").addEventListener("click", closePopup);
+document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", closePopup);
+document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", closePopup);
+document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", closePopup);
+
+function deletePopup(e) {
+  var el = e.target;
+  var popup = el.parentNode;
+  popup.parentNode.removeChild(popup);
+}
+
+function closePopup(e) {
+  e.target.parentNode.style.display = 'none';
+}
+
 $("#clicEnSavoirPlusCouv1").click(function() {
   document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
 });
@@ -1158,8 +1165,9 @@ $("#clicEnSavoirPlusCouv3").click(function() {
 $("#clicEnSavoirPlusCouv4").click(function() {
   document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
 });
+
 $("#boutonCarteVoix").click(function() {
-  if (carteCouvertureAvant != "voix") {
+  if(boutonCarteVoix.status != "active"){
     activeBoutonCarteVoix();
     chartsGenerator("2G");
     carteCouverture = "voix";
@@ -1171,7 +1179,7 @@ $("#boutonCarteVoix").click(function() {
     document.getElementById('blocLegendeCouvData').style.display = 'none';
     document.getElementById('EnteteLegendeAgglos').style.display = 'block';
     document.getElementById('EnteteLegendeCouvData').style.display = 'none';
-    if (!PopupInfosLegendeCouvVoixEstFerme && window.innerWidth > 910) {
+    if (window.innerWidth > 910) {
       document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'block';
     }
     document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'none';
@@ -1184,7 +1192,7 @@ $("#boutonCarteVoix").click(function() {
   }
 });
 $("#boutonCarteData").click(function() {
-  if (carteCouvertureAvant != "data") {
+  if (boutonCarteData.status != "active") {
     activeBoutonCarteData();
     chartsGenerator(technoCarteCouverture);
     carteCouverture = "data";
@@ -1196,14 +1204,14 @@ $("#boutonCarteData").click(function() {
     document.getElementById('EnteteLegendeAgglos').style.display = 'none';
     document.getElementById('EnteteLegendeCouvData').style.display = 'block';
     document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
-    if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910 && technoCarteCouverture == "3G") {
+    if (window.innerWidth > 910 && technoCarteCouverture == "3G") {
       if (MCCMNCCouv == 20815) {
         document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'block';
       } else {
         document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'block';
       }
     }
-    if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910 && technoCarteCouverture == "4G") {
+    if (window.innerWidth > 910 && technoCarteCouverture == "4G") {
       document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
     }
     document.getElementById('infoCouvVoix').style.display = 'none';
@@ -1213,129 +1221,155 @@ $("#boutonCarteData").click(function() {
   }
 });
 $("#bouton3G").click(function() {
-  technoCarteCouverture = "3G";
-  activeBouton3G();
-  chartsGenerator(technoCarteCouverture);
-  document.getElementById('boutonInfosCouvData3G').style.display = 'block';
-  document.getElementById('boutonInfosCouvData4G').style.display = 'none';
-  document.getElementById('blocLegendeData3G_Old').style.display = 'none';
-  document.getElementById('blocLegendeData3G').style.display = 'block';
-  document.getElementById('blocLegendeData4G').style.display = 'none';
-  document.getElementById('GraphiqueCouvPopulation3G').style.display = 'block';
-  document.getElementById('GraphiqueCouvSurface3G').style.display = 'block';
-  document.getElementById('GraphiqueCouvPopulation4G').style.display = 'none';
-  document.getElementById('GraphiqueCouvSurface4G').style.display = 'none';
-  document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
-  if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910) {
+  if(bouton3G.status != "active"){
+    technoCarteCouverture = "3G";
+    activeBouton3G();
+    chartsGenerator(technoCarteCouverture);
+    document.getElementById('boutonInfosCouvData3G').style.display = 'block';
+    document.getElementById('boutonInfosCouvData4G').style.display = 'none';
+    document.getElementById('blocLegendeData3G_Old').style.display = 'none';
+    document.getElementById('blocLegendeData3G').style.display = 'block';
+    document.getElementById('blocLegendeData4G').style.display = 'none';
+    document.getElementById('GraphiqueCouvPopulation3G').style.display = 'block';
+    document.getElementById('GraphiqueCouvSurface3G').style.display = 'block';
+    document.getElementById('GraphiqueCouvPopulation4G').style.display = 'none';
+    document.getElementById('GraphiqueCouvSurface4G').style.display = 'none';
+    document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
+    if (window.innerWidth > 910) {
+      if (MCCMNCCouv == 20815) {
+        document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'block';
+      } else {
+        document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'block';
+      }
+    }
+    document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'none';
+    afficherCouches();
+  }
+});
+$("#bouton4G").click(function() {
+  if(bouton4G.status != "active"){
+    technoCarteCouverture = "4G";
+    activeBouton4G();
+    chartsGenerator(technoCarteCouverture);
+    document.getElementById('boutonInfosCouvData3G').style.display = 'none';
+    document.getElementById('boutonInfosCouvData4G').style.display = 'block';
+    document.getElementById('blocLegendeData3G').style.display = 'none';
+    document.getElementById('blocLegendeData3G_Old').style.display = 'none';
+    document.getElementById('blocLegendeData4G').style.display = 'block';
+    document.getElementById('GraphiqueCouvPopulation3G').style.display = 'none';
+    document.getElementById('GraphiqueCouvSurface3G').style.display = 'none';
+    document.getElementById('GraphiqueCouvPopulation4G').style.display = 'block';
+    document.getElementById('GraphiqueCouvSurface4G').style.display = 'block';
+    document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
+    document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'none';
+    document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'none';
+    if (window.innerWidth > 910) {
+      document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
+    }
+    afficherCouches();
+  }
+});
+$("#boutonNational").click(function() {
+  if(boutonNational.status != "active"){
+    activeBoutonNational();
+    strate = "national";
+    chartsGenerator(strate);
+  }
+});
+$("#boutonRural").click(function() {
+  if(boutonRural.status != "active"){
+    activeBoutonRural();
+    strate = "rural";
+    chartsGenerator(strate);
+  }
+});
+$("#boutonIntermediaire").click(function() {
+  if(boutonIntermediaire.status != "active"){
+    activeBoutonIntermediaire()
+    strate = "intermediaire";
+    chartsGenerator(strate);
+  }
+});
+$("#boutonDense").click(function() {
+  if(boutonDense.status != "active"){
+    activeBoutonDense()
+    strate = "dense";
+    chartsGenerator(strate);
+  }
+});
+$("#boutonAutoroutes").click(function() {
+  if(boutonDense.status != "active"){
+    activeBoutonAutoroutes();
+    strateTransports = "autoroutes";
+    sousStrateTransports = "toutesAutoroutes";
+    createDataList(strateTransports);
+    chartsGenerator(strateTransports);
+    MiseAjourCheckboxOperateursMetro();
+    setTransportsFilter();
+  }
+});
+$("#boutonTGV").click(function() {
+  if(boutonTGV.status != "active"){
+    activeBoutonTGV();
+    strateTransports = "tgv";
+    sousStrateTransports = "tousTGV";
+    createDataList(strateTransports);
+    chartsGenerator(strateTransports);
+    MiseAjourCheckboxOperateursMetro();
+    setTransportsFilter();
+  }
+});
+$("#boutonTET").click(function() {
+  if(boutonTET.status != "active"){
+    activeBoutonTET();
+    strateTransports = "tet";
+    sousStrateTransports = "tousTET";
+    createDataList(strateTransports);
+    chartsGenerator(strateTransports);
+    MiseAjourCheckboxOperateursMetro();
+    setTransportsFilter();
+  }
+});
+$("#boutonTDQ").click(function() {
+  if(boutonTDQ.status != "active"){
+    activeBoutonTDQ();
+    strateTransports = "tdq";
+    sousStrateTransports = "tousTDQ";
+    createDataList(strateTransports);
+    chartsGenerator(strateTransports);
+    MiseAjourCheckboxOperateursMetro();
+    setTransportsFilter();
+  }
+});
+$("#boutonMetro").click(function() {
+  if(boutonMetro.status != "active"){
+    activeBoutonMetro();
+    strateTransports = "metro";
+    sousStrateTransports = "tousMetros";
+    createDataList(strateTransports);
+    chartsGenerator(strateTransports);
+    MiseAjourCheckboxOperateursMetro();
+    setTransportsFilter();
+  }
+});
+$("#boutonInfosCouvVoix").click(function() {
+  if(boutonInfosCouvVoix.status != "active"){
+    document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'block';
+  }
+});
+$("#boutonInfosCouvData3G").click(function() {
+  if(boutonInfosCouvData3G.status != "active"){
     if (MCCMNCCouv == 20815) {
       document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'block';
     } else {
       document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'block';
     }
   }
-  document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'none';
-  afficherCouches();
-});
-$("#bouton4G").click(function() {
-  technoCarteCouverture = "4G";
-  activeBouton4G();
-  chartsGenerator(technoCarteCouverture);
-  document.getElementById('boutonInfosCouvData3G').style.display = 'none';
-  document.getElementById('boutonInfosCouvData4G').style.display = 'block';
-  document.getElementById('blocLegendeData3G').style.display = 'none';
-  document.getElementById('blocLegendeData3G_Old').style.display = 'none';
-  document.getElementById('blocLegendeData4G').style.display = 'block';
-  document.getElementById('GraphiqueCouvPopulation3G').style.display = 'none';
-  document.getElementById('GraphiqueCouvSurface3G').style.display = 'none';
-  document.getElementById('GraphiqueCouvPopulation4G').style.display = 'block';
-  document.getElementById('GraphiqueCouvSurface4G').style.display = 'block';
-  document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
-  document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'none';
-  document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'none';
-  if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910) {
-    document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
-  }
-  afficherCouches();
-});
-$("#boutonNational").click(function() {
-  activeBoutonNational();
-  strate = "national";
-  chartsGenerator(strate);
-});
-$("#boutonRural").click(function() {
-  activeBoutonRural();
-  strate = "rural";
-  chartsGenerator(strate);
-});
-$("#boutonIntermediaire").click(function() {
-  activeBoutonIntermediaire()
-  strate = "intermediaire";
-  chartsGenerator(strate);
-});
-$("#boutonDense").click(function() {
-  activeBoutonDense()
-  strate = "dense";
-  chartsGenerator(strate);
-});
-$("#boutonAutoroutes").click(function() {
-  activeBoutonAutoroutes();
-  strateTransports = "autoroutes";
-  sousStrateTransports = "toutesAutoroutes";
-  createDataList(strateTransports);
-  chartsGenerator(strateTransports);
-  MiseAjourCheckboxOperateursMetro();
-  setTransportsFilter();
-});
-$("#boutonTGV").click(function() {
-  activeBoutonTGV();
-  strateTransports = "tgv";
-  sousStrateTransports = "tousTGV";
-  createDataList(strateTransports);
-  chartsGenerator(strateTransports);
-  MiseAjourCheckboxOperateursMetro();
-  setTransportsFilter();
-});
-$("#boutonTET").click(function() {
-  activeBoutonTET();
-  strateTransports = "tet";
-  sousStrateTransports = "tousTET";
-  createDataList(strateTransports);
-  chartsGenerator(strateTransports);
-  MiseAjourCheckboxOperateursMetro();
-  setTransportsFilter();
-});
-$("#boutonTDQ").click(function() {
-  activeBoutonTDQ();
-  strateTransports = "tdq";
-  sousStrateTransports = "tousTDQ";
-  createDataList(strateTransports);
-  chartsGenerator(strateTransports);
-  MiseAjourCheckboxOperateursMetro();
-  setTransportsFilter();
-});
-$("#boutonMetro").click(function() {
-  activeBoutonMetro();
-  strateTransports = "metro";
-  sousStrateTransports = "tousMetros";
-  createDataList(strateTransports);
-  chartsGenerator(strateTransports);
-  MiseAjourCheckboxOperateursMetro();
-  setTransportsFilter();
-});
-$("#boutonInfosCouvVoix").click(function() {
-  document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'block';
-});
-$("#boutonInfosCouvData3G").click(function() {
-  if (MCCMNCCouv == 20815) {
-    document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'block';
-  } else {
-    document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'block';
-  }
-  PopupsInfosLegendeCouvDataSontFermes = 0;
 });
 $("#boutonInfosCouvData4G").click(function() {
-  document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
-  PopupsInfosLegendeCouvDataSontFermes = 0;
+  if(boutonInfosCouvData4G.status != "active"){
+    document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
+  }
 });
 
 function MiseAjourCheckboxOperateursMetro() {
@@ -1403,7 +1437,7 @@ function setSitesCouvFilter() {
 }
 
 function miseAJourLegendeCouverture(element) {
-  if (!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth > 910 && technoCarteCouverture == "3G") {
+  if (window.innerWidth > 910 && technoCarteCouverture == "3G") {
     if (MCCMNCCouv == 20815) {
       document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'none';
       document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'block';
@@ -1412,7 +1446,6 @@ function miseAJourLegendeCouverture(element) {
       document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'block';
     }
   }
-  //if(!PopupsInfosLegendeCouvDataSontFermes && window.innerWidth>910 && technoCarteCouverture == "4G"){document.getElementById('PopupInfosLegendeCouvData4G').style.display='block';}
 }
 
 function miseAJourCheckboxOrangeAgglos(element) {
@@ -1633,8 +1666,6 @@ window.addEventListener('orientationchange', function() {
     $("#toggleHUD").css("left", "287px");
   }
 });
-
-
 
 document.getElementById("autocompleteRoute").addEventListener("input", getSelectedRoute);
 
