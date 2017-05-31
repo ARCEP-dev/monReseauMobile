@@ -67,436 +67,7 @@ map.addControl(new mapboxgl.ScaleControl({
 }));
 
 map.on('load', function() {
-  map.addSource('single-point', {
-    "type": "geojson",
-    "data": {
-      "type": "FeatureCollection",
-      "features": []
-    }
-  });
-  map.addSource('3d-buildings', {
-    type: 'vector',
-    url: 'mapbox://mapbox.mapbox-streets-v7'
-  });
-  map.addSource('Transports', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.bqq8lchg'
-  });
-  map.addSource('Sites', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.2oma6qi3'
-  });
-  map.addSource('BC_Orange', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.1itlprfq'
-  });
-  map.addSource('CL_Orange', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.ayv1e9ma'
-  });
-  map.addSource('TBC_Orange', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.byh030uw'
-  });
-  map.addSource('BC_Bouygues', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.d2cg6m3r'
-  });
-  map.addSource('CL_Bouygues', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.bja9et4r'
-  });
-  map.addSource('TBC_Bouygues', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.2ojpr35i'
-  });
-  map.addSource('BC_SFR', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.3ugfuhda'
-  });
-  map.addSource('CL_SFR', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.8qr2go6r'
-  });
-  map.addSource('TBC_SFR', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.55trxcxo'
-  });
-  map.addSource('BC_Free', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.2k878f8z'
-  });
-  map.addSource('CL_Free', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.871i0ezg'
-  });
-  map.addSource('TBC_Free', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.9f327gzv'
-  });
-  map.addSource('3G_Orange', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.5y8y2hfk'
-  });
-  map.addSource('4G_Orange', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.du0x0q43'
-  });
-  map.addSource('3G_Bouygues', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.dslt35a9'
-  });
-  map.addSource('4G_Bouygues', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.dz19onm7'
-  });
-  map.addSource('3G_SFR', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.678g6zc3'
-  });
-  map.addSource('4G_SFR', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.38ppw3l4'
-  });
-  map.addSource('3G_Free', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.4aq76l46'
-  });
-  map.addSource('3G_Free_bridee', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.9wlkaxfh'
-  });
-  map.addSource('4G_Free', {
-    type: 'vector',
-    url: 'mapbox://stephanedeboysson.77oejp8f'
-  });
-
-  map.addLayer({
-    'id': '3d-buildings',
-    'source': '3d-buildings',
-    'source-layer': 'building',
-    'filter': ['==', 'extrude', 'true'],
-    'type': 'fill-extrusion',
-    'minzoom': 15,
-    'paint': {
-      'fill-extrusion-color': '#777',
-      'fill-extrusion-height': {
-        'type': 'identity',
-        'property': 'height'
-      },
-      'fill-extrusion-base': {
-        'type': 'identity',
-        'property': 'min_height'
-      },
-      'fill-extrusion-opacity': 0.7
-    }
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "point",
-    "source": "single-point",
-    "type": "circle",
-    "paint": {
-      "circle-radius": 10,
-      "circle-color": "#4c4c4c"
-    }
-  });
-  map.addLayer({
-    "id": "Sites",
-    "type": "symbol",
-    "minzoom": 10,
-    "source": "Sites",
-    "source-layer": "2017-01_sites-58ec8q",
-    "layout": {
-      "icon-image": "triangle-15",
-    },
-    //"filter": ["==", "Operateur", 20801],
-    //"filter": ["==", "Operateur", MCCMNCCouv],
-  });
-  map.addLayer({
-    "id": "TBC_Orange",
-    "type": "fill",
-    "source": "TBC_Orange",
-    "source-layer": "ORA_TBCgeojson",
-    "paint": {
-      "fill-color": '#d82424',
-      'fill-opacity': 0.7,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "BC_Orange",
-    "type": "fill",
-    "source": "BC_Orange",
-    "source-layer": "ORA_BCgeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.6,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "CL_Orange",
-    "type": "fill",
-    "source": "CL_Orange",
-    "source-layer": "ORA_CLgeojson",
-    "paint": {
-      "fill-color": '#efa7a7',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "TBC_Bouygues",
-    "type": "fill",
-    "source": "TBC_Bouygues",
-    "source-layer": "BYT_TBCgeojson",
-    "paint": {
-      "fill-color": '#d82424',
-      'fill-opacity': 0.7,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "BC_Bouygues",
-    "type": "fill",
-    "source": "BC_Bouygues",
-    "source-layer": "BYT_BCgeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.6,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "CL_Bouygues",
-    "type": "fill",
-    "source": "CL_Bouygues",
-    "source-layer": "BYT_CLgeojson",
-    "paint": {
-      "fill-color": '#efa7a7',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "TBC_SFR",
-    "type": "fill",
-    "source": "TBC_SFR",
-    "source-layer": "SFR_TBCgeojson",
-    "paint": {
-      "fill-color": '#d82424',
-      'fill-opacity': 0.7,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "BC_SFR",
-    "type": "fill",
-    "source": "BC_SFR",
-    "source-layer": "SFR_BCgeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.6,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "CL_SFR",
-    "type": "fill",
-    "source": "CL_SFR",
-    "source-layer": "SFR_CLgeojson",
-    "paint": {
-      "fill-color": '#efa7a7',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "TBC_Free",
-    "type": "fill",
-    "source": "TBC_Free",
-    "source-layer": "Free_TBCgeojson",
-    "paint": {
-      "fill-color": '#d82424',
-      'fill-opacity': 0.7,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "BC_Free",
-    "type": "fill",
-    "source": "BC_Free",
-    "source-layer": "Free_BCgeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.6,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "CL_Free",
-    "type": "fill",
-    "source": "CL_Free",
-    "source-layer": "Free_CLgeojson",
-    "paint": {
-      "fill-color": '#efa7a7',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "3G_Orange",
-    "type": "fill",
-    "source": "3G_Orange",
-    "source-layer": "ORA_3Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "4G_Orange",
-    "type": "fill",
-    "source": "4G_Orange",
-    "source-layer": "ORA_4Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "3G_Bouygues",
-    "type": "fill",
-    "source": "3G_Bouygues",
-    "source-layer": "BYT_3Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "4G_Bouygues",
-    "type": "fill",
-    "source": "4G_Bouygues",
-    "source-layer": "BYT_4Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "3G_SFR",
-    "type": "fill",
-    "source": "3G_SFR",
-    "source-layer": "SFR_3Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "4G_SFR",
-    "type": "fill",
-    "source": "4G_SFR",
-    "source-layer": "SFR_4Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "3G_Free",
-    "type": "fill",
-    "source": "3G_Free",
-    "source-layer": "Free_3Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "3G_Free_bridee",
-    "type": "fill",
-    "source": "3G_Free_bridee",
-    "source-layer": "Free_3G_bridegeojson",
-    "paint": {
-      "fill-color": '#efa7a7',
-      'fill-opacity': 0.4,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "4G_Free",
-    "type": "fill",
-    "source": "4G_Free",
-    "source-layer": "Free_4Ggeojson",
-    "paint": {
-      "fill-color": '#e36565',
-      'fill-opacity': 0.5,
-      "fill-outline-color": 'rgba(255, 255, 255, 0)',
-    },
-  }, 'place_label_other');
-  map.addLayer({
-    "id": "transports",
-    "type": "circle",
-    "source": "Transports",
-    "source-layer": "QosTransports2016_-_V2",
-    'paint': {
-      'circle-radius': {
-        'base': 2,
-        'stops': [
-          [4, 2.5],
-          [12, 8]
-        ],
-      },
-      "circle-blur": 1,
-      'circle-color': {
-        property: 'BILAN2-OD',
-        type: 'categorical',
-        stops: [
-          ["ECHEC-HR", '#d82727'],
-          ["2G", '#d82727'],
-          ["3G", '#8AE300'],
-          ["4G", '#3b913b']
-        ]
-      }
-    },
-    //"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", 20801]],
-    //"filter": ["all",["==", "STRATE", "AUTOROUTES"],["==", "MCC-MNC", MCCMNCCouv]],
-  });
-
-  setAllLayersInvisible();
-  randomOperateur();
-});
-
-/*
-map.on('load', function() {
-  map.addSource('single-pointest', {
-      "type": "geojson",
-      "data": {
-        "type": "FeatureCollection",
-        "features": []
-    }
-  });
-
-  map.addLayer({
-    "id": "point",
-    "source": "single-pointest",
-    "type": "circle",
-    "paint": {
-      "circle-radius": 10,
-      "circle-color": "#4c4c4c"
-    }
-  });
-
-  addMbSource("single-point");
+  addMbSource("point");
   addMbSource("3d-buildings");
   addMbSource("transports");
   addMbSource("Sites");
@@ -516,7 +87,7 @@ map.on('load', function() {
   addMbLayer("3d-buildings");
   addMbLayer("Sites");
   addMbLayer("point");
-
+  addMbLayer("transports");
   addMbLayer("TBC_Orange");
   addMbLayer("BC_Orange");
   addMbLayer("CL_Orange");
@@ -530,9 +101,9 @@ map.on('load', function() {
   addMbLayer("BC_Free");
   addMbLayer("CL_Free");
 
+  setAllLayersInvisible();
   randomOperateur();
 });
-*/
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point);
   if (!features.length) {
@@ -565,8 +136,9 @@ map.on('dblclick', function(e) {
     map.setZoom(z);
   }
 });
-// Create a popup, but don't add it to the map yet.
-var popup = new mapboxgl.Popup({
+
+//Site Info popup
+var siteInfoPopup = new mapboxgl.Popup({
   closeButton: false,
   closeOnClick: false
 });
@@ -575,22 +147,23 @@ map.on('mousemove', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
     layers: ['Sites']
   });
+
   // Change the cursor style as a UI indicator.
   //map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
-  if (!features.length) {
-    popup.remove();
+  if (features.length !== 1) {
+    siteInfoPopup.remove();
     return;
   }
   var feature = features[0];
-  // Populate the popup and set its coordinates
-  // based on the feature found.
-  popup.setLngLat(feature.geometry.coordinates)
+  // Populate the popup and set its coordinates based on the feature found.
+  siteInfoPopup.setLngLat(feature.geometry.coordinates)
     .setHTML(getIconeOperateur() + "<br>Emetteur " + getTechnosInstalleesSite(feature.properties.C4G, feature.properties.C3G, feature.properties.C2G))
     .addTo(map);
 });
 
 geocoder.on('result', function(ev) {
-  map.getSource('single-point').setData(ev.result.geometry);
+  setLayerVisible("point");
+  map.getSource('point').setData(ev.result.geometry);
 });
 
 function convertirStrateEnTexte(strate) {
@@ -633,85 +206,6 @@ function randomOperateur() {
   }
 }
 
-function afficherCouches() {
-  if ((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
-    map.setLayoutProperty('Sites', 'visibility', 'visible');
-    if (carteCouverture == "voix") {
-      setAllLayersInvisible();
-      if (MCCMNCCouv == 20801) {
-        setLayerVisible("TBC_Orange");
-        setLayerVisible("BC_Orange");
-        setLayerVisible("CL_Orange");
-      }
-      if (MCCMNCCouv == 20810) {
-        setLayerVisible("TBC_SFR");
-        setLayerVisible("BC_SFR");
-        setLayerVisible("CL_SFR");
-      }
-      if (MCCMNCCouv == 20815) {
-        setLayerVisible("TBC_Free");
-        setLayerVisible("BC_Free");
-        setLayerVisible("CL_Free");
-      }
-      if (MCCMNCCouv == 20820) {
-        setLayerVisible("TBC_Bouygues");
-        setLayerVisible("BC_Bouygues");
-        setLayerVisible("CL_Bouygues");
-      }
-    }
-    if (carteCouverture == "data") {
-      setAllLayersInvisible();
-      if (MCCMNCCouv == 20801 && technoCarteCouverture == "3G") {
-        setLayerVisible("3G_Orange");
-      }
-      if (MCCMNCCouv == 20801 && technoCarteCouverture == "4G") {
-        setLayerVisible("4G_Orange");
-      }
-
-      if (MCCMNCCouv == 20810 && technoCarteCouverture == "3G") {
-        setLayerVisible("3G_SFR");
-      }
-      if (MCCMNCCouv == 20810 && technoCarteCouverture == "4G") {
-        setLayerVisible("4G_SFR");
-      }
-
-      if (MCCMNCCouv == 20815 && technoCarteCouverture == "3G") {
-        setLayerVisible("3G_Free");
-        setLayerVisible("3G_Free_bridee");
-      }
-      if (MCCMNCCouv == 20815 && technoCarteCouverture == "4G") {
-        setLayerVisible("4G_Free");
-      }
-
-      if (MCCMNCCouv == 20820 && technoCarteCouverture == "3G") {
-        setLayerVisible("3G_Bouygues");
-      }
-      if (MCCMNCCouv == 20820 && technoCarteCouverture == "4G") {
-        setLayerVisible("4G_Bouygues");
-      }
-    }
-  }
-  if (couvertureQos == "QoS" && agglosTransports == "agglos" && (agglosTransportsAvant == "transports" || couvertureQosAvant == "couverture")) {
-    setAllLayersInvisible();
-  }
-  if ((couvertureQos == "QoS" && agglosTransports == "transports" && (agglosTransportsAvant == "agglos" || couvertureQosAvant == "couverture") || transportsVoixDataAvant != transportsVoixData)) {
-    setAllLayersInvisible();
-    if (transportsVoixData == "data") {
-      setLayerVisible("transports");
-    }
-    if (transportsVoixData == "voix") {
-      //map.setLayoutProperty('transports', 'visibility', 'none');
-    }
-  }
-  carteCouvertureAvant = carteCouverture;
-  technoCarteCouvertureAvant = technoCarteCouverture;
-  couvertureQosAvant = couvertureQos;
-  agglosTransportsAvant = agglosTransports;
-  transportsVoixDataAvant = transportsVoixData;
-  MCCMNCCouvAvant = MCCMNCCouv;
-}
-
-/*
 function afficherCouches() {
   if ((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
     if (carteCouverture == "voix") {
@@ -800,8 +294,8 @@ function afficherCouches() {
   agglosTransportsAvant = agglosTransports;
   transportsVoixDataAvant = transportsVoixData;
   MCCMNCCouvAvant = MCCMNCCouv;
-};
-*/
+}
+
 function activeBoutonCouverture() {
   unactiveButton(boutonQoS);
   unactiveButton(selectLightQoS);
@@ -1034,7 +528,6 @@ function genMenuQoS() {
   if (boutonQoS.status != "active") {
     activeBoutonQoS();
     chartsGenerator(strateTransports);
-
     createDataList(strateTransports);
 
     couvertureQos = "QoS";
@@ -1056,7 +549,7 @@ function genMenuQoS() {
     document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'none';
     document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'none';
     if (agglosTransports == "agglos") {
-      document.getElementById('ZoneGraphiquesQoS').style.display = 'block';
+    document.getElementById('ZoneGraphiquesQoS').style.display = 'block';
       document.getElementById('ZoneGraphiquesTransports').style.display = 'none';
     }
     if (agglosTransports == "transports") {
@@ -1189,6 +682,15 @@ $("#boutonCarteVoix").click(function() {
 });
 $("#boutonCarteData").click(function() {
   if (boutonCarteData.status != "active") {
+    addMbSource("4G_Orange");
+    addMbSource("4G_Bouygues");
+    addMbSource("4G_SFR");
+    addMbSource("4G_Free");
+
+    addMbLayer("4G_Orange");
+    addMbLayer("4G_Bouygues");
+    addMbLayer("4G_SFR");
+    addMbLayer("4G_Free");
     activeBoutonCarteData();
     chartsGenerator(technoCarteCouverture);
     carteCouverture = "data";
@@ -1218,6 +720,17 @@ $("#boutonCarteData").click(function() {
 });
 $("#bouton3G").click(function() {
   if(bouton3G.status != "active"){
+    addMbSource("3G_Orange");
+    addMbSource("3G_Bouygues");
+    addMbSource("3G_SFR");
+    addMbSource("3G_Free");
+    addMbSource("3G_Free_bridee");
+
+    addMbLayer("3G_Orange");
+    addMbLayer("3G_Bouygues");
+    addMbLayer("3G_SFR");
+    addMbLayer("3G_Free");
+    addMbLayer("3G_Free_bridee");
     technoCarteCouverture = "3G";
     activeBouton3G();
     chartsGenerator(technoCarteCouverture);
@@ -1244,6 +757,15 @@ $("#bouton3G").click(function() {
 });
 $("#bouton4G").click(function() {
   if(bouton4G.status != "active"){
+    addMbSource("4G_Orange");
+    addMbSource("4G_Bouygues");
+    addMbSource("4G_SFR");
+    addMbSource("4G_Free");
+
+    addMbLayer("4G_Orange");
+    addMbLayer("4G_Bouygues");
+    addMbLayer("4G_SFR");
+    addMbLayer("4G_Free");
     technoCarteCouverture = "4G";
     activeBouton4G();
     chartsGenerator(technoCarteCouverture);
@@ -1667,7 +1189,6 @@ document.getElementById("autocompleteRoute").addEventListener("input", getSelect
 function createDataList(strateTransports){
   resetInput("autocompleteRoute");
   removeAllChild("voies");
-  //console.log("strateTransports : " + strateTransports);
   var obj = JSON.parse(listeVoies);
   var listeStrateTransports;
   switch (strateTransports) {
@@ -1755,17 +1276,18 @@ function unactiveButton(value){
 }
 
 var sourceLoaded = [];
+var layerVisible = [];
 
 function addMbSource(value) {
-  console.log("addMbSource : " + value);
+  //console.log("addMbSource : " + value);
   for (var i = 0; i < sourceLoaded.length; i++) {
     if (sourceLoaded[i] == value) {
       console.log("Deja charge");
       return 0;
     }
   }
-  if (value == "single-point") {
-    map.addSource('single-point', {
+  if (value == "point") {
+    map.addSource('point', {
       "type": "geojson",
       "data": {
         "type": "FeatureCollection",
@@ -1775,11 +1297,12 @@ function addMbSource(value) {
   } else {
     var obj = JSON.parse(mbData);
     var MbSources = obj.sources;
-    for (var i = 0; i < MbSources.length; i++) {
-      if (value == MbSources[i].id) {
+    for (var j = 0; j < MbSources.length; j++) {
+      if (value == MbSources[j].id) {
+        //console.log("value : " + value + "; type : " + MbSources[j].type + "; url : " + MbSources[j].url);
         map.addSource(value, {
-          type: MbSources[i].type,
-          url: MbSources[i].url
+          type: MbSources[j].type,
+          url: MbSources[j].url
         });
       }
     }
@@ -1788,7 +1311,7 @@ function addMbSource(value) {
 }
 
 function addMbLayer(value){
-  console.log("addMbLayer function : " + value);
+  //console.log("addMbLayer function : " + value);
   if (value == "3d-buildings") {
     map.addLayer({
       'id': '3d-buildings',
@@ -1814,7 +1337,7 @@ function addMbLayer(value){
   else if (value == "point") {
     map.addLayer({
       "id": "point",
-      "source": "single-point",
+      "source": "point",
       "type": "circle",
       "paint": {
         "circle-radius": 10,
@@ -1832,8 +1355,6 @@ function addMbLayer(value){
       "layout": {
         "icon-image": "triangle-15",
       },
-      //"filter": ["==", "Operateur", 20801],
-      //"filter": ["==", "Operateur", MCCMNCCouv],
     });
   }
   else if (value == "transports") {
@@ -1886,10 +1407,11 @@ function addMbLayer(value){
       }
     }
   }
+  layerVisible.push(value);
 }
 
 function setLayerVisible(layer) {
-  console.log("setLayerVisible : " + layer);
+  //console.log("setLayerVisible : " + layer);
   map.setLayoutProperty(layer, "visibility", "visible");
 }
 
@@ -1899,9 +1421,7 @@ function setLayerInvisible(layer) {
 }
 
 function setAllLayersInvisible() {
-  var obj = JSON.parse(mbData);
-  var layers = obj.sources;
-  for (var i = 0; i < layers.length; i++) {
-    setLayerInvisible(layers[i].id);
+  for (var i = 0; i < layerVisible.length; i++) {
+    setLayerInvisible(layerVisible[i]);
   }
 }
