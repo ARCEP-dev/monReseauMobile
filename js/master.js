@@ -38,7 +38,7 @@ else {
     maxZoom: 15,
     minZoom: 5,
     maxBounds: [-12, 39, 18, 53],
-    attributionControl: false,
+    attributionControl: false
   });
   // disable map rotation
   map.dragRotate.disable();
@@ -475,15 +475,16 @@ function activeBoutonMetro() {
   activeButton(selectLightMetro);
 }
 
-document.getElementById("boutonCouverture").addEventListener("click", genMenuCouverture);
-document.getElementById("boutonQoS").addEventListener("click", genMenuQoS);
-document.getElementById("boutonAgglos").addEventListener("click", genMenuAgg);
-document.getElementById("boutonTransports").addEventListener("click", genMenuTransports);
-document.getElementById("boutonQoSTransportsVoixSMS").addEventListener("click", genMenuQoSTransportsVoixSMS);
-document.getElementById("boutonQoSTransportsData").addEventListener("click", genMenuQoSTransportsData);
+document.getElementById("boutonCouverture").addEventListener("click", activerMenuCouverture);
+document.getElementById("boutonQoS").addEventListener("click", activerMenuQoS);
+document.getElementById("boutonAgglos").addEventListener("click", activerMenuAgg);
+document.getElementById("boutonTransports").addEventListener("click", activerMenuTransports);
+document.getElementById("boutonQoSTransportsVoixSMS").addEventListener("click", activerMenuQoSTransportsVoixSMS);
+document.getElementById("boutonQoSTransportsData").addEventListener("click", activerMenuQoSTransportsData);
 
-function genMenuCouverture(){
+function activerMenuCouverture(){
   if (boutonCouverture.status != "active") {
+    activerMenuCarteVoix();
     activeBoutonCouverture();
     chartsGenerator("2G");
     couvertureQos = "couverture";
@@ -524,38 +525,33 @@ function genMenuCouverture(){
     document.getElementById('masquerMap').style.display = 'none';
   }
 }
-function genMenuQoS() {
+function activerMenuQoS() {
   if (boutonQoS.status != "active") {
     activeBoutonQoS();
+    activeBoutonTransports();
+    activeBoutonAutoroutes();
+    activeBoutonQoSTransportsData();
+
     chartsGenerator(strateTransports);
     createDataList(strateTransports);
 
     couvertureQos = "QoS";
     afficherCouches();
-    if (agglosTransports == "agglos" || (agglosTransports == "transports" && transportsVoixData == "voix")) {
-      document.getElementById('masquerMap').style.display = 'block';
-      document.getElementById('EnteteLegendeTransports').style.display = 'none';
-      document.getElementById('legendeTransports').style.display = 'none';
-    }
-    if (agglosTransports == "transports" && transportsVoixData == "data") {
-      document.getElementById('masquerMap').style.display = 'none';
-      document.getElementById('EnteteLegendeTransports').style.display = 'block';
-      document.getElementById('legendeTransports').style.display = 'block';
-    }
+
+    document.getElementById('masquerMap').style.display = 'none';
+    document.getElementById('EnteteLegendeTransports').style.display = 'block';
+    document.getElementById('legendeTransports').style.display = 'block';
+
     document.getElementById('containerboutonAggloTransports').style.display = 'block';
     document.getElementById('ZoneGraphiquesCouv').style.display = 'none';
     document.getElementById('PopupInfosLegendeCouvVoix').style.display = 'none';
     document.getElementById('PopupInfosLegendeCouvData3G').style.display = 'none';
     document.getElementById('PopupInfosLegendeCouvData3GFree').style.display = 'none';
     document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'none';
-    if (agglosTransports == "agglos") {
-    document.getElementById('ZoneGraphiquesQoS').style.display = 'block';
-      document.getElementById('ZoneGraphiquesTransports').style.display = 'none';
-    }
-    if (agglosTransports == "transports") {
-      document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
-      document.getElementById('ZoneGraphiquesTransports').style.display = 'block';
-    }
+
+    document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
+    document.getElementById('ZoneGraphiquesTransports').style.display = 'block';
+
     document.getElementById('EnteteLegendeAgglos').style.display = 'none';
     document.getElementById('EnteteLegendeCouvData').style.display = 'none';
     document.getElementById('legendeAgglos').style.display = 'none';
@@ -564,9 +560,10 @@ function genMenuQoS() {
     document.getElementById('infoQoS').style.display = 'block';
   }
 }
-function genMenuAgg() {
+function activerMenuAgg() {
   if (boutonAgglos.status != "active") {
     activeBoutonAgglos();
+    activeBoutonNational();
     chartsGenerator(strate);
     agglosTransports = "agglos";
     afficherCouches();
@@ -579,9 +576,13 @@ function genMenuAgg() {
     document.getElementById('masquerMap').style.display = 'block';
   }
 }
-function genMenuTransports() {
+
+function activerMenuTransports() {
   if (boutonTransports.status != "active") {
     activeBoutonTransports();
+    activerMenuAutoroute();
+    activerMenuQoSTransportsData();
+
     agglosTransports = "transports";
     afficherCouches();
     document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
@@ -589,22 +590,22 @@ function genMenuTransports() {
     document.getElementById('EnteteLegendeAgglos').style.display = 'none';
     document.getElementById('legendeAgglos').style.display = 'none';
     if (transportsVoixData == "data") {
+      activerMenuQoSTransportsData();
       document.getElementById('masquerMap').style.display = 'none';
-      document.getElementById('EnteteLegendeTransports').style.display = 'block';
-      document.getElementById('legendeTransports').style.display = 'block';
     } else {
+      activerMenuQoSTransportsVoixSMS();
       document.getElementById('masquerMap').style.display = 'block';
       document.getElementById('EnteteLegendeTransports').style.display = 'none';
       document.getElementById('legendeTransports').style.display = 'none';
     }
   }
 }
-function genMenuQoSTransportsVoixSMS() {
+
+function activerMenuQoSTransportsVoixSMS() {
   if(boutonQoSTransportsVoixSMS.status != "active"){
     activeBoutonQoSTransportsVoixSMS();
     transportsVoixData = "voix";
     afficherCouches();
-    document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
     document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display = 'block';
     document.getElementById('ZoneGraphiquesTransportsData').style.display = 'none';
     document.getElementById('EnteteLegendeTransports').style.display = 'none';
@@ -612,12 +613,11 @@ function genMenuQoSTransportsVoixSMS() {
     document.getElementById('masquerMap').style.display = 'block';
   }
 }
-function genMenuQoSTransportsData() {
+function activerMenuQoSTransportsData() {
   if(boutonQoSTransportsData.status != "active"){
     activeBoutonQoSTransportsData();
     transportsVoixData = "data";
     afficherCouches();
-    document.getElementById('ZoneGraphiquesQoS').style.display = 'none';
     document.getElementById('ZoneGraphiquesTransportsVoixSMS').style.display = 'none';
     document.getElementById('ZoneGraphiquesTransportsData').style.display = 'block';
     document.getElementById('EnteteLegendeTransports').style.display = 'block';
@@ -635,6 +635,11 @@ document.getElementById("BoutonFermerPopupInfosInfosComplementairesCouverture").
 document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", closePopup);
 document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", closePopup);
 document.getElementById("popupBoutonFermerBienvenue").addEventListener("click", closePopup);
+
+document.getElementById("boutonCarteData").addEventListener("click", activerMenuCarteData);
+document.getElementById("bouton3G").addEventListener("click", activerMenu3G);
+document.getElementById("bouton4G").addEventListener("click", activerMenu4G);
+document.getElementById("boutonCarteVoix").addEventListener("click", activerMenuCarteVoix);
 
 function deletePopup(e) {
   var el = e.target;
@@ -655,7 +660,7 @@ function displayPopupInfo() {
   document.getElementById('PopupInfosInfosComplementairesCouverture').style.display = 'block';
 }
 
-$("#boutonCarteVoix").click(function() {
+function activerMenuCarteVoix() {
   if(boutonCarteVoix.status != "active"){
     activeBoutonCarteVoix();
     chartsGenerator("2G");
@@ -679,9 +684,10 @@ $("#boutonCarteVoix").click(function() {
     document.getElementById('bouton3G').style.display = 'none';
     document.getElementById('bouton4G').style.display = 'none';
   }
-});
-$("#boutonCarteData").click(function() {
+}
+function activerMenuCarteData() {
   if (boutonCarteData.status != "active") {
+    activerMenu4G();
     addMbSource("4G_Orange");
     addMbSource("4G_Bouygues");
     addMbSource("4G_SFR");
@@ -717,8 +723,8 @@ $("#boutonCarteData").click(function() {
     document.getElementById('bouton3G').style.display = 'block';
     document.getElementById('bouton4G').style.display = 'block';
   }
-});
-$("#bouton3G").click(function() {
+}
+function activerMenu3G() {
   if(bouton3G.status != "active"){
     addMbSource("3G_Orange");
     addMbSource("3G_Bouygues");
@@ -754,8 +760,8 @@ $("#bouton3G").click(function() {
     document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'none';
     afficherCouches();
   }
-});
-$("#bouton4G").click(function() {
+}
+function activerMenu4G() {
   if(bouton4G.status != "active"){
     addMbSource("4G_Orange");
     addMbSource("4G_Bouygues");
@@ -786,7 +792,8 @@ $("#bouton4G").click(function() {
     }
     afficherCouches();
   }
-});
+}
+
 $("#boutonNational").click(function() {
   if(boutonNational.status != "active"){
     activeBoutonNational();
@@ -815,7 +822,10 @@ $("#boutonDense").click(function() {
     chartsGenerator(strate);
   }
 });
-$("#boutonAutoroutes").click(function() {
+
+document.getElementById("boutonAutoroutes").addEventListener("click", activerMenuAutoroute);
+
+function activerMenuAutoroute() {
   if(boutonDense.status != "active"){
     activeBoutonAutoroutes();
     strateTransports = "autoroutes";
@@ -825,7 +835,8 @@ $("#boutonAutoroutes").click(function() {
     MiseAjourCheckboxOperateursMetro();
     setTransportsFilter();
   }
-});
+}
+
 $("#boutonTGV").click(function() {
   if(boutonTGV.status != "active"){
     activeBoutonTGV();
