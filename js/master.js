@@ -149,7 +149,7 @@ map.on('mousemove', function(e) {
   });
 
   // Change the cursor style as a UI indicator.
-  //map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+  map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
   if (features.length !== 1) {
     siteInfoPopup.remove();
     return;
@@ -157,26 +157,28 @@ map.on('mousemove', function(e) {
   var feature = features[0];
   // Populate the popup and set its coordinates based on the feature found.
   siteInfoPopup.setLngLat(feature.geometry.coordinates)
-    .setHTML(getIconeOperateur() + "<br>Emetteur " + getTechnosInstalleesSite(feature.properties.C4G, feature.properties.C3G, feature.properties.C2G))
+    .setHTML(getIconeOperateur(feature.properties.Operateur) + "<br>Emetteur " + getTechnosInstalleesSite(feature.properties.C4G, feature.properties.C3G, feature.properties.C2G))
     .addTo(map);
+});
+
+map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point, {layers: ["transports"]});
+    if (features.length !== 0) {
+      var feature = features[0];
+
+      var logo = "";
+      if(getIconeOperateur(feature.properties["MCC-MNC"]) !== ""){logo = getIconeOperateur(feature.properties["MCC-MNC"]) + "<br>";}
+
+      siteInfoPopup.setLngLat(feature.geometry.coordinates)
+      .setHTML(logo + "Résultat : " + feature.properties['BILAN2-OD'])
+      .addTo(map);
+    }
 });
 
 geocoder.on('result', function(ev) {
   setLayerVisible("point");
   map.getSource('point').setData(ev.result.geometry);
 });
-
-function convertirStrateEnTexte(strate) {
-  if (strate == "dense") {
-    return "dense";
-  }
-  if (strate == "intermediaire") {
-    return "intermédiaire";
-  }
-  if (strate == "rural") {
-    return "rurale";
-  }
-}
 
 function randomOperateur() {
   var randOp = Math.floor(Math.random() * 4);
@@ -207,8 +209,8 @@ function randomOperateur() {
 }
 
 function afficherCouches() {
-  if ((couvertureQos == "couverture" && couvertureQosAvant == "QoS") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
-    if (carteCouverture == "voix") {
+  if ((boutonCouverture.status == "active") || (MCCMNCCouv != MCCMNCCouvAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
+    if (boutonCarteVoix.status == "active") {
       if (MCCMNCCouv == 20801) {
         setAllLayersInvisible();
         setLayerVisible("TBC_Orange");
@@ -235,7 +237,7 @@ function afficherCouches() {
       }
     }
 
-    if (carteCouverture == "data") {
+    if (boutonCarteData.status == "active") {
       if (MCCMNCCouv == 20801) {
         setAllLayersInvisible();
         if (technoCarteCouverture == "3G") {
@@ -275,11 +277,11 @@ function afficherCouches() {
     setLayerVisible("Sites");
   }
 
-  if (couvertureQos == "QoS" && agglosTransports == "agglos" && (agglosTransportsAvant == "transports" || couvertureQosAvant == "couverture")) {
+  if (boutonQoS.status == "active" && agglosTransports == "agglos" && (agglosTransportsAvant == "transports" || couvertureQosAvant == "couverture")) {
     setAllLayersInvisible();
   }
 
-  if ((couvertureQos == "QoS" && agglosTransports == "transports" && (agglosTransportsAvant == "agglos" || couvertureQosAvant == "couverture") || transportsVoixDataAvant != transportsVoixData)) {
+  if ((boutonQoS.status == "active" && agglosTransports == "transports" && (agglosTransportsAvant == "agglos" || couvertureQosAvant == "couverture") || transportsVoixDataAvant != transportsVoixData)) {
     setAllLayersInvisible();
     if (transportsVoixData == "data") {
       setLayerVisible("transports");
@@ -525,6 +527,7 @@ function activerMenuCouverture(){
     document.getElementById('masquerMap').style.display = 'none';
   }
 }
+
 function activerMenuQoS() {
   if (boutonQoS.status != "active") {
     activeBoutonQoS();
@@ -1158,18 +1161,18 @@ function getTechnosInstalleesSite(C4G, C3G, C2G) {
   }
 }
 
-function getIconeOperateur() {
-  if (MCCMNCCouv == 20801) {
-    return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png' alt='' style='position:absolute; top:9px; left:calc(50% - 9px); width: 18px; height: 18px;'/>";
-  }
-  if (MCCMNCCouv == 20820) {
-    return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png' alt='' style='position:absolute; top:9px; left:calc(50% - 10px); width: 21px; height: 18px;'/>";
-  }
-  if (MCCMNCCouv == 20810) {
-    return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png' alt='' style='position:absolute; top:9px; left:calc(50% - 9px); width: 18px; height: 18px;'/>";
-  }
-  if (MCCMNCCouv == 20815) {
-    return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png' alt='' style='position:absolute; top:10px; left:calc(50% - 15px); width: 30px; height: 17px;'/>";
+function getIconeOperateur(value) {
+  switch (value) {
+    case 20801:
+      return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png' alt='' style='position:absolute; top:9px; left:calc(50% - 9px); width: 18px; height: 18px;'/>";
+    case 20820:
+      return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png' alt='' style='position:absolute; top:9px; left:calc(50% - 10px); width: 21px; height: 18px;'/>";
+    case 20810:
+      return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png' alt='' style='position:absolute; top:9px; left:calc(50% - 9px); width: 18px; height: 18px;'/>";
+    case 20815:
+      return "<img src='https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png' alt='' style='position:absolute; top:10px; left:calc(50% - 15px); width: 30px; height: 17px;'/>";
+    default:
+      return "";
   }
 }
 
