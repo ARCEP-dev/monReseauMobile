@@ -11,13 +11,13 @@
   <meta name="description" content="L’observatoire de la couverture et la qualité de service mobile s'inscrit dans le cadre des actions que mène l'Arcep pour améliorer l'information des utilisateurs en matière de couverture et de qualité des services de communications électroniques. Pour choisir un opérateur, les utilisateurs peuvent en effet s'appuyer sur 4 critères : le contenu de l'offre, le prix, la qualité de service de l'opérateur et sa couverture. Si les informations disponibles sur le marché permettent bien de comparer les opérateurs sur les deux premiers critères, la comparaison de la couverture et de la qualité des opérateurs est quant à elle complexe, en particulier pour les services mobiles. L'Arcep s'attache donc à améliorer la transparence du marché sur ce point.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <!-- CSS -->
-  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css" rel="stylesheet" />
-  <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css" rel="stylesheet" />
-  <link rel="stylesheet" href="./css/master.css">
+  <link href="./css/mapbox-gl-0.28.0.css" rel="stylesheet" />
+  <link href="./css/mapbox-gl-geocoder-2.0.1.css" rel="stylesheet" />
+  <link href="./css/master.css" rel="stylesheet" />
 </head>
 
 <body>
-  <img alt="Logo ARCEP" id="logo" style="z-index:1;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoArcep.png">
+  <img alt="Logo ARCEP" id="logo" style="z-index:1;" src="./img/logoArcep.png">
   <div id="map"></div>
   <div id="masquerMap" style="display:none; opacity:0.7; background-color: #ffffff; z-index:2; position:absolute; top:0px; bottom:0; left: 0px;right: 0px;">
     <div style="position:absolute; top:calc(40%); left:calc(50% - 151px); text-align:center; font-size: 30px; transform: rotate(-10deg);">Pas de données cartographiques</div>
@@ -29,14 +29,14 @@
       <div class="boutonAggloTransports" id="boutonCouverture" style="margin: 0px 10px 0px 0px; position:relative;">
         <div class="selectLight" id="selectLightCouverture"></div>
         <div>
-          <div><img alt="Icone transport" class="iconeTransportSelec" style="height:25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCouvNegative.png"></div>
+          <div><img alt="Icone transport" class="iconeTransportSelec" style="height:25px;" src="./img/logoCouvNegative.png"></div>
           <div>Couverture simulée</div>
         </div>
       </div>
       <div class="boutonAggloTransports" id="boutonQoS" style="margin: 0px 0px 0px 0px; position:relative;">
         <div class="selectLight" id="selectLightQoS"></div>
         <div>
-          <div><img alt="Icone transport" class="iconeTransportSelec" style="height:25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQoSNegative.png"></div>
+          <div><img alt="Icone transport" class="iconeTransportSelec" style="height:25px;" src="./img/logoQoSNegative.png"></div>
           <div>Qualité mesurée</div>
         </div>
       </div>
@@ -50,11 +50,11 @@
       <div style="font-size:14px; font-weight:bold; margin: 8px -10px 0px -10px;">Qualité mesurée</div>
       <div class="boutonAggloTransports" id="boutonTransports" style="margin: 5px 10px 0px 0px; position:relative;">
         <div class="selectLight" id="selectLightTransports"></div>
-        <p><img alt="Icone Autoroutes" class="iconeTransportSelec" style="height:25px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Autoroutes.png">&nbsp;Transports</p>
+        <p><img alt="Icone Autoroutes" class="iconeTransportSelec" style="height:25px;" src="./img/Autoroutes.png">&nbsp;Transports</p>
       </div>
       <div class="boutonAggloTransports" id="boutonAgglos" style="margin: 5px 0px 0px 0px; position:relative;">
         <div class="selectLight" id="selectLightAgglos"></div>
-        <p><img alt="Icone Lieux de vie" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoLieuxDeVie.png">&nbsp;Lieux de vie</p>
+        <p><img alt="Icone Lieux de vie" src="./img/logoLieuxDeVie.png">&nbsp;Lieux de vie</p>
       </div>
 
       <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
@@ -66,14 +66,14 @@
       <div style="font-size:14px; font-weight:bold; margin: 18px -10px 0px -10px;">Cartes de couverture simulée</div>
 
       <div id="GraphiqueCouv_Techno" style="width: 100%; height: 120px;">
-        <div class="boutonGeo" id="boutonCarteVoix" style="width:124px; height:110px; margin: 5px 10px 0px 0px;position:relative;"><img alt="Icone Voix" height="80" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteVoix.png">
+        <div class="boutonGeo" id="boutonCarteVoix" style="width:124px; height:110px; margin: 5px 10px 0px 0px;position:relative;"><img alt="Icone Voix" height="80" src="./img/logoCarteVoix.png">
           <div style="line-height:12px;">Voix et SMS<br />
             <span style="font-size:9px;">(version beta)</span>
           </div>
           <div class="selectLight" id="selectLightCarteVoix">
           </div>
         </div>
-        <div class="boutonGeo" id="boutonCarteData" style="width:124px; height:110px; margin: 5px 0px 0px 0px;position:relative;"><img alt="Icone Data" height="80" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCarteData.png">
+        <div class="boutonGeo" id="boutonCarteData" style="width:124px; height:110px; margin: 5px 0px 0px 0px;position:relative;"><img alt="Icone Data" height="80" src="./img/logoCarteData.png">
           <div>Internet mobile</div>
           <div class="selectLight" id="selectLightCarteData"></div>
         </div>
@@ -118,22 +118,22 @@
       <div style="font-size:14px; font-weight:bold; margin: 10px -10px 0px -10px; float:left;">Par type de lieux</div>
       <div id="GraphiqueQoS_ZoneGeo" style="width: 100%; height: 110px;">
         <div class="boutonGeo" id="boutonNational" style="width:258px; margin: 5px 0px 10px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone toutes zones" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/ToutesZones.png"></div>
+          <div style="height: 25px;"><img alt="Icone toutes zones" src="./img/ToutesZones.png"></div>
           <div>Toutes zones</div>
           <div class="selectLight" id="selectLightNational"></div>
         </div>
         <div class="boutonGeo" id="boutonRural" style="width:73px; margin: 0px 10px 0px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Zone Rutal" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Rural.png"></div>
+          <div style="height: 25px;"><img alt="Icone Zone Rutal" src="./img/Rural.png"></div>
           <div>Zone rurale</div>
           <div class="selectLight" id="selectLightRural"></div>
         </div>
         <div class="boutonGeo" id="boutonIntermediaire" style="width:92px; margin: 0px 10px 0px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Zone Intermediaire" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Intermediaire.png"></div>
+          <div style="height: 25px;"><img alt="Icone Zone Intermediaire" src="./img/Intermediaire.png"></div>
           <div>Z. intermédiaire</div>
           <div class="selectLight" id="selectLightIntermediaire"></div>
         </div>
         <div class="boutonGeo" id="boutonDense" style="width:73px; margin: 0px 0px 0px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Zone Dense" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Dense.png"></div>
+          <div style="height: 25px;"><img alt="Icone Zone Dense" src="./img/Dense.png"></div>
           <div>Zone dense</div>
           <div class="selectLight" id="selectLightDense"></div>
         </div>
@@ -157,27 +157,27 @@
       <div style="font-size:14px; font-weight:bold; margin: 10px -10px 0px -10px; float:left;">Par type de transports</div>
       <div id="GraphiqueQoSTransports_ZoneGeo" style="width: 100%; height: 110px; float:left;">
         <div class="boutonGeo" id="boutonAutoroutes" style="width:76px; margin: 5px 10px 10px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Autoroutes" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Autoroutes.png"></div>
+          <div style="height: 25px;"><img alt="Icone Autoroutes" src="./img/Autoroutes.png"></div>
           <div>Autoroutes</div>
           <div class="selectLight" id="selectLightAutoroutes"></div>
         </div>
         <div class="boutonGeo" id="boutonTGV" style="width:76px; margin: 5px 10px 10px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone TGV" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/TGV.png"></div>
+          <div style="height: 25px;"><img alt="Icone TGV" src="./img/TGV.png"></div>
           <div>TGV</div>
           <div class="selectLight" id="selectLightTGV"></div>
         </div>
         <div class="boutonGeo" id="boutonTET" style="width:88px; margin: 5px 0px 10px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone TET" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/TET.png"></div>
+          <div style="height: 25px;"><img alt="Icone TET" src="./img/TET.png"></div>
           <div>Grandes lignes</div>
           <div class="selectLight" id="selectLightTET"></div>
         </div>
         <div class="boutonGeo" id="boutonTDQ" style="width:115px; margin: 5px 10px 0px 10px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Trains du quotidien" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Tdb.png"></div>
+          <div style="height: 25px;"><img alt="Icone Trains du quotidien" src="./img/Tdb.png"></div>
           <div>Trains du quotidien</div>
           <div class="selectLight" id="selectLightTDQ"></div>
         </div>
         <div class="boutonGeo" id="boutonMetro" style="width:115px; margin: 5px 10px 0px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Metro" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/Metro.png"></div>
+          <div style="height: 25px;"><img alt="Icone Metro" src="./img/Metro.png"></div>
           <div>Métro parisien</div>
           <div class="selectLight" id="selectLightMetro"></div>
         </div>
@@ -190,12 +190,12 @@
 
       <div style="float:left;">
         <div class="boutonGeo" id="boutonQoSTransportsVoixSMS" style="width:100px; margin: 10px 10px 0px 24px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Voix" height="25" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQosVoix.png"></div>
+          <div style="height: 25px;"><img alt="Icone Voix" height="25" src="./img/logoQosVoix.png"></div>
           <div>Voix et SMS</div>
           <div class="selectLight" id="selectLightQoSTransportsVoixSMS"></div>
         </div>
         <div class="boutonGeo" id="boutonQoSTransportsData" style="width:100px; margin: 10px 24px 0px 0px;position:relative;">
-          <div style="height: 25px;"><img alt="Icone Data" height="25" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQosData.png"></div>
+          <div style="height: 25px;"><img alt="Icone Data" height="25" src="./img/logoQosData.png"></div>
           <div>Internet mobile</div>
           <div class="selectLight" id="selectLightQoSTransportsData"></div>
         </div>
@@ -247,10 +247,10 @@
     <div id="EnteteLegendeCouvData" style="width: 241px; display:none; z-index: 1;">Couverture Internet mobile</div>
     <div id="legendeAgglos" style="display:block;">
       <div style="width: 100%; height: 20px;">
-        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosOrange" name="checkboxAgglosOrange" onchange="miseAJourCheckboxOrangeAgglos(this)"><img alt="Logo Orange" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png" style="vertical-align: middle; width: 18px; height: 18px;"/></label></div>
-        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosBouygues" name="checkboxAgglosBouygues" onchange="miseAJourCheckboxBouyguesAgglos(this)"><img alt="Logo Bouygues Telecom" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png" style="vertical-align: middle; width: 21px; height: 18px;"/></label></div>
-        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosSFR" name="checkboxAgglosSFR" onchange="miseAJourCheckboxSFRAgglos(this)"><img alt="Logo SFR" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png" style="vertical-align: middle; width: 18px; height: 18px;"/></label></div>
-        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosFree" name="checkboxAgglosFree" onchange="miseAJourCheckboxFreeAgglos(this)"><img alt="Logo Free Mobile" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png" style="vertical-align: middle; width: 30px; height: 17px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosOrange" name="checkboxAgglosOrange" onchange="miseAJourCheckboxOrangeAgglos(this)"><img alt="Logo Orange" src="./img/logoOrange.png" style="vertical-align: middle; width: 18px; height: 18px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosBouygues" name="checkboxAgglosBouygues" onchange="miseAJourCheckboxBouyguesAgglos(this)"><img alt="Logo Bouygues Telecom" src="./img/logoBouygues.png" style="vertical-align: middle; width: 21px; height: 18px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosSFR" name="checkboxAgglosSFR" onchange="miseAJourCheckboxSFRAgglos(this)"><img alt="Logo SFR" src="./img/logoSFR.png" style="vertical-align: middle; width: 18px; height: 18px;"/></label></div>
+        <div style="width: 25%; color:#AAAAAA; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxAgglosFree" name="checkboxAgglosFree" onchange="miseAJourCheckboxFreeAgglos(this)"><img alt="Logo Free Mobile" src="./img/logoFree.png" style="vertical-align: middle; width: 30px; height: 17px;"/></label></div>
       </div>
       <div style="width: 60%; height: 1px; margin: 5px 20% 2px 20%;">
         <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:black; float:left;"></div>
@@ -282,10 +282,10 @@
     <div id="EnteteLegendeTransports" style="width: 241px; z-index: 3; display:none;">Navigation Web <span style="font-size:9px;">(chargement &lt;10s d’une page)</span></div>
     <div id="legendeTransports" style="display:none;">
       <div style="width: 100%; height: 18px; margin: 8px 0px 0px 0px;">
-        <div style="width: 25%; color:#ff8432; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxOrange" name="checkboxOrange" onchange="miseAJourCheckboxOrangeTrans(this)"><img alt="Logo Orange" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoOrange.png" style="vertical-align: middle; width: 18px; height: 18px"/></label></div>
-        <div style="width: 25%; color:#3baeb3; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxBouygues" name="checkboxBouygues" onchange="miseAJourCheckboxBouyguesTrans(this)"><img alt="Logo Bouygues Telecom" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoBouygues.png" style="vertical-align: middle; width: 21px; height: 18px"/></label></div>
-        <div style="width: 25%; color:#cf3232; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxSFR" name="checkboxSFR" onchange="miseAJourCheckboxSFRTrans(this)"><img alt="Logo SFR" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoSFR.png" style="vertical-align: middle; width: 18px; height: 18px"/></label></div>
-        <div style="width: 25%; color:#32b432; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxFree" name="checkboxFree" onchange="miseAJourCheckboxFreeTrans(this)"><img alt="Logo Free Mobile" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoFree.png" style="vertical-align: middle; width: 30px; height: 17px"/></label></div>
+        <div style="width: 25%; color:#ff8432; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxOrange" name="checkboxOrange" onchange="miseAJourCheckboxOrangeTrans(this)"><img alt="Logo Orange" src="./img/logoOrange.png" style="vertical-align: middle; width: 18px; height: 18px"/></label></div>
+        <div style="width: 25%; color:#3baeb3; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxBouygues" name="checkboxBouygues" onchange="miseAJourCheckboxBouyguesTrans(this)"><img alt="Logo Bouygues Telecom" src="./img/logoBouygues.png" style="vertical-align: middle; width: 21px; height: 18px"/></label></div>
+        <div style="width: 25%; color:#cf3232; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxSFR" name="checkboxSFR" onchange="miseAJourCheckboxSFRTrans(this)"><img alt="Logo SFR" src="./img/logoSFR.png" style="vertical-align: middle; width: 18px; height: 18px"/></label></div>
+        <div style="width: 25%; color:#32b432; text-align:center; font-size:11px; float:left"><label><input type="radio" id="checkboxFree" name="checkboxFree" onchange="miseAJourCheckboxFreeTrans(this)"><img alt="Logo Free Mobile" src="./img/logoFree.png" style="vertical-align: middle; width: 30px; height: 17px"/></label></div>
       </div>
       <div style="width: 60%; height: 1px; margin: 5px 20% 2px 20%;">
         <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:black; float:left;"></div>
@@ -302,20 +302,20 @@
   </section>
 
   <div id="PopupBienvenue">
-    <img alt="Logo ARCEP" id="logoPopupBienvenue" style="position: absolute; top: calc(50% - 185px); left: calc(50% - 64px); width: 100px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoArcep.png">
+    <img alt="Logo ARCEP" id="logoPopupBienvenue" style="position: absolute; top: -50px; left: calc(50% - 64px); width: 100px;" src="./img/logoArcep.png">
     <div class="popupButtonClose" id="popupBoutonFermerBienvenue">X</div>
 
     <div style="font-size:16px; text-align:center; color:#e56363; font-weight:bold; margin:0px 0px 5px 0px">Bienvenue</div>
     <div style="text-align:jutify; font-size:11px; line-height:11px;">sur <span style="color:#e56363; font-weight:bold;">monreseaumobile.fr</span>, l’outil cartographique de l’Arcep qui vous permet de comparer les opérateurs mobiles.</div>
     <div style="width:300px; margin:10px 0px 0px 0px; float:left;">
       <div style="width:136px; margin:0px 0px 0px 0px; float:left;">
-        <div style="height:38px; width:38px; margin: 0px 46px 0px 46px; float:left;"><img alt="Icone Couverture" style="height:38px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoCouv.png"></div>
+        <div style="height:38px; width:38px; margin: 0px 46px 0px 46px; float:left;"><img alt="Icone Couverture" style="height:38px;" src="./img/logoCouv.png"></div>
         <div style="width:100%; margin: 2px 0px 2px 0px; font-weight:bold; font-size:12px; text-align:center; line-height:11px; float:left;">Couverture simulée</div>
         <div style="text-align:center; font-size:10px; line-height:10px; color:#888; float:left;">Cartes de couverture simulée fournies par les opérateurs</div>
       </div>
       <div style="width:28px; margin:0px 0px 0px 0px; font-size:30px; text-align:center; color:#e56363; font-weight:bold;  line-height:90px; float:left;">+</div>
       <div style="width:136px; margin:0px 0px 0px 0px; float:left;">
-        <div style="height:38px; width:38px; margin: 0px 46px 0px 46px; float:left;"><img alt="Icone Qualité de Service" style="height:38px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/logoQoS.png"></div>
+        <div style="height:38px; width:38px; margin: 0px 46px 0px 46px; float:left;"><img alt="Icone Qualité de Service" style="height:38px;" src="./img/logoQoS.png"></div>
         <div style="width:100%; margin: 2px 0px 2px 0px; font-weight:bold; font-size:12px; text-align:center; line-height:11px; float:left;">Qualité mesurée</div>
         <div style="text-align:center; font-size:10px; line-height:10px; color:#888; float:left;">Qualité mesurée sur le terrain par l’Arcep avec plus de 500 000 mesures</div>
       </div>
@@ -342,7 +342,7 @@
     </div>
     <div style="margin: 10px 0px 0px 0px; float:left">
       <div style="color:#000000; font-size:12px; float:left">
-        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
+        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="./img/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
     </div>
     <div class="clicEnSavoirPlusCouv" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
   </div>
@@ -356,7 +356,7 @@
     </div>
     <div style="margin: 10px 0px 0px 0px; float:left">
       <div style="color:#000000; font-size:12px; float:left">
-        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
+        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="./img/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
     </div>
     <div class="clicEnSavoirPlusCouv" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
   </div>
@@ -375,7 +375,7 @@
     </div>
     <div style="margin: 10px 0px 0px 0px; float:left">
       <div style="color:#000000; font-size:12px; float:left">
-        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
+        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="./img/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
     </div>
     <div class="clicEnSavoirPlusCouv" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
   </div>
@@ -389,7 +389,7 @@
     </div>
     <div style="margin: 10px 0px 0px 0px; float:left">
       <div style="color:#000000; font-size:12px; float:left">
-        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="https://monreseaumobile.fr/fileadmin/reprise/observatoire/qsmobile/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
+        <div style="height:16px; width:14px; margin: 0px 5px 0px 0px; float:left"><img alt="Icone Site" style="height:12px;" src="./img/LogoSite.png"></div><b>Emetteurs </b><span style="font-size:11px;">(zoomer pour afficher)</span></div>
     </div>
     <div class="clicEnSavoirPlusCouv" style="color:#000000; font-size:10px; width:100%; text-align:center; color:#666; font-style:italic; cursor: pointer; -moz-outline:0 none; outline:0 none;float:left">(<u>en savoir plus sur la couverture</u>)</div>
   </div>
@@ -403,19 +403,15 @@
   </div>
 
   <!--scripts-->
-  <script src="https://code.jquery.com/jquery-latest.js"></script>
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js"></script>
-  <script src="https://code.highcharts.com/highcharts-more.js"></script>
-  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js"></script>
-  <script src="https://code.highcharts.com/modules/solid-gauge.src.js"></script>
+  <script src="./js/jquery-1.11.1.js"></script>
+  <script src="./js/highcharts-5.0.12.js"></script>
+  <script src="./js/mapbox-gl-0.28.0.js"></script>
+  <script src="./js/highcharts-more-5.0.12.js"></script>
+  <script src="./js/mapbox-gl-geocoder-2.0.1.js"></script>
+  <script src="./js/solid-gauge-5.0.12.js"></script>
   <script src="./js/data.js"></script>
   <script src="./js/graph.js"></script>
   <script src="./js/master.js"></script>
-  <!--To DEV-->
-  <script src="http://localhost:35729/livereload.js"></script>
-  <script src="./js/toDevTools.js"></script>
-  <!--To DEV-->
 </body>
 
 </html>

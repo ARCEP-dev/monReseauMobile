@@ -26,7 +26,7 @@ activeBoutonQoSTransportsData();
 activeBoutonAutoroutes();
 
 if (!mapboxgl.supported()) {
-  alert("Votre navigateur Internet ne permet pas d\'afficher cette page. Veuillez le mettre à jour.");
+  alert("Votre navigateur Internet ne permet pas d’afficher cette page. Veuillez le mettre à jour.");
 }
 else {
   mapboxgl.accessToken = mapBoxToken;
@@ -68,7 +68,7 @@ map.addControl(new mapboxgl.ScaleControl({
 
 map.on('load', function() {
   addMbSource("point");
-  addMbSource("3d-buildings");
+  //addMbSource("3d-buildings");
   addMbSource("transports");
   addMbSource("Sites");
   addMbSource("BC_Orange");
@@ -84,7 +84,7 @@ map.on('load', function() {
   addMbSource("CL_Free");
   addMbSource("TBC_Free");
 
-  addMbLayer("3d-buildings");
+  //addMbLayer("3d-buildings");
   addMbLayer("Sites");
   addMbLayer("point");
   addMbLayer("transports");
@@ -165,7 +165,6 @@ map.on('mousemove', function (e) {
     var features = map.queryRenderedFeatures(e.point, {layers: ["transports"]});
     if (features.length !== 0) {
       var feature = features[0];
-
       var logo = "";
       if(getIconeOperateur(feature.properties["MCC-MNC"]) !== ""){logo = getIconeOperateur(feature.properties["MCC-MNC"]) + "<br>";}
 
@@ -1278,13 +1277,11 @@ function getSelectedRoute(){
 }
 
 function activeButton(value){
-  //console.log("activeButton : " + value.id);
   $(value).addClass('active');
   value.status = "active";
 }
 
 function unactiveButton(value){
-  //console.log("unactiveButton : " + value.id);
   $(value).removeClass('active');
   value.status = "unactive";
 }
@@ -1293,10 +1290,9 @@ var sourceLoaded = [];
 var layerVisible = [];
 
 function addMbSource(value) {
-  //console.log("addMbSource : " + value);
   for (var i = 0; i < sourceLoaded.length; i++) {
     if (sourceLoaded[i] == value) {
-      console.log("Deja charge");
+      //Source already loaded
       return 0;
     }
   }
@@ -1313,7 +1309,6 @@ function addMbSource(value) {
     var MbSources = obj.sources;
     for (var j = 0; j < MbSources.length; j++) {
       if (value == MbSources[j].id) {
-        //console.log("value : " + value + "; type : " + MbSources[j].type + "; url : " + MbSources[j].url);
         map.addSource(value, {
           type: MbSources[j].type,
           url: MbSources[j].url
@@ -1325,7 +1320,6 @@ function addMbSource(value) {
 }
 
 function addMbLayer(value){
-  //console.log("addMbLayer function : " + value);
   if (value == "3d-buildings") {
     map.addLayer({
       'id': '3d-buildings',
@@ -1425,17 +1419,24 @@ function addMbLayer(value){
 }
 
 function setLayerVisible(layer) {
-  //console.log("setLayerVisible : " + layer);
   map.setLayoutProperty(layer, "visibility", "visible");
 }
 
 function setLayerInvisible(layer) {
-  //console.log("setLayerInvisible : " + layer);
   map.setLayoutProperty(layer, "visibility", "none");
 }
 
 function setAllLayersInvisible() {
   for (var i = 0; i < layerVisible.length; i++) {
     setLayerInvisible(layerVisible[i]);
+  }
+}
+
+function setElInvisible(value){
+  var allDiv = document.querySelectorAll("div");
+  for (var i = 0; i < allDiv.length; i++) {
+    if (allDiv[i].id.match(/value/)) {
+      allDiv[i].style.display = "none";
+    }
   }
 }
