@@ -1,83 +1,81 @@
 var chartsCollection = [];
 
-function removeAllCharts(){
-  for (var i = (chartsCollection.length - 1) ; i >= 0; i--) {
+function removeAllCharts() {
+  for (var i = (chartsCollection.length - 1); i >= 0; i--) {
     chartsCollection[i].destroy();
     chartsCollection.pop();
   }
 }
 
 function chartsGenerator(features) {
-  console.log("chartsGenerator : " + features);
-  console.log("Before removeAllCharts : " + chartsCollection.length);
   removeAllCharts();
-    switch (features) {
-      case "2G":
-        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population")));
-        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
+  switch (features) {
+    case "2G":
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population")));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
       break;
 
-      case "3G":
-        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "3G")));
-        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "3G")));
+    case "3G":
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "3G")));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "3G")));
       break;
 
-      case "4G":
-        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "4G")));
-        chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "4G")));
+    case "4G":
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "4G")));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "4G")));
       break;
   }
 
   if (features == "national" || features == "rural" || features == "intermediaire" || features == "dense") {
 
-    var chartVoice = new Highcharts.Chart(GraphiqueQoS_Voix(features), function(chart) {
+    var chartVoice = new Highcharts.Chart(GraphiqueQoSLDV_Voix(features), function(chart) {
       for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
+        if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
           chart.series[i].data[0].dataLabel.attr({
             y: 24
           });
         }
       }
     });
-    var chartSms = new Highcharts.Chart(GraphiqueQoS_SMS(features), function(chart) {
+    var chartSms = new Highcharts.Chart(GraphiqueQoSLDV_SMS(features), function(chart) {
       for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
+        if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
           chart.series[i].data[0].dataLabel.attr({
             y: 24
           });
         }
       }
     });
-    var chartWeb = new Highcharts.Chart(GraphiqueQoS_Web(features), function(chart) {
+    var chartWeb = new Highcharts.Chart(GraphiqueQoSLDV_Web(features), function(chart) {
       for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
+        if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
           chart.series[i].data[0].dataLabel.attr({
             y: 24
           });
         }
       }
     });
-    var chartDwl = new Highcharts.Chart(GraphiqueQoS_DebitsDl(features), function(chart) {
+    var chartDwl = new Highcharts.Chart(GraphiqueQoSLDV_DebitsDl(features), function(chart) {
       for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
+        if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
           chart.series[i].data[0].dataLabel.attr({
             y: 24
           });
         }
       }
     });
-    var chartUpl = new Highcharts.Chart(GraphiqueQoS_DebitsUl(features), function(chart) {
+    var chartUpl = new Highcharts.Chart(GraphiqueQoSLDV_DebitsUl(features), function(chart) {
       for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
+        if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
           chart.series[i].data[0].dataLabel.attr({
             y: 24
           });
         }
       }
     });
-    var chartVideo = new Highcharts.Chart(GraphiqueQoS_Video(features), function(chart) {
+    var chartVideo = new Highcharts.Chart(GraphiqueQoSLDV_Video(features), function(chart) {
       for (var i = 0; i < 4; i++) {
-        if (chart.series[i].data[0].y < 47) {
+        if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
           chart.series[i].data[0].dataLabel.attr({
             y: 24
           });
@@ -94,41 +92,42 @@ function chartsGenerator(features) {
     return 1;
   }
 
-  if (features == "tgv" || features == "tet" || features == "tdq" || features == "metro" || features == "autoroutes"){
-    if (features != "metro") {
-      new Highcharts.Chart(GraphiqueQoS_VoixTransports(features), function(chart) {
+  if (features == "tgv" || features == "intercites_ter" || features == "rer_transiliens" || features == "metros" || features == "routes") {
+    if (transportsVoixData == "voix") {
+
+      var chartQoSTransVoix = new Highcharts.Chart(GraphiqueQoSTransports_Voix(features, sousStrateTransports), function(chart) {
         for (var i = 0; i < 4; i++) {
-          if (chart.series[i].data[0].y < 47) {
+          if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
             chart.series[i].data[0].dataLabel.attr({
               y: 24
             });
           }
         }
       });
-      var chartSmsTrans = new Highcharts.Chart(GraphiqueQoS_SMSTransports(features), function(chart) {
+      chartsCollection.push(chartQoSTransVoix);
+
+      var chartQoSTransSMS = new Highcharts.Chart(GraphiqueQoSTransports_SMS(features, sousStrateTransports), function(chart) {
         for (var i = 0; i < 4; i++) {
-          if (chart.series[i].data[0].y < 47) {
+          if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
             chart.series[i].data[0].dataLabel.attr({
               y: 24
             });
           }
         }
       });
-      var chartWebTrans = new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports), function(chart) {
+      chartsCollection.push(chartQoSTransSMS);
+    } else if (transportsVoixData == "data") {
+
+      var chartQoSTransData = new Highcharts.Chart(GraphiqueQoSTransports_Web(features, sousStrateTransports), function(chart) {
         for (var i = 0; i < 4; i++) {
-          if (chart.series[i].data[0].y < 47) {
+          if (chart.series[i].data[0].y < 47 && chart.series[i].data[0].y > 0) {
             chart.series[i].data[0].dataLabel.attr({
               y: 24
             });
           }
         }
       });
-      chartsCollection.push(chartSmsTrans);
-      chartsCollection.push(chartWebTrans);
-    } else {
-      chartsCollection.push(new Highcharts.Chart(GraphiqueQoS_VoixTransports(features)));
-      chartsCollection.push(new Highcharts.Chart(GraphiqueQoS_SMSTransports(features)));
-      chartsCollection.push(new Highcharts.Chart(GraphiqueQoS_WebTransports(features, sousStrateTransports)));
+      chartsCollection.push(chartQoSTransData);
     }
     return 1;
   }
@@ -346,8 +345,8 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
       },
       {
         name: 'très bonne couverture',
-        data: [
-          {
+        data: [{
+
           y: dataRaw.couvertureTechno.TBC[inUnite].Orange,
           color: {
             linearGradient: {
@@ -412,7 +411,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
@@ -632,15 +631,15 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_Voix(inStrate) {
+function GraphiqueQoSLDV_Voix(inStrate) {
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_Voix',
+      renderTo: 'GraphiqueQoSLDV_Voix',
       margin: [18, 20, 16, 10],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -801,15 +800,15 @@ function GraphiqueQoS_Voix(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_VoixTransports(inStrate) {
+function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_VoixTransports',
+      renderTo: 'GraphiqueQoSTransports_Voix',
       margin: [18, 20, 16, 10],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -888,7 +887,7 @@ function GraphiqueQoS_VoixTransports(inStrate) {
     series: [{
         name: 'Orange',
         data: [{
-          y: dataRaw.appelsVocaux[inStrate].Orange,
+          y: dataRaw.appelsVocaux[inStrate][sousStrateTransports].Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -908,7 +907,7 @@ function GraphiqueQoS_VoixTransports(inStrate) {
       {
         name: 'Bouygues',
         data: [{
-          y: dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,
+          y: dataRaw.appelsVocaux[inStrate][sousStrateTransports].Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -928,7 +927,7 @@ function GraphiqueQoS_VoixTransports(inStrate) {
       {
         name: 'SFR',
         data: [{
-          y: dataRaw.appelsVocaux[inStrate].SFR,
+          y: dataRaw.appelsVocaux[inStrate][sousStrateTransports].SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -948,7 +947,7 @@ function GraphiqueQoS_VoixTransports(inStrate) {
       {
         name: 'Free',
         data: [{
-          y: dataRaw.appelsVocaux[inStrate].Free_Mobile,
+          y: dataRaw.appelsVocaux[inStrate][sousStrateTransports].Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
@@ -970,15 +969,15 @@ function GraphiqueQoS_VoixTransports(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_SMS(inStrate) {
+function GraphiqueQoSLDV_SMS(inStrate) {
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_SMS',
+      renderTo: 'GraphiqueQoSLDV_SMS',
       margin: [18, 10, 16, 20],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -1139,26 +1138,24 @@ function GraphiqueQoS_SMS(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_SMSTransports(inStrate) {
+function GraphiqueQoSTransports_SMS(inStrate, sousStrateTransports) {
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_SMSTransports',
+      renderTo: 'GraphiqueQoSTransports_SMS',
       margin: [18, 10, 16, 20],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
-
     title: {
       align: 'center',
       x: 5,
       y: 87,
       text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
     },
-
     tooltip: {
       enabled: true,
       hideDelay: 0,
@@ -1170,18 +1167,15 @@ function GraphiqueQoS_SMSTransports(inStrate) {
       borderColor: 'gray',
       borderWidth: 1
     },
-
     legend: {
       enabled: false,
     },
-
     xAxis: {
       tickWidth: 0,
       labels: {
         enabled: false,
       },
     },
-
     plotOptions: {
       column: {
         borderWidth: 0,
@@ -1208,7 +1202,6 @@ function GraphiqueQoS_SMSTransports(inStrate) {
         },
       }
     },
-
     yAxis: {
       min: 0,
       max: 100,
@@ -1222,11 +1215,10 @@ function GraphiqueQoS_SMSTransports(inStrate) {
         enabled: false,
       }
     },
-
     series: [{
         name: 'Orange',
         data: [{
-          y: dataRaw.SMS[inStrate].Orange,
+          y: dataRaw.SMS[inStrate][sousStrateTransports].Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -1246,7 +1238,7 @@ function GraphiqueQoS_SMSTransports(inStrate) {
       {
         name: 'Bouygues',
         data: [{
-          y: dataRaw.SMS[inStrate].Bouygues_Telecom,
+          y: dataRaw.SMS[inStrate][sousStrateTransports].Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -1266,7 +1258,7 @@ function GraphiqueQoS_SMSTransports(inStrate) {
       {
         name: 'SFR',
         data: [{
-          y: dataRaw.SMS[inStrate].SFR,
+          y: dataRaw.SMS[inStrate][sousStrateTransports].SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -1286,7 +1278,7 @@ function GraphiqueQoS_SMSTransports(inStrate) {
       {
         name: 'Free',
         data: [{
-          y: dataRaw.SMS[inStrate].Free_Mobile,
+          y: dataRaw.SMS[inStrate][sousStrateTransports].Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
@@ -1304,19 +1296,18 @@ function GraphiqueQoS_SMSTransports(inStrate) {
         animation: false,
       }
     ],
-
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_Web(inStrate) {
+function GraphiqueQoSLDV_Web(inStrate) {
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_Web',
+      renderTo: 'GraphiqueQoSLDV_Web',
       margin: [18, 20, 16, 10],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -1478,15 +1469,17 @@ function GraphiqueQoS_Web(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
+function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
+
+
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_WebTransports',
+      renderTo: 'GraphiqueQoSTransports_Web',
       margin: [18, 15, 16, 15],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -1498,7 +1491,7 @@ function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
       text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
     },
 
-    subtitle: {
+    /*subtitle: {
       text: sousTitreVariableGraphMetro(),
       align: 'center',
       verticalAlign: 'middle',
@@ -1510,7 +1503,7 @@ function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
         color: '#FFFFFF',
       },
       useHTML: true,
-    },
+    },*/
 
     tooltip: {
       enabled: true,
@@ -1661,15 +1654,15 @@ function GraphiqueQoS_WebTransports(inStrate, sousStrateTransports) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_DebitsDl(inStrate) {
+function GraphiqueQoSLDV_DebitsDl(inStrate) {
   var options = {
     chart: {
       type: 'solidgauge',
-      renderTo: 'GraphiqueQoS_DebitsDl',
+      renderTo: 'GraphiqueQoSLDV_DebitsDl',
       margin: [0, 10, 5, 0],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -1905,15 +1898,15 @@ function GraphiqueQoS_DebitsDl(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_DebitsUl(inStrate) {
+function GraphiqueQoSLDV_DebitsUl(inStrate) {
   var options = {
     chart: {
       type: 'solidgauge',
-      renderTo: 'GraphiqueQoS_DebitsUl',
+      renderTo: 'GraphiqueQoSLDV_DebitsUl',
       margin: [0, 0, 5, 10],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -2149,15 +2142,15 @@ function GraphiqueQoS_DebitsUl(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }
 
-function GraphiqueQoS_Video(inStrate) {
+function GraphiqueQoSLDV_Video(inStrate) {
   var options = {
     chart: {
       type: 'column',
-      renderTo: 'GraphiqueQoS_Video',
+      renderTo: 'GraphiqueQoSLDV_Video',
       margin: [18, 10, 16, 20],
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
@@ -2320,6 +2313,6 @@ function GraphiqueQoS_Video(inStrate) {
     credits: {
       enabled: false,
     },
-  }
+  };
   return options;
 }

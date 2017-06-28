@@ -17,7 +17,7 @@ label {
   vertical-align: middle;
 }
 
-#EnteteLegendeAgglos, #EnteteLegendeTransports, #EnteteLegendeCouvData {
+#enteteLegendeCouvVoix, #enteteLegendeQoSWeb, #enteteLegendeCouvData, #enteteLegendeQoSVoixSMS {
   font-family: Arial, sans-serif;
   font-size: 12px;
   padding: 3px 0px 0px 3px;
@@ -32,7 +32,7 @@ label {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
-#containerboutonCouvertureQoS {
+#containerBoutonCouvertureOuQoS {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   float: left;
   height: 35px;
@@ -42,7 +42,7 @@ label {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
-#containerboutonAggloTransports {
+#containerBoutonQoSTransportsOuLDV {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   display: none;
   float: left;
@@ -64,7 +64,6 @@ label {
   border-radius: 7px;
   background: rgba(39, 39, 39, 0.9);
   cursor: pointer;
-  -moz-outline: 0 none;
   outline: 0 none;
   float: left;
 }
@@ -80,19 +79,17 @@ label {
   border-radius: 7px;
   background: rgba(39, 39, 39, 0.9);
   cursor: pointer;
-  -moz-outline: 0 none;
   outline: 0 none;
   float: left;
 }
 
-.boutonAggloTransports {
+.boutonType1 {
   height: 40px;
   width: 125px;
   padding: 4px 0px;
   text-align: center;
   font-family: Arial, sans-serif;
   cursor: pointer;
-  -moz-outline: 0 none;
   outline: 0 none;
   color: white;
   border-radius: 5px;
@@ -101,15 +98,15 @@ label {
   float: left;
 }
 
-.boutonAggloTransports img {
+.boutonType1 img {
   vertical-align: middle;
 }
 
-.boutonAggloTransports p {
+.boutonType1 p {
   margin-top: 8px;
 }
 
-.boutonAggloTransports.active {
+.boutonType1.active {
   background: #777777;
   box-shadow: 0px 0px 5px black inset, 0 1px 0 rgba( 255, 255, 255, 0.4);
 }
@@ -135,7 +132,6 @@ label {
   background: #444444;
   font-family: Arial, sans-serif;
   cursor: pointer;
-  -moz-outline: 0 none;
   outline: 0 none;
   color: white;
   border-radius: 5px;
@@ -150,20 +146,18 @@ label {
 
 select {
   padding: 3px;
-  -moz-outline: 0 none;
   outline: 0 none;
   border-radius: 4px;
   background: #DDDDDD;
 }
 
-#legendeAgglos {
+#sousLegendeCouverture, #sousLegendeQoS{
   font-family: Arial, sans-serif;
   font-weight: bold;
   position: absolute;
   z-index: 2;
   bottom: 4px;
   right: 4px;
-  height: 41px;
   width: 230px;
   background-color: #fff;
   padding: 5px;
@@ -171,116 +165,55 @@ select {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
-#legendeTransports {
-  font-family: Arial, sans-serif;
-  font-weight: bold;
-  position: absolute;
-  z-index: 2;
-  bottom: 4px;
-  right: 4px;
+#sousLegendeCouverture {
+  height: 41px;
+}
+
+#sousLegendeQoS {
   height: 50px;
-  width: 230px;
-  background-color: #fff;
-  padding: 5px;
-  border: 2px solid #555555;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
+}
+
+#PopupBienvenue,#PopupInfosLegendeCouvVoix,#PopupInfosLegendeCouvData3G,#PopupInfosLegendeCouvData3GFree,#PopupInfosLegendeCouvData4G,#PopupInfosInfosComplementairesCouverture  {
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  position: absolute;
+  z-index: 5;
+  color: black;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
+  border: 1px solid #555555;
 }
 
 #PopupBienvenue {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 5px;
-  position: absolute;
-  z-index: 5;
   top: calc(50% - 150px);
   left: calc(50% - 157px);
   height: 180px;
   width: 300px;
-  color: black;
-  background: rgba(255, 255, 255, 1);
   border-radius: 10px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
-  border: 1px solid #555555;
 }
 
 #PopupInfosLegendeCouvVoix {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  position: absolute;
-  z-index: 5;
-  bottom: 90px;
-  right: 20px;
   height: 272px;
-  width: 200px;
-  color: black;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
-  border: 1px solid #555555;
 }
 
-#PopupInfosLegendeCouvData3G {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+#PopupInfosLegendeCouvVoix, #PopupInfosLegendeCouvData3G, #PopupInfosLegendeCouvData3GFree, #PopupInfosLegendeCouvData4G {
   padding: 10px;
-  position: absolute;
-  z-index: 5;
   bottom: 90px;
   right: 20px;
   width: 200px;
-  color: black;
   display: none;
-  background: rgba(255, 255, 255, 1);
   border-radius: 4px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
-  border: 1px solid #555555;
-}
-
-#PopupInfosLegendeCouvData3GFree {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  position: absolute;
-  z-index: 5;
-  bottom: 90px;
-  right: 20px;
-  width: 200px;
-  color: black;
-  display: none;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
-  border: 1px solid #555555;
-}
-
-#PopupInfosLegendeCouvData4G {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  position: absolute;
-  z-index: 5;
-  bottom: 90px;
-  right: 20px;
-  width: 200px;
-  color: black;
-  display: none;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
-  border: 1px solid #555555;
 }
 
 #PopupInfosInfosComplementairesCouverture {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   display: none;
   padding: 10px;
-  position: absolute;
   z-index: 6;
   bottom: 180px;
   right: 100px;
   height: 315px;
   width: 200px;
-  color: black;
-  background: rgba(255, 255, 255, 1);
   border-radius: 4px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.10);
-  border: 1px solid #555555;
 }
 
 .popupButtonClose {
@@ -312,22 +245,12 @@ select {
   color: #fff;
 }
 
-#ZoneGraphiquesQoS {
+#ZoneGraphiquesQoSLDV, #ZoneGraphiquesQoSTransports {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 0px 10px 0px 10px;
   z-index: 3;
   display: none;
   height: 470px;
-  width: 260px;
-  color: #fff;
-}
-
-#ZoneGraphiquesTransports {
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 0px 10px 0px 10px;
-  z-index: 3;
-  display: none;
-  height: 450px;
   width: 260px;
   color: #fff;
 }
@@ -388,10 +311,6 @@ aside p {
   color: white;
 }
 
-aside::-webkit-scrollbar {
-  width: 0 !important
-}
-
 #toggleHUD {
   background: rgba(39, 39, 39, 0.9);
   color: white;
@@ -400,19 +319,7 @@ aside::-webkit-scrollbar {
   border-radius: 5px;
 }
 
-#infoCouvVoix {
-  font: 11px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  line-height: 12px;
-  width: 280px;
-  bottom: 5px;
-  left: 0px;
-  text-align: center;
-  position: absolute;
-  margin-top: 25px;
-  color: white;
-}
-
-#infoCouvData {
+#infoCouv, #infoQoS {
   font: 11px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   line-height: 12px;
   display: none;
@@ -425,27 +332,7 @@ aside::-webkit-scrollbar {
   color: white;
 }
 
-#infoQoS {
-  font: 11px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  line-height: 12px;
-  display: none;
-  width: 280px;
-  bottom: 5px;
-  left: 0px;
-  text-align: center;
-  position: absolute;
-  margin-top: 25px;
-}
-
-#infoCouvVoix a {
-  color: white;
-}
-
-#infoCouvData a {
-  color: white;
-}
-
-#infoQoS a {
+#infoCouv a, #infoQoS a {
   color: white;
 }
 
@@ -456,7 +343,7 @@ aside::-webkit-scrollbar {
 }
 
 @media screen and (max-height: 500px) {
-  #infoCouvVoix, #infoCouvData {
+  #infoCouv {
     position: static;
   }
 }
