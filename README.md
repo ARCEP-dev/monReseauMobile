@@ -2,7 +2,7 @@
 
 Here we have the code of the french telecommunication regulator for the mobile services observatory.
 
-The site allow to view and compare the mobile coverage for 2G, 3G and 4G for the french four operators.
+The site allows to view and compare the mobile coverage for 2G, 3G and 4G for the four french operators.
 
 ## Libraries
 
