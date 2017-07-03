@@ -472,9 +472,12 @@ function activerMenuCarteVoix() {
     setElInvisible("infoQoS");
     setElVisible("ZoneGraphiquesCouvVoix");
 
-    setElInvisible("PopupInfosLegendeCouvData3G");
+    resetLegendesCarte();
+
+    /*setElInvisible("PopupInfosLegendeCouvData3G");
     setElInvisible("PopupInfosLegendeCouvData3GFree");
-    setElInvisible("PopupInfosLegendeCouvData4G");
+    setElInvisible("PopupInfosLegendeCouvData4G");*/
+
     setElInvisible("infoCouv");
     setElInvisible("bouton3G");
     setElInvisible("bouton4G");
@@ -968,7 +971,7 @@ function setSitesCouvFilter() {
 }
 
 function miseAJourLegendeCouverture(element) {
-  if (window.innerWidth > 910 && technoCarteCouverture == "3G") {
+  if (window.innerWidth > 910 && couvertureQoS == "couverture" && carteCouverture == "data" && technoCarteCouverture == "3G") {
     if (MCCMNC == 20815) {
       setElInvisible("PopupInfosLegendeCouvData3G");
       setElVisible("PopupInfosLegendeCouvData3GFree");
