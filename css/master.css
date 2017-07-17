@@ -173,6 +173,26 @@ select {
   height: 50px;
 }
 
+.legendeCouv{
+  width: 180px;
+  text-align:center;
+  font-weight:bold;
+  margin: 10px 50px 0px 50px;
+  float:left;
+}
+
+.graphiqueCouv{
+  width: 130px;
+  height: 110px;
+  float:left;
+  }
+
+.graphiqueQoS{
+  width: 130px;
+  height: 105px;
+  float:left;
+}
+
 #PopupBienvenue,#PopupInfosLegendeCouvVoix,#PopupInfosLegendeCouvData3G,#PopupInfosLegendeCouvData3GFree,#PopupInfosLegendeCouvData4G,#PopupInfosInfosComplementairesCouverture  {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   position: absolute;
