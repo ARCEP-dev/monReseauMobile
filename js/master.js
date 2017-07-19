@@ -189,7 +189,7 @@ function randomOperateur() {
 function afficherCouches() {
   if (map != undefined && map.ready) {
     setAllLayersInvisible();
-    if ((boutonCouverture.status == "active") || (MCCMNC != MCCMNCAvant) || (carteCouverture != carteCouvertureAvant) || (technoCarteCouverture != technoCarteCouvertureAvant)) {
+    if (boutonCouverture.status == "active" && (MCCMNC != MCCMNCAvant || carteCouverture != carteCouvertureAvant || technoCarteCouverture != technoCarteCouvertureAvant)) {
       if (boutonCarteVoix.status == "active") {
         if (MCCMNC == 20801) {
           setLayerVisible("TBC_Orange");
