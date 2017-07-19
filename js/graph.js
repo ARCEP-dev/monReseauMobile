@@ -15,6 +15,11 @@ function chartsGenerator(features) {
       chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
       break;
 
+    case "2G3G":
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population")));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
+      break;
+
     case "3G":
       chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Population", "Couverture_en_population", "3G")));
       chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul_3G4G("Surface", "Couverture_en_territoire", "3G")));
@@ -635,175 +640,6 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
   return options;
 }
 
-function GraphiqueQoSLDV_Voix(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoSLDV_Voix',
-      margin: [18, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-
-    title: {
-      align: 'center',
-      x: -7,
-      y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
-    },
-
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      formatter: function() {
-        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes avec une qualité parfaite</div>';
-      },
-      followPointer: true,
-      useHTML: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-
-    legend: {
-      enabled: false,
-    },
-
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.appelsVocaux[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-
-    credits: {
-      enabled: false,
-    },
-  };
-  return options;
-}
-
 function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
   var options = {
     chart: {
@@ -815,8 +651,8 @@ function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
 
     title: {
       align: 'center',
-      y: 87,
       x: -7,
+      y: 95,
       text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
     },
 
@@ -833,13 +669,13 @@ function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
     },
 
     legend: {
-      enabled: false,
+      enabled: false
     },
 
     xAxis: {
       tickWidth: 0,
       labels: {
-        enabled: false,
+        enabled: false
       },
     },
 
@@ -855,17 +691,13 @@ function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
           enabled: true,
           color: '#FFFFFF',
           rotation: -90,
-          y: 16,
+          //y: 16,
+          y: 25,
           style: {
             textShadow: '0px 0px 3px black',
             fontSize: '9px',
           },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
+          formatter: function() {return this.y + ' %';}
         },
       }
     },
@@ -880,7 +712,7 @@ function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
         enabled: false
       },
       title: {
-        enabled: false,
+        enabled: false
       }
     },
 
@@ -973,175 +805,6 @@ function GraphiqueQoSTransports_Voix(inStrate, sousStrateTransports) {
   return options;
 }
 
-function GraphiqueQoSLDV_SMS(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoSLDV_SMS',
-      margin: [18, 10, 16, 20],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-
-    title: {
-      align: 'center',
-      x: 5,
-      y: 87,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
-    },
-
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 95px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">SMS reçus en moins de 10 secondes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-
-    legend: {
-      enabled: false,
-    },
-
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.SMS[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.SMS[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.SMS[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.SMS[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-
-    credits: {
-      enabled: false,
-    },
-  };
-  return options;
-}
-
 function GraphiqueQoSTransports_SMS(inStrate, sousStrateTransports) {
   var options = {
     chart: {
@@ -1153,7 +816,7 @@ function GraphiqueQoSTransports_SMS(inStrate, sousStrateTransports) {
     title: {
       align: 'center',
       x: 5,
-      y: 87,
+      y: 95,
       text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
     },
     tooltip: {
@@ -1193,12 +856,7 @@ function GraphiqueQoSTransports_SMS(inStrate, sousStrateTransports) {
             textShadow: '0px 0px 3px black',
             fontSize: '9px',
           },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
+          formatter: function() {return this.y + ' %';}
         },
       }
     },
@@ -1303,179 +961,7 @@ function GraphiqueQoSTransports_SMS(inStrate, sousStrateTransports) {
   return options;
 }
 
-function GraphiqueQoSLDV_Web(inStrate) {
-  var options = {
-    chart: {
-      type: 'column',
-      renderTo: 'GraphiqueQoSLDV_Web',
-      margin: [18, 20, 16, 10],
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-    },
-
-    title: {
-      align: 'center',
-      x: -7,
-      y: 87,
-      widthAdjust: 140,
-      text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
-    },
-
-    tooltip: {
-      enabled: true,
-      hideDelay: 0,
-      useHTML: true,
-      formatter: function() {
-        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
-      },
-      followPointer: true,
-      borderColor: 'gray',
-      borderWidth: 1
-    },
-
-    legend: {
-      enabled: false,
-    },
-
-    plotOptions: {
-      column: {
-        borderWidth: 0,
-        borderColor: '#AAAAAA',
-        groupPadding: 0.05,
-        pointPadding: 0.1,
-      },
-      series: {
-        dataLabels: {
-          enabled: true,
-          color: '#FFFFFF',
-          rotation: -90,
-          y: 16,
-          style: {
-            textShadow: '0px 0px 3px black',
-            fontSize: '9px',
-          },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
-        },
-      }
-    },
-
-    xAxis: {
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-    },
-
-    yAxis: {
-      min: 0,
-      max: 100,
-      minorTickInterval: 25,
-      minorGridLineColor: '#666666',
-      gridLineWidth: 0,
-      labels: {
-        enabled: false
-      },
-      title: {
-        enabled: false,
-      }
-    },
-
-    series: [{
-        name: 'Orange',
-        data: [{
-          y: dataRaw.web[inStrate].Orange,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#ff8432'],
-              [1, '#FF6600']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Bouygues',
-        data: [{
-          y: dataRaw.web[inStrate].Bouygues_Telecom,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#3baeb3'],
-              [1, '#2e898d']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'SFR',
-        data: [{
-          y: dataRaw.web[inStrate].SFR,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#cf3232'],
-              [1, '#af0000']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      },
-      {
-        name: 'Free',
-        data: [{
-          y: dataRaw.web[inStrate].Free_Mobile,
-          color: {
-            linearGradient: {
-              x1: 1,
-              x2: 1,
-              y1: 0,
-              y2: 1
-            },
-            stops: [
-              [0, '#32b432'],
-              [1, '#00A200']
-            ],
-          }
-        }],
-        legendItemClick: false,
-        animation: false,
-      }
-    ],
-
-    credits: {
-      enabled: false,
-    },
-  };
-  return options;
-}
-
 function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
-
-
   var options = {
     chart: {
       type: 'column',
@@ -1491,20 +977,6 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
       text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
     },
 
-    /*subtitle: {
-      text: sousTitreVariableGraphMetro(),
-      align: 'center',
-      verticalAlign: 'middle',
-      x: 0,
-      y: -15,
-      widthAdjust: -10,
-      style: {
-        fontSize: '11px',
-        color: '#FFFFFF',
-      },
-      useHTML: true,
-    },*/
-
     tooltip: {
       enabled: true,
       hideDelay: 0,
@@ -1545,12 +1017,7 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
             textShadow: '0px 0px 3px black',
             fontSize: '9px',
           },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
+          formatter: function() {return this.y + ' %';}
         },
       }
     },
@@ -1569,8 +1036,8 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
       }
     },
 
-    series: [{
-        name: 'Orange',
+    series: [
+      {name: 'Orange',
         data: [{
           y: dataRaw.web[inStrate][sousStrateTransports].Orange,
           color: {
@@ -1589,8 +1056,7 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
         legendItemClick: false,
         animation: false,
       },
-      {
-        name: 'Bouygues',
+      {name: 'Bouygues',
         data: [{
           y: dataRaw.web[inStrate][sousStrateTransports].Bouygues_Telecom,
           color: {
@@ -1609,8 +1075,7 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
         legendItemClick: false,
         animation: false,
       },
-      {
-        name: 'SFR',
+      {name: 'SFR',
         data: [{
           y: dataRaw.web[inStrate][sousStrateTransports].SFR,
           color: {
@@ -1629,8 +1094,7 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
         legendItemClick: false,
         animation: false,
       },
-      {
-        name: 'Free',
+      {name: 'Free',
         data: [{
           y: dataRaw.web[inStrate][sousStrateTransports].Free_Mobile,
           color: {
@@ -1658,6 +1122,499 @@ function GraphiqueQoSTransports_Web(inStrate, sousStrateTransports) {
   return options;
 }
 
+function GraphiqueQoSLDV_Voix(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoSLDV_Voix',
+      margin: [18, 20, 16, 10],
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x: -7,
+      y: 95,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Voix</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      formatter: function() {
+        return '<div style="width: 90px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Appels maintenus 2 minutes avec une qualité parfaite</div>';
+      },
+      followPointer: true,
+      useHTML: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled: false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth: 0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels: {
+          enabled: true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y: 16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter: function() {return this.y + ' %';}
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [{
+      name: 'Orange',
+      data: [{
+        y: dataRaw.appelsVocaux[inStrate].Orange,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#ff8432'],
+            [1, '#FF6600']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{
+        y: dataRaw.appelsVocaux[inStrate].Bouygues_Telecom,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#3baeb3'],
+            [1, '#2e898d']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{
+        y: dataRaw.appelsVocaux[inStrate].SFR,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#cf3232'],
+            [1, '#af0000']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{
+        y: dataRaw.appelsVocaux[inStrate].Free_Mobile,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#32b432'],
+            [1, '#00A200']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    }
+  ],
+
+  credits: {
+    enabled: false,
+    },
+  };
+  return options;
+}
+
+function GraphiqueQoSLDV_SMS(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoSLDV_SMS',
+      margin: [18, 10, 16, 20],
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x: 5,
+      y: 95,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">SMS</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function() {
+        return '<div style="width: 95px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">SMS reçus en moins de 10 secondes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled: false,
+      },
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth: 0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels: {
+          enabled: true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y: 16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter: function() {return this.y + ' %';}
+        },
+      }
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [{
+      name: 'Orange',
+      data: [{
+        y: dataRaw.SMS[inStrate].Orange,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#ff8432'],
+            [1, '#FF6600']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{
+        y: dataRaw.SMS[inStrate].Bouygues_Telecom,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#3baeb3'],
+            [1, '#2e898d']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{
+        y: dataRaw.SMS[inStrate].SFR,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#cf3232'],
+            [1, '#af0000']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{
+        y: dataRaw.SMS[inStrate].Free_Mobile,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#32b432'],
+            [1, '#00A200']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    }
+  ],
+
+  credits: {
+    enabled: false,
+    },
+  };
+  return options;
+}
+
+function GraphiqueQoSLDV_Web(inStrate) {
+  var options = {
+    chart: {
+      type: 'column',
+      renderTo: 'GraphiqueQoSLDV_Web',
+      margin: [18, 20, 16, 10],
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+    },
+
+    title: {
+      align: 'center',
+      x: -7,
+      y: 95,
+      widthAdjust: 140,
+      text: '<span style="font-size:10px; color:white; font-weight: bold">Navigation Web</span>',
+    },
+
+    tooltip: {
+      enabled: true,
+      hideDelay: 0,
+      useHTML: true,
+      formatter: function() {
+        return '<div style="width: 115px; white-space:normal; line-height: 10px;"><span style="font-size:11px; font-family: Arial,sans-serif; font-weight: bold; color:' + getCouleurOperateur(this.series.name) + '">' + this.series.name + ' : ' + this.y + '%</span><br><span style="font-size:10px; font-family: Arial,sans-serif;">Pages Web chargées en moins de 10 secondes</div>';
+      },
+      followPointer: true,
+      borderColor: 'gray',
+      borderWidth: 1
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    plotOptions: {
+      column: {
+        borderWidth: 0,
+        borderColor: '#AAAAAA',
+        groupPadding: 0.05,
+        pointPadding: 0.1,
+      },
+      series: {
+        dataLabels: {
+          enabled: true,
+          color: '#FFFFFF',
+          rotation: -90,
+          y: 16,
+          style: {
+            textShadow: '0px 0px 3px black',
+            fontSize: '9px',
+          },
+          formatter: function() {return this.y + ' %';}
+        },
+      }
+    },
+
+    xAxis: {
+      tickWidth: 0,
+      labels: {
+        enabled: false,
+      },
+    },
+
+    yAxis: {
+      min: 0,
+      max: 100,
+      minorTickInterval: 25,
+      minorGridLineColor: '#666666',
+      gridLineWidth: 0,
+      labels: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+      }
+    },
+
+    series: [{
+      name: 'Orange',
+      data: [{
+        y: dataRaw.web[inStrate].Orange,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#ff8432'],
+            [1, '#FF6600']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'Bouygues',
+      data: [{
+        y: dataRaw.web[inStrate].Bouygues_Telecom,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#3baeb3'],
+            [1, '#2e898d']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'SFR',
+      data: [{
+        y: dataRaw.web[inStrate].SFR,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#cf3232'],
+            [1, '#af0000']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    },
+    {
+      name: 'Free',
+      data: [{
+        y: dataRaw.web[inStrate].Free_Mobile,
+        color: {
+          linearGradient: {
+            x1: 1,
+            x2: 1,
+            y1: 0,
+            y2: 1
+          },
+          stops: [
+            [0, '#32b432'],
+            [1, '#00A200']
+          ],
+        }
+      }],
+      legendItemClick: false,
+      animation: false,
+    }
+  ],
+
+  credits: {
+    enabled: false,
+    },
+  };
+  return options;
+}
+
 function GraphiqueQoSLDV_DebitsDl(inStrate) {
   var options = {
     chart: {
@@ -1670,7 +1627,7 @@ function GraphiqueQoSLDV_DebitsDl(inStrate) {
     title: {
       align: 'center',
       x: -7,
-      y: 87,
+      y: 95,
       widthAdjust: 140,
       text: '<span style="font-size:10px; color:white; font-weight: bold">Débit descendant</span>',
     },
@@ -1915,7 +1872,7 @@ function GraphiqueQoSLDV_DebitsUl(inStrate) {
       align: 'center',
       widthAdjust: 140,
       x: 5,
-      y: 87,
+      y: 95,
       text: '<span style="font-size:10px; color:white; font-weight: bold">Débit montant</span>',
     },
 
@@ -2158,7 +2115,7 @@ function GraphiqueQoSLDV_Video(inStrate) {
     title: {
       align: 'center',
       x: 5,
-      y: 87,
+      y: 95,
       widthAdjust: 140,
       text: '<span style="font-size:10px; color:white; font-weight: bold">Vidéo en ligne</span>',
     },
@@ -2204,12 +2161,7 @@ function GraphiqueQoSLDV_Video(inStrate) {
             textShadow: '0px 0px 3px black',
             fontSize: '9px',
           },
-          formatter: function() {
-            if (this.y > 99)
-              return '> 99 %';
-            if (this.y > 0)
-              return this.y + ' %';
-          }
+          formatter: function() {return this.y + ' %';}
         },
       }
     },

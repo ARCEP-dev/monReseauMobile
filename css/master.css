@@ -181,17 +181,11 @@ select {
   float:left;
 }
 
-.graphiqueCouv{
+.graphiqueCouv, .graphiqueQoS{
   width: 130px;
-  height: 110px;
+  height: 107px;
   float:left;
   }
-
-.graphiqueQoS{
-  width: 130px;
-  height: 105px;
-  float:left;
-}
 
 #PopupBienvenue,#PopupInfosLegendeCouvVoix,#PopupInfosLegendeCouvData3G,#PopupInfosLegendeCouvData3GFree,#PopupInfosLegendeCouvData4G,#PopupInfosInfosComplementairesCouverture  {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;

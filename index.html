@@ -80,19 +80,19 @@
             <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
           </div>
           <div style="font-size:14px; font-weight:bold; margin: 0px 0px 5px 0px; float:left;">Par type de technologie</div>
-          <div class="boutonGeo" id="bouton2G" style="height:30px; width:49px; margin: 0px 10px 0px 65px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;">
+          <div class="boutonGeo" id="bouton2G" style="height:30px; width:49px; margin: 0px 10px 0px 65px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;" title="Données au xx/xx/2017">
             <div class="selectLight" id="selectLight2G"></div>
             <div>2G</div>
           </div>
-          <div class="boutonGeo" id="bouton2G3G" style="height:30px; width:70px; margin: 0px 10px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;">
+          <div class="boutonGeo" id="bouton2G3G" style="height:30px; width:70px; margin: 0px 10px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;" title="Données au xx/xx/2017">
             <div class="selectLight" id="selectLight2G3G"></div>
             <div>2G/3G</div>
           </div>
-          <div class="boutonGeo" id="bouton3G" style="height:30px; width:49px; margin: 0px 10px 0px 80px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;">
+          <div class="boutonGeo" id="bouton3G" style="height:30px; width:49px; margin: 0px 10px 0px 80px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;" title="Données au xx/xx/2017">
             <div class="selectLight" id="selectLight3G"></div>
             <div>3G</div>
           </div>
-          <div class="boutonGeo" id="bouton4G" style="height:30px; width:49px; margin: 0px 0px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;">
+          <div class="boutonGeo" id="bouton4G" style="height:30px; width:49px; margin: 0px 0px 0px 0px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;" title="Données au xx/xx/2017">
             <div class="selectLight" id="selectLight4G"></div>
             <div>4G</div>
           </div>
@@ -106,9 +106,12 @@
       <div id="ZoneGraphiquesCouvVoix">
         <div class="graphiqueCouv" id="GraphiqueCouvPopulation"></div>
         <div class="graphiqueCouv" id="GraphiqueCouvSurface"></div>
-        <div class="legendeCouv"><span style="color:#ff8432; font-size:11px;">Orange&nbsp;&nbsp;&nbsp;</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp;&nbsp;&nbsp;</span>
-          <span style="color:#cf3232; font-size:11px;">SFR&nbsp;&nbsp;&nbsp;</span><span style="color:#32b432; font-size:11px;">Free</span></div>
-        <!--iv style="text-align:justify; font-size:10px; line-height:11px; margin: 5px 0px 0px 0px; float:left"><u>Note:</u> en raison de leur caractère expérimental, les chiffres et cartes voix/SMS de "nouvelle génération" ci-contre ne sont diponibles <span style="zoom: 1"><u>que pour la région Nouvelle Aquitaine</u></span> et que pour la 2G. Cette démarche sera étendue à l’ensemble du territoire après contrôle sur le terrain par l’Arcep.</div-->
+        <div class="legendeCouv">
+          <span style="color:#ff8432; font-size:11px;">Orange&nbsp;&nbsp;&nbsp;</span>
+          <span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp;&nbsp;&nbsp;</span>
+          <span style="color:#cf3232; font-size:11px;">SFR&nbsp;&nbsp;&nbsp;</span>
+          <span style="color:#32b432; font-size:11px;">Free</span>
+        </div>
       </div>
 
       <div id="ZoneGraphiquesCouvData" style="display:none;">
@@ -116,7 +119,12 @@
         <div class="graphiqueCouv" id="GraphiqueCouvSurface4G"></div>
         <div class="graphiqueCouv" id="GraphiqueCouvPopulation3G"></div>
         <div class="graphiqueCouv" id="GraphiqueCouvSurface3G"></div>
-        <div class="legendeCouv"><span style="color:#ff8432; font-size:11px;">Orange&nbsp;&nbsp;&nbsp;</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp;&nbsp;&nbsp;</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp;&nbsp;&nbsp;</span><span style="color:#32b432; font-size:11px;">Free</span></div>
+        <div class="legendeCouv">
+          <span style="color:#ff8432; font-size:11px;">Orange&nbsp;&nbsp;&nbsp;</span>
+          <span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp;&nbsp;&nbsp;</span>
+          <span style="color:#cf3232; font-size:11px;">SFR&nbsp;&nbsp;&nbsp;</span>
+          <span style="color:#32b432; font-size:11px;">Free</span>
+        </div>
         <div style="text-align:justify; font-size:10px; line-height:11px; margin: 5px 0px 0px 0px; float:left"><u>Note:</u> les cartes du service Internet mobile sont binaires (couvert/non couvert). La présentation en 4 niveaux, comme pour le service Voix/SMS, fera l’objet de travaux complémentaires.</div>
       </div>
 
@@ -279,7 +287,7 @@
             <div style="height:7px; width:7px; border: 1px solid #CECECE; margin: 5px 5px 5px 10px; background-color: #efa7a7; opacity: 0.4; float:left"></div>3G bridée à 1Mbit/s (Free)</div>
         </div>
         <div id="blocLegendeCouvData4G" style="color:#000000; font-size:11px; float:left">
-          <div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 62px; background-color: #e36565; opacity: 0.5; float:left"></div>4G</div>
+          <div style="height:8px; width:8px; border: 1px solid #CECECE; margin: 5px 5px 5px 85px; background-color: #e36565; opacity: 0.5; float:left"></div>4G</div>
         <div id="boutonInfosCouvData3G" style="margin: 0px 0px 0px 10px; display:none">i</div>
         <div id="boutonInfosCouvData4G" style="margin: 0px 0px 0px 10px;">i</div>
       </div>
@@ -336,7 +344,7 @@
         <div style="text-align:center; font-size:10px; line-height:10px; color:#888; float:left;">Qualité mesurée sur le terrain par l’Arcep avec plus d'un million de mesures</div>
       </div>
     </div>
-    <div style="text-align:justify; margin:7px 0px 0px 0px; font-size:9px; font-style:italic; line-height:9px; color:#666; float:left;">L’Arcep, arbitre expert et neutre au statut d’autorité administrative indépendante, est l’architecte et le gardien des réseaux d’échanges en France (+ d’infos <a href="https://www.arcep.fr/" target="_blank">ici</a>).</div>
+    <div style="text-align:justify; margin:7px 0px 0px 0px; font-size:9px; font-style:italic; line-height:9px; color:#666; float:left;">L’Arcep, arbitre expert et neutre au statut d’autorité administrative indépendante, est l’architecte et le gardien des réseaux d’échanges en France (<a href="https://www.arcep.fr/" target="_blank">plus d'infos</a>).</div>
   </div>
 
   <div id="PopupInfosLegendeCouvVoix">

@@ -1,9 +1,9 @@
 var emphasePublication = "QoS";
 var strate = "national";
-var carteCouverture = "voix";
-var carteCouvertureAvant = "voix";
-var technoCarteCouverture = "4G";
-var technoCarteCouvertureAvant = "4G";
+var carteCouverture;
+var carteCouvertureAvant;
+var technoCarteCouverture;
+var technoCarteCouvertureAvant;
 var strateTransports = "routes";
 var sousStrateTransports = "tous";
 var MCCMNC;
@@ -15,11 +15,13 @@ var agglosTransports = "transports";
 var transportsVoixDataAvant = "data";
 var transportsVoixData = "data";
 var map;
+var noPopup = false;
 
 var sourceLoaded = [];
+var layerLoaded = [];
 var layerVisible = [];
 
-//console.log("Le site monreseaumobile est développé par l'Arcep.\nLes différentes bibliothèques utilisées sont : \n- MapBox pour la cartographie,\n- highcharts pour les graphiques\n- et bien sûr un peu de jquery.\n\nLe code est disponible sur gitHub : \nhttps://github.com/ARCEP-dev/monReseauMobile/\n\nN'hésitez pas à nous faire des retours quant à votre utilisation et d'éventuels bugs constatés, nous nous efforcerons d'améliorer cela.\nBonne utilisation ;-)");
+console.log("Le site monreseaumobile est développé par l'Arcep.\nLes différentes bibliothèques utilisées sont : \n- MapBox pour la cartographie,\n- highcharts pour les graphiques\n- et bien sûr un peu de jquery.\n\nLe code est disponible sur gitHub : \nhttps://github.com/ARCEP-dev/monReseauMobile/\n\nN'hésitez pas à nous faire des retours quant à votre utilisation et d'éventuels bugs constatés, nous nous efforcerons d'améliorer cela.\nBonne utilisation ;-)");
 
 activerMenuQoS();
 //activerMenuCouverture();
@@ -110,17 +112,14 @@ map.on('load', function() {
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point);
   if (!features.length) {
-    return;
+    return -1;
   }
   var feature = features[0];
-  if (features[0].properties.TypeCouv == "TBC") {
-    var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML("<span style='color:#d82424;'>Très bonne couverture</span>").addTo(map);
+  if (features[0].properties.bilan == "OK") {
+    var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(feature.properties.protocole + " : succès :-)").addTo(map);
   }
-  if (features[0].properties.TypeCouv == "BC") {
-    var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML("<span style='color:#e36565;'>Bonne couverture</span>").addTo(map);
-  }
-  if (features[0].properties.TypeCouv == "CL") {
-    var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML("<span style='color:#efa7a7;'>Couverture limitée</span>").addTo(map);
+  else if(features[0].properties.bilan == "KO") {
+    var popup = new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(feature.properties.protocole + " : échec ;-(").addTo(map);
   }
 });
 
@@ -163,31 +162,6 @@ map.on('click', function(e) {
     popupInfo.setLngLat(feature.geometry.coordinates)
       .setHTML(getIconeOperateur(feature.properties.Operateur) + "Emetteur " + getTechnosInstalleesSite(feature.properties.C4G, feature.properties.C3G, feature.properties.C2G))
       .addTo(map);
-  }
-});
-
-map.on('mousemove', function(e) {
-  if (layerVisible.includes("transports_voix")) {
-    var features = map.queryRenderedFeatures(e.point, {
-      layers: ["transports_voix"]
-    });
-
-    if (features.length !== 0) {
-      var feature = features[0];
-
-      if (feature.properties['bilan'] == "OK") {
-        popupInfo.setLngLat(feature.geometry.coordinates)
-          .setHTML(feature.properties.protocole + " : succès :-)")
-          .addTo(map);
-      } else {
-        popupInfo.setLngLat(feature.geometry.coordinates)
-          .setHTML(feature.properties.protocole + " : échec ;-(")
-          .addTo(map);
-      }
-    } else {
-      popupInfo.remove();
-      return;
-    }
   }
 });
 
@@ -483,17 +457,14 @@ function activerMenuCarteVoix() {
     setElVisible("ZoneGraphiquesCouvVoix");
 
     resetLegendesCarte();
-    setElVisible("PopupInfosLegendeCouvVoix");
-    setElInvisible("PopupInfosLegendeCouvData3G");
-    setElInvisible("PopupInfosLegendeCouvData3GFree");
-    setElInvisible("PopupInfosLegendeCouvData4G");
+    miseAJourLegendeCouverture();
 
     setElInvisible("infoCouv");
     setElInvisible("bouton3G");
     setElInvisible("bouton4G");
     setElVisible("bouton2G");
     setElVisible("bouton2G3G");
-    activeBouton2G3G();
+    activerMenu2G()
     afficherInfo();
     afficherLegendeCarte();
     return 1;
@@ -503,16 +474,16 @@ function activerMenuCarteVoix() {
 
 function activerMenuCarteData() {
   if (boutonCarteData.status != "active") {
+    carteCouverture = "data";
     unactiveButton(bouton3G);
+    unactiveButton(bouton4G);
     activerMenu4G();
     activeBoutonCarteData();
     chartsGenerator(technoCarteCouverture);
-    carteCouverture = "data";
     afficherCouches();
 
     afficherInfo();
     setElInvisible("ZoneGraphiquesCouvVoix");
-    setElInvisible("PopupInfosLegendeCouvVoix");
     setElVisible("ZoneGraphiquesCouvData");
 
     setElInvisible("infoCouv");
@@ -533,6 +504,7 @@ function activerMenu2G() {
 
     afficherLegendeCarte();
     afficherCouches();
+    miseAJourLegendeCouverture();
     return 1;
   }
   return -1;
@@ -543,8 +515,10 @@ function activerMenu2G3G() {
     technoCarteCouverture = "2G3G";
     activeBouton2G3G();
 
-    afficherLegendeCarte();
-    afficherCouches();
+    /*afficherLegendeCarte();
+    afficherCouches();*/
+    afficherCouche2g3g();
+    miseAJourLegendeCouverture();
     return 1;
   }
   return -1;
@@ -571,20 +545,13 @@ function activerMenu3G() {
     setElInvisible("boutonInfosCouvData4G");
     setElInvisible("GraphiqueCouvPopulation4G");
     setElInvisible("GraphiqueCouvSurface4G");
-    setElInvisible("PopupInfosLegendeCouvVoix");
-    setElInvisible("PopupInfosLegendeCouvData4G");
     setElVisible("boutonInfosCouvData3G");
     setElVisible("GraphiqueCouvPopulation3G");
     setElVisible("GraphiqueCouvSurface3G");
-    if (MCCMNC == 20815) {
-      setElVisible("PopupInfosLegendeCouvData3GFree");
-    }
-    else {
-      setElVisible("PopupInfosLegendeCouvData3G");
-    }
 
     afficherLegendeCarte();
     afficherCouches();
+    miseAJourLegendeCouverture();
     return 1;
   }
   return -1;
@@ -609,13 +576,10 @@ function activerMenu4G() {
     setElInvisible("boutonInfosCouvData3G");
     setElInvisible("GraphiqueCouvPopulation3G");
     setElInvisible("GraphiqueCouvSurface3G");
-    setElInvisible("PopupInfosLegendeCouvVoix");
-    setElInvisible("PopupInfosLegendeCouvData3G");
-    setElInvisible("PopupInfosLegendeCouvData3GFree");
     setElVisible("boutonInfosCouvData4G");
     setElVisible("GraphiqueCouvPopulation4G");
     setElVisible("GraphiqueCouvSurface4G");
-    setElVisible("PopupInfosLegendeCouvData4G");
+    miseAJourLegendeCouverture();
 
     afficherLegendeCarte();
     afficherCouches();
@@ -678,7 +642,7 @@ function activerMenuTransports() {
       activerMenuQoSTransportsData();
     } else {
       activerMenuQoSTransportsVoixSMS();
-      setElInvisible("legendeQoSTransports");
+      setElVisible("legendeQoSTransports");
     }
     return 1;
   }
@@ -780,6 +744,7 @@ function deletePopup(e) {
 
 function closePopup(e) {
   e.target.parentNode.style.display = 'none';
+  noPopup = true;
 }
 
 //addEventListener on each clicEnSavoirPlusCouv class elements
@@ -916,10 +881,12 @@ function activerMenuMetro() {
 $("#boutonInfosCouvVoix").click(function() {
   if (boutonInfosCouvVoix.status != "active") {
     setElVisible("PopupInfosLegendeCouvVoix");
+    noPopup = false;
   }
 });
 $("#boutonInfosCouvData3G").click(function() {
   if (boutonInfosCouvData3G.status != "active") {
+    noPopup = false;
     if (MCCMNC == 20815) {
       setElVisible("PopupInfosLegendeCouvData3GFree");
     } else {
@@ -928,6 +895,7 @@ $("#boutonInfosCouvData3G").click(function() {
   }
 });
 $("#boutonInfosCouvData4G").click(function() {
+  noPopup = false;
   if (boutonInfosCouvData4G.status != "active") {
     document.getElementById('PopupInfosLegendeCouvData4G').style.display = 'block';
   }
@@ -1010,9 +978,8 @@ function setSitesCouvFilter() {
 }
 
 function miseAJourLegendeCouverture() {
-  console.log("miseAJourLegendeCouverture");
   resetAffichagePopupInfosLegende();
-  if (window.innerWidth > 910) {
+  if (window.innerWidth > 910 & !noPopup) {
     if (couvertureQoS == "couverture" && carteCouverture == "data") {
       if (technoCarteCouverture == "3G") {
         if (MCCMNC == 20815) {
@@ -1284,7 +1251,7 @@ function addMbSource(value) {
   for (var i = 0; i < sourceLoaded.length; i++) {
     if (sourceLoaded[i] == value) {
       //Source already loaded
-      return 0;
+      return -1;
     }
   }
   if (value == "point") {
@@ -1311,6 +1278,12 @@ function addMbSource(value) {
 }
 
 function addMbLayer(value) {
+  for (var i = 0; i < layerLoaded.length; i++) {
+    if (layerLoaded[i] == value) {
+      //Source already loaded
+      return -1;
+    }
+  }
   if (value == "3d-buildings") {
     map.addLayer({
       'id': '3d-buildings',
@@ -1431,6 +1404,7 @@ function addMbLayer(value) {
     }
   }
   layerVisible.push(value);
+  layerLoaded.push(value);
 }
 
 function setLayerVisible(layer) {
