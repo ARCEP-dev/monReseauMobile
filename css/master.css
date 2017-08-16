@@ -187,6 +187,21 @@ select {
   float:left;
   }
 
+.ZoneGraphiquesQoSTransportsVoixSMS, .ZoneGraphiquesQoSTransportsData{
+  height: 126px;
+  margin: 5px 19px 0px 0px;
+  border:0px solid grey;
+  float:left
+}
+
+.ZoneGraphiquesQoSTransportsVoixSMS{
+  width: 260px;
+}
+
+.ZoneGraphiquesQoSTransportsData{
+  width: 224px;
+}
+
 #PopupBienvenue,#PopupInfosLegendeCouvVoix,#PopupInfosLegendeCouvData3G,#PopupInfosLegendeCouvData3GFree,#PopupInfosLegendeCouvData4G,#PopupInfosInfosComplementairesCouverture  {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   position: absolute;
