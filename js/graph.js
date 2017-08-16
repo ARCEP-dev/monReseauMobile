@@ -201,7 +201,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
           formatter: function() {
             if (this.series.name == 'couverture limitée') {
               if (this.total > 99)
-                return '> 99 %';
+                return '>99%';
               if (this.total > 0)
                 return this.total + ' %';
             }
@@ -485,7 +485,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
           formatter: function() {
             if (this.series.name == 'couverture ' + inTechno + ' bridée à 1Mbit/s') {
               if (this.total > 99)
-                return '> 99 %';
+                return '>99%';
               if (this.total > 0)
                 return this.total + ' %';
             }
