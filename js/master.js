@@ -69,18 +69,18 @@ map.on('load', function() {
   addMbSource("transports_data");
   addMbSource("transports_voix");
   addMbSource("Sites");
-  addMbSource("BC_Orange");
-  addMbSource("CL_Orange");
-  addMbSource("TBC_Orange");
-  addMbSource("BC_Bouygues");
-  addMbSource("CL_Bouygues");
-  addMbSource("TBC_Bouygues");
-  addMbSource("BC_SFR");
-  addMbSource("CL_SFR");
-  addMbSource("TBC_SFR");
-  addMbSource("BC_Free");
-  addMbSource("CL_Free");
-  addMbSource("TBC_Free");
+  addMbSource("2G_TBC_Bouygues");
+  addMbSource("2G_BC_Bouygues");
+  addMbSource("2G_CL_Bouygues");
+  addMbSource("2G_TBC_Free");
+  addMbSource("2G_BC_Free");
+  addMbSource("2G_CL_Free");
+  addMbSource("2G_TBC_Orange");
+  addMbSource("2G_BC_Orange");
+  addMbSource("2G_CL_Orange");
+  addMbSource("2G_TBC_SFR");
+  addMbSource("2G_BC_SFR");
+  addMbSource("2G_CL_SFR");
 
   if (couvertureQoS == "QoS") {
     addMbLayer("Sites");
@@ -176,50 +176,47 @@ function randomOperateur() {
 function afficherCouches() {
   if (map != undefined && map.ready) {
     setAllLayersInvisible();
+    setElInvisible("noOperatorData");
     if (boutonCouverture.status == "active" && (MCCMNC != MCCMNCAvant || carteCouverture != carteCouvertureAvant || technoCarteCouverture != technoCarteCouvertureAvant)) {
       if (boutonCarteVoix.status == "active") {
         if (technoCarteCouverture == "2G") {
           if (MCCMNC == 20801) {
-            setLayerVisible("TBC_Orange");
-            setLayerVisible("BC_Orange");
-            setLayerVisible("CL_Orange");
+            setLayerVisible("2G_TBC_Orange");
+            setLayerVisible("2G_BC_Orange");
+            setLayerVisible("2G_CL_Orange");
           }
           if (MCCMNC == 20810) {
-            setLayerVisible("TBC_SFR");
-            setLayerVisible("BC_SFR");
-            setLayerVisible("CL_SFR");
+            setLayerVisible("2G_TBC_SFR");
+            setLayerVisible("2G_BC_SFR");
+            setLayerVisible("2G_CL_SFR");
           }
           if (MCCMNC == 20815) {
-            setLayerVisible("TBC_Free");
-            setLayerVisible("BC_Free");
-            setLayerVisible("CL_Free");
+            setLayerVisible("2G_TBC_Free");
+            setLayerVisible("2G_BC_Free");
+            setLayerVisible("2G_CL_Free");
           }
           if (MCCMNC == 20820) {
-            setLayerVisible("TBC_Bouygues");
-            setLayerVisible("BC_Bouygues");
-            setLayerVisible("CL_Bouygues");
+            setLayerVisible("2G_TBC_Bouygues");
+            setLayerVisible("2G_BC_Bouygues");
+            setLayerVisible("2G_CL_Bouygues");
           }
         }
         else if (technoCarteCouverture == "2G3G") {
           if (MCCMNC == 20801) {
-            setLayerVisible("TBC_Orange_test");
-            setLayerVisible("BC_Orange_test");
-            setLayerVisible("CL_Orange_test");
+            setLayerVisible("2G3G_TBC_Orange");
+            setLayerVisible("2G3G_BC_Orange");
+            setLayerVisible("2G3G_CL_Orange");
           }
           if (MCCMNC == 20810) {
-            setLayerVisible("TBC_Orange_test");
-            setLayerVisible("BC_Orange_test");
-            setLayerVisible("CL_Orange_test");
+            setLayerVisible("2G3G_TBC_SFR");
+            setLayerVisible("2G3G_BC_SFR");
+            setLayerVisible("2G3G_CL_SFR");
           }
           if (MCCMNC == 20815) {
-            setLayerVisible("TBC_Orange_test");
-            setLayerVisible("BC_Orange_test");
-            setLayerVisible("CL_Orange_test");
+            setElVisible("noOperatorData");
           }
           if (MCCMNC == 20820) {
-            setLayerVisible("TBC_Orange_test");
-            setLayerVisible("BC_Orange_test");
-            setLayerVisible("CL_Orange_test");
+            setElVisible("noOperatorData");
           }
         }
       }
@@ -242,7 +239,7 @@ function afficherCouches() {
         if (MCCMNC == 20815) {
           if (technoCarteCouverture == "3G") {
             setLayerVisible("3G_Free");
-            setLayerVisible("3G_Free_bridee");
+            //setLayerVisible("3G_Free_bridee");
           }
           if (technoCarteCouverture == "4G") {
             setLayerVisible("4G_Free");
@@ -442,18 +439,18 @@ document.getElementById("boutonQoSTransportsData").addEventListener("click", act
 function activerMenuCouverture() {
   if (boutonCouverture.status != "active") {
     couvertureQoS = "couverture";
-    addMbLayer("TBC_Orange");
-    addMbLayer("BC_Orange");
-    addMbLayer("CL_Orange");
-    addMbLayer("TBC_Bouygues");
-    addMbLayer("BC_Bouygues");
-    addMbLayer("CL_Bouygues");
-    addMbLayer("TBC_SFR");
-    addMbLayer("BC_SFR");
-    addMbLayer("CL_SFR");
-    addMbLayer("TBC_Free");
-    addMbLayer("BC_Free");
-    addMbLayer("CL_Free");
+    addMbLayer("2G_TBC_Bouygues");
+    addMbLayer("2G_BC_Bouygues");
+    addMbLayer("2G_CL_Bouygues");
+    addMbLayer("2G_TBC_Free");
+    addMbLayer("2G_BC_Free");
+    addMbLayer("2G_CL_Free");
+    addMbLayer("2G_TBC_Orange");
+    addMbLayer("2G_BC_Orange");
+    addMbLayer("2G_CL_Orange");
+    addMbLayer("2G_TBC_SFR");
+    addMbLayer("2G_BC_SFR");
+    addMbLayer("2G_CL_SFR");
 
     activeBoutonCouverture();
 
@@ -461,6 +458,7 @@ function activerMenuCouverture() {
     setElInvisible("ZoneGraphiquesQoSTransports");
     setElInvisible("ZoneGraphiquesQoSLDV");
     setElInvisible("masquerMap");
+    setElInvisible("noOperatorData");
     setElVisible("ZoneGraphiquesCouv");
     activerMenuCarteVoix();
     return 1;
@@ -522,31 +520,31 @@ function activerMenu2G() {
     technoCarteCouverture = "2G";
     activeBouton2G();
 
-    addMbSource("BC_Orange");
-    addMbSource("CL_Orange");
-    addMbSource("TBC_Orange");
-    addMbSource("BC_Bouygues");
-    addMbSource("CL_Bouygues");
-    addMbSource("TBC_Bouygues");
-    addMbSource("BC_SFR");
-    addMbSource("CL_SFR");
-    addMbSource("TBC_SFR");
-    addMbSource("BC_Free");
-    addMbSource("CL_Free");
-    addMbSource("TBC_Free");
+    addMbSource("2G_TBC_Bouygues");
+    addMbSource("2G_BC_Bouygues");
+    addMbSource("2G_CL_Bouygues");
+    addMbSource("2G_TBC_Free");
+    addMbSource("2G_BC_Free");
+    addMbSource("2G_CL_Free");
+    addMbSource("2G_TBC_Orange");
+    addMbSource("2G_BC_Orange");
+    addMbSource("2G_CL_Orange");
+    addMbSource("2G_TBC_SFR");
+    addMbSource("2G_BC_SFR");
+    addMbSource("2G_CL_SFR");
 
-    addMbLayer("TBC_Orange");
-    addMbLayer("BC_Orange");
-    addMbLayer("CL_Orange");
-    addMbLayer("TBC_Bouygues");
-    addMbLayer("BC_Bouygues");
-    addMbLayer("CL_Bouygues");
-    addMbLayer("TBC_SFR");
-    addMbLayer("BC_SFR");
-    addMbLayer("CL_SFR");
-    addMbLayer("TBC_Free");
-    addMbLayer("BC_Free");
-    addMbLayer("CL_Free");
+    addMbLayer("2G_TBC_Bouygues");
+    addMbLayer("2G_BC_Bouygues");
+    addMbLayer("2G_CL_Bouygues");
+    addMbLayer("2G_TBC_Free");
+    addMbLayer("2G_BC_Free");
+    addMbLayer("2G_CL_Free");
+    addMbLayer("2G_TBC_Orange");
+    addMbLayer("2G_BC_Orange");
+    addMbLayer("2G_CL_Orange");
+    addMbLayer("2G_TBC_SFR");
+    addMbLayer("2G_BC_SFR");
+    addMbLayer("2G_CL_SFR");
 
     chartsGenerator(technoCarteCouverture);
     afficherLegendeCarte();
@@ -562,13 +560,19 @@ function activerMenu2G3G() {
     technoCarteCouverture = "2G3G";
     activeBouton2G3G();
 
-    addMbSource("TBC_Orange_test");
-    addMbSource("BC_Orange_test");
-    addMbSource("CL_Orange_test");
+    addMbSource("2G3G_TBC_Orange");
+    addMbSource("2G3G_BC_Orange");
+    addMbSource("2G3G_CL_Orange");
+    addMbSource("2G3G_TBC_SFR");
+    addMbSource("2G3G_BC_SFR");
+    addMbSource("2G3G_CL_SFR");
 
-    addMbLayer("TBC_Orange_test");
-    addMbLayer("BC_Orange_test");
-    addMbLayer("CL_Orange_test");
+    addMbLayer("2G3G_TBC_Orange");
+    addMbLayer("2G3G_BC_Orange");
+    addMbLayer("2G3G_CL_Orange");
+    addMbLayer("2G3G_TBC_SFR");
+    addMbLayer("2G3G_BC_SFR");
+    addMbLayer("2G3G_CL_SFR");
 
     chartsGenerator(technoCarteCouverture);
     afficherLegendeCarte();
@@ -588,13 +592,13 @@ function activerMenu3G() {
     addMbSource("3G_Bouygues");
     addMbSource("3G_SFR");
     addMbSource("3G_Free");
-    addMbSource("3G_Free_bridee");
+    //addMbSource("3G_Free_bridee");
 
     addMbLayer("3G_Orange");
     addMbLayer("3G_Bouygues");
     addMbLayer("3G_SFR");
     addMbLayer("3G_Free");
-    addMbLayer("3G_Free_bridee");
+    //addMbLayer("3G_Free_bridee");
 
     chartsGenerator(technoCarteCouverture);
     setElInvisible("boutonInfosCouvData4G");
@@ -686,7 +690,6 @@ function activerMenuTransports() {
   if (boutonTransports.status != "active") {
     agglosTransports = "transports";
     activeBoutonTransports();
-    createDataList(strateTransports);
     chartsGenerator(strate);
 
     setElInvisible("masquerMap");
@@ -708,6 +711,7 @@ function activerMenuQoSTransportsVoixSMS() {
   if (boutonQoSTransportsVoixSMS.status != "active") {
     activeBoutonQoSTransportsVoixSMS();
     transportsVoixData = "voix";
+    createDataList(strateTransports);
     sousStrateTransports = holdAutocompleteValue(sousStrateTransports);
     setElInvisible("ZoneGraphiquesQoSTransportsData");
     chartsGenerator(strateTransports);
@@ -723,6 +727,7 @@ function activerMenuQoSTransportsData() {
   if (boutonQoSTransportsData.status != "active") {
     activeBoutonQoSTransportsData();
     transportsVoixData = "data";
+    createDataList(strateTransports);
     sousStrateTransports = holdAutocompleteValue(sousStrateTransports);
     setElInvisible("ZoneGraphiquesQoSTransportsVoixSMS");
     chartsGenerator(strateTransports);
@@ -1206,15 +1211,18 @@ document.getElementById("autocompleteRouteData").addEventListener("input", getSe
 document.getElementById("autocompleteRouteVoix").addEventListener("input", getSelectedRoute);
 
 function createDataList(strateTransports) {
-  var parentNode = document.getElementById("autocompleteListeVoies");
-  removeAllChild("autocompleteListeVoies");
+  var parentNode;
 
   if (transportsVoixData == "data") {
-    resetInput("autocompleteRouteData");
+    removeAllChild("autocompleteRouteData");
+    parentNode = document.getElementById("autocompleteRouteData");
+    //resetInput("autocompleteRouteData");
     obj = JSON.parse(listeVoies);
     obj = obj.data;
   } else if (transportsVoixData == "voix") {
-    resetInput("autocompleteRouteVoix");
+    removeAllChild("autocompleteRouteVoix");
+    parentNode = document.getElementById("autocompleteRouteVoix");
+    //resetInput("autocompleteRouteVoix");
     obj = JSON.parse(listeVoies);
     obj = obj.voix;
   } else {
@@ -1242,6 +1250,7 @@ function createDataList(strateTransports) {
   for (var i = 0; i < listeStrateTransports.length; i++) {
     var newOption = document.createElement("option");
     newOption.value = listeStrateTransports[i].value;
+    newOption.innerText = listeStrateTransports[i].value;
     parentNode.appendChild(newOption);
   }
 }
@@ -1470,6 +1479,7 @@ function addMbLayer(value) {
 function setLayerVisible(layer) {
   if (!layerVisible.includes(layer)) {
     map.setLayoutProperty(layer, "visibility", "visible");
+    console.log("setLayerVisible : " + layer);
     layerVisible.push(layer);
   }
 }
