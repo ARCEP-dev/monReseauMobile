@@ -8,16 +8,17 @@ function removeAllCharts() {
 }
 
 function chartsGenerator(features) {
+  console.log("chart : " + features);
   removeAllCharts();
   switch (features) {
     case "2G":
-      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population")));
-      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population", features)));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire", features)));
       break;
 
     case "2G3G":
-      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population")));
-      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire")));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Population", "Couverture_en_population", features)));
+      chartsCollection.push(new Highcharts.Chart(GraphiqueCouvCumul("Surface", "Couverture_en_territoire", features)));
       break;
 
     case "3G":
@@ -138,7 +139,7 @@ function chartsGenerator(features) {
   }
 }
 
-function GraphiqueCouvCumul(texteLeg, inUnite) {
+function GraphiqueCouvCumul(texteLeg, inUnite, inTechno) {
   var options = {
     chart: {
       type: 'column',
@@ -227,7 +228,9 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
     series: [{
         name: 'couverture limitée',
         data: [{
-          y: dataRaw.couvertureTechno.CL[inUnite].Orange,
+          //dataRaw.couverture.CL[inUnite].Orange,
+          y: dataRaw.couverture[inTechno].CL[inUnite].Orange,
+          //dataRaw.couverture[inTechno][inUnite].Iti.Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -241,7 +244,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.CL[inUnite].Bouygues_Telecom,
+          y: dataRaw.couverture[inTechno].CL[inUnite].Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -255,7 +258,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.CL[inUnite].SFR,
+          y: dataRaw.couverture[inTechno].CL[inUnite].SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -269,7 +272,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.CL[inUnite].Free_Mobile,
+          y: dataRaw.couverture[inTechno].CL[inUnite].Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
@@ -289,7 +292,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
       {
         name: 'bonne couverture',
         data: [{
-          y: dataRaw.couvertureTechno.BC[inUnite].Orange,
+          y: dataRaw.couverture[inTechno].BC[inUnite].Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -303,7 +306,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.BC[inUnite].Bouygues_Telecom,
+          y: dataRaw.couverture[inTechno].BC[inUnite].Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -317,7 +320,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.BC[inUnite].SFR,
+          y: dataRaw.couverture[inTechno].BC[inUnite].SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -331,7 +334,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.BC[inUnite].Free_Mobile,
+          y: dataRaw.couverture[inTechno].BC[inUnite].Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
@@ -352,7 +355,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
         name: 'très bonne couverture',
         data: [{
 
-          y: dataRaw.couvertureTechno.TBC[inUnite].Orange,
+          y: dataRaw.couverture[inTechno].TBC[inUnite].Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -366,7 +369,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.TBC[inUnite].Bouygues_Telecom,
+          y: dataRaw.couverture[inTechno].TBC[inUnite].Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -380,7 +383,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.TBC[inUnite].SFR,
+          y: dataRaw.couverture[inTechno].TBC[inUnite].SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -394,7 +397,7 @@ function GraphiqueCouvCumul(texteLeg, inUnite) {
             ],
           }
         }, {
-          y: dataRaw.couvertureTechno.TBC[inUnite].Free_Mobile,
+          y: dataRaw.couverture[inTechno].TBC[inUnite].Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
@@ -511,7 +514,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
     series: [{
         name: 'couverture ' + inTechno + ' bridée à 1Mbit/s',
         data: [{
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Orange,
+          y: dataRaw.couverture[inTechno][inUnite].Iti.Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -525,7 +528,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             ],
           }
         }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Bouygues_Telecom,
+          y: dataRaw.couverture[inTechno][inUnite].Iti.Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -539,7 +542,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             ],
           }
         }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.SFR,
+          y: dataRaw.couverture[inTechno][inUnite].Iti.SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -553,7 +556,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             ],
           }
         }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].Iti.Free_Mobile,
+          y: dataRaw.couverture[inTechno][inUnite].Iti.Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
@@ -573,7 +576,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
       {
         name: 'couverture ' + inTechno,
         data: [{
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Orange,
+          y: dataRaw.couverture[inTechno][inUnite].ReseauPropre.Orange,
           color: {
             linearGradient: {
               x1: 1,
@@ -587,7 +590,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             ],
           }
         }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Bouygues_Telecom,
+          y: dataRaw.couverture[inTechno][inUnite].ReseauPropre.Bouygues_Telecom,
           color: {
             linearGradient: {
               x1: 1,
@@ -601,7 +604,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             ],
           }
         }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.SFR,
+          y: dataRaw.couverture[inTechno][inUnite].ReseauPropre.SFR,
           color: {
             linearGradient: {
               x1: 1,
@@ -615,7 +618,7 @@ function GraphiqueCouvCumul_3G4G(texteLeg, inUnite, inTechno) {
             ],
           }
         }, {
-          y: dataRaw.couverture3G4G[inTechno][inUnite].ReseauPropre.Free_Mobile,
+          y: dataRaw.couverture[inTechno][inUnite].ReseauPropre.Free_Mobile,
           color: {
             linearGradient: {
               x1: 1,
