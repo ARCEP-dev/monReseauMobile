@@ -22,6 +22,9 @@
   <div id="masquerMap" style="display:none; opacity:0.7; background-color: #ffffff; z-index:2; position:absolute; top:0px; bottom:0; left: 0px;right: 0px;">
     <div style="position:absolute; top:calc(40%); left:calc(50% - 151px); text-align:center; font-size: 30px; transform: rotate(-10deg);">Pas de données cartographiques</div>
   </div>
+  <div id="noOperatorData" style="display:none; opacity:0.7; background-color: #ffffff; z-index:2; position:absolute; top:0px; bottom:0; left: 0px;right: 0px;">
+    <div style="position:absolute; top:calc(40%); left:calc(50% - 151px); text-align:center; font-size: 30px; transform: rotate(-10deg);">Données non transmises par l'opérateur concerné</div>
+  </div>
   <div id="toggleHUD">☰</div>
 
   <aside>
@@ -57,7 +60,7 @@
         <p><img alt="Icone Lieux de vie" src="./img/logoLieuxDeVie.png">&nbsp;Lieux de vie</p>
       </div>
 
-      <div style="width: 60%; height: 1px; margin: 10px 20% 5px 20%; float:left;">
+      <div style="width: 60%; height: 1px; margin: 10px 20% 10px 20%; float:left;">
         <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
       </div>
     </div>
@@ -80,7 +83,7 @@
             <div style="width: 100%; border-style: solid; border-width: 1px 0px 0px 0px;border-color:white; float:left;"></div>
           </div>
           <div style="font-size:14px; font-weight:bold; margin: 0px 0px 5px 0px; float:left;">Par type de terminal</div>
-          <div class="boutonGeo" id="bouton2G" style="height:30px; width:49px; margin: 0px 10px 0px 65px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;" title="Données au xx/xx/2017">
+          <div class="boutonGeo" id="bouton2G" style="height:30px; width:49px; margin: 0px 10px 0px 80px;position:relative; line-height:30px; font-size:16px; font-weight:bold; display:none;" title="Données au xx/xx/2017">
             <div class="selectLight" id="selectLight2G"></div>
             <div>2G</div>
           </div>
@@ -131,7 +134,7 @@
     </div>
 
     <div id="ZoneGraphiquesQoSLDV">
-      <div style="font-size:14px; font-weight:bold; margin: 10px 0px 0px 0px; float:left;">Par type de lieux</div>
+      <!--div style="font-size:14px; font-weight:bold; margin: 10px 0px 0px 0px; float:left;">Par type de lieux</div-->
       <div id="GraphiqueQoS_ZoneGeo" style="width: 100%; height: 110px;">
         <div class="boutonGeo" id="boutonNational" style="width:258px; margin: 5px 0px 10px 0px;position:relative;">
           <div class="selectLight" id="selectLightNational"></div>
@@ -166,7 +169,7 @@
       <div class="graphiqueQoS" id="GraphiqueQoSLDV_Web"></div>
       <div class="graphiqueQoS" id="GraphiqueQoSLDV_Video"></div>
 
-      <div id="legendeGraphiqueQoS" style="width: 150px; text-align:center; font-weight:bold; margin: 10px 55px 0px 45px; float:left;"><span style="color:#ff8432; font-size:11px;">Orange&nbsp;&nbsp;&nbsp;</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp;&nbsp;&nbsp;</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp;&nbsp;&nbsp;</span><span style="color:#32b432; font-size:11px;">Free</span></div>
+      <div id="legendeGraphiqueQoS" style="width: 150px; text-align:center; font-weight:bold; margin: 5px 55px 0px 45px; float:left;"><span style="color:#ff8432; font-size:11px;">Orange&nbsp;&nbsp;&nbsp;</span><span style="color:#3baeb3; font-size:11px;">Bouygues&nbsp;&nbsp;&nbsp;</span><span style="color:#cf3232; font-size:11px;">SFR&nbsp;&nbsp;&nbsp;</span><span style="color:#32b432; font-size:11px;">Free</span></div>
     </div>
 
     <div id="ZoneGraphiquesQoSTransports">
@@ -223,14 +226,16 @@
       <datalist id="autocompleteListeVoies"></datalist>
       <div id="ZoneGraphiquesQoSTransportsVoixSMS">
         <div class="menuDeroulantTransports" style="margin: 2px 10px 0px 2px; float:left">
-          <input type="text" id="autocompleteRouteVoix" list="autocompleteListeVoies" style="width: 220px;" placeholder="Filtrer sur un axe ou une ligne" title="Le contenu de la liste sera affiné en fonction de votre saisie." />
+          <!--input type="text" id="autocompleteRouteVoix" list="autocompleteListeVoies" style="width: 220px;" placeholder="Filtrer sur un axe ou une ligne" title="Le contenu de la liste sera affiné en fonction de votre saisie." /-->
+          <select id="autocompleteRouteVoix" style="width: 250px;"></select>
         </div>
         <div class="graphiqueQoS" id="GraphiqueQoSTransports_Voix"></div>
         <div class="graphiqueQoS" id="GraphiqueQoSTransports_SMS"></div>
       </div>
       <div id="ZoneGraphiquesQoSTransportsData">
         <div class="menuDeroulantTransports" style="margin: 2px 10px 0px 2px; float:left">
-          <input type="text" id="autocompleteRouteData" list="autocompleteListeVoies" style="width: 220px;" placeholder="Filtrer sur un axe ou une ligne" title="Le contenu de la liste sera affiné en fonction de votre saisie." />
+          <!--input type="text" id="autocompleteRouteData" list="autocompleteListeVoies" style="width: 220px;" placeholder="Filtrer sur un axe ou une ligne" title="Le contenu de la liste sera affiné en fonction de votre saisie." /-->
+          <select id="autocompleteRouteData" style="width: 250px;"></select>
         </div>
         <div id="GraphiqueQoSTransports_Web" style="width: 130px; height: 100px;margin: 0px 47px 10px 47px; float:left"></div>
       </div>
@@ -246,7 +251,7 @@
       </div>
     </div>
     <div id="infoQoS">
-      <div style="font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 15px 10px 10px 10px; float:left;">Performances mesurées par l’Arcep au S1-2017, avec des terminaux compatibles 4G.</div>
+      <div style="font-size:9px; line-height:9px; font-style:italic; color:#BBBBBB; text-align:justify; margin: 5px 10px 10px 10px; float:left;">Performances mesurées par l’Arcep au S1-2017, avec des terminaux compatibles 4G.</div>
       <div style="font-size:9px; line-height:9px; color:#BBBBBB; text-align:center; margin: 15px 10px 10px 10px;">
         <a href="https://www.data.gouv.fr/fr/datasets/monreseaumobile" target="_blank" data-htmlarea-external="1">OpenData</a> -
         <a href="mailto:monreseaumobile@arcep.fr">Contact</a> -
@@ -433,6 +438,7 @@
   <script src="./js/data.js"></script>
   <script src="./js/graph.js"></script>
   <script src="./js/master.js"></script>
+  <!--script src="./js/toDevTools.js"></script-->
 </body>
 
 </html>
