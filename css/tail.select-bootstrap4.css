@@ -1,0 +1,394 @@
+@charset "utf-8";
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./css/tail.select-bootstrap4.css
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.5 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2018 SamBrishes, pytesNET <info@pytes.net>
+ */
+
+/* @start GENERAL */
+.tail-select,
+.tail-select *,
+.tail-select *:before,
+.tail-select *:after{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.tail-select,
+.tail-select *{
+    font-size: 0.8rem;
+    line-height: 1.5;
+    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+.tail-select{
+    width: 275px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+}
+.tail-select mark{
+    color: #FFFFFF;
+    background-color: #3A87AD;
+}
+.tail-select button.tail-all,
+.tail-select button.tail-none{
+    color: #FFFFFF;
+    margin: 0 2px;
+    padding: 0.25em 0.4em;
+    display: inline-block;
+    font-size: 75%;
+    line-height: 1;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: none;
+    white-space: nowrap;
+    vertical-align: top;
+    background-color: #6c757d;
+    border: 0;
+    border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.tail-select button.tail-all:hover{
+    color: #FFFFFF;
+    background-color: #28a745;
+}
+.tail-select button.tail-none:hover{
+    color: #FFFFFF;
+    background-color: #dc3545;
+}
+.tail-select-container{
+    margin: 0;
+    padding: 3px;
+    text-align: left;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.tail-select-container .select-handle{
+    width: auto;
+    color: #FFFFFF;
+    cursor: pointer;
+    margin: 1px;
+    padding: 0.2em 0.6em 0.3em;
+    display: inline-block;
+    position: relative;
+    font-size: 75%;
+    text-align: left;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: top;
+    background-color: #777777;
+    border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    transition: background 142ms linear;
+    -moz-transition: background 142ms linear;
+    -webkit-transition: background 142ms linear;
+}
+.tail-select-container .select-handle:hover{
+    background-color: #B94A48;
+}
+/* @end GENERAL */
+
+/* @start LABEL */
+.tail-select .select-label{
+    cursor: pointer;
+    color: #FFFFFF;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    text-align: left;
+    background-color: #6c757d;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    transition: background 142ms linear;
+    -moz-transition: background 142ms linear;
+    -webkit-transition: background 142ms linear;
+}
+.tail-select .select-label:hover{
+    background-color: #545b62;
+}
+.tail-select .select-label:focus{
+    background-color: #3d4246;
+    box-shadow: 0 0 0 .2rem rgba(108, 117, 125, 0.5);
+    -moz-box-shadow: 0 0 0 .2rem rgba(108, 117, 125, 0.5);
+    -webkit-box-shadow: 0 0 0 .2rem rgba(108, 117, 125, 0.5);
+}
+.tail-select .select-label:before{
+    top: 9px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    margin: 5px 0 0 0;
+    padding: 0;
+    z-index: 25;
+    content: "";
+    display: inline-block;
+    position: absolute;
+    vertical-align: top;
+    border-top: 5px dashed;
+    border-top: 5px solid\9;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    text-shadow: none;
+    transition: transform 142ms linear;
+    -moz-transition: transform 142ms linear;
+    -webkit-transition: transform 142ms linear;
+}
+.tail-select .select-label .label-count,
+.tail-select .select-label .label-inner{
+    color: #FFFFFF;
+    width: auto;
+    margin: 0;
+    padding: 0.375rem 0.75rem;
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+}
+.tail-select .select-label .label-inner{
+    max-width: 100%;
+}
+.tail-select .select-label .label-count{
+    color: #212529;
+    margin: 8px -3px 0 9px;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: top;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+}
+.tail-select.active .select-label{
+    background-color: #3d4246;
+    box-shadow: 0 0 0 .2rem rgba(108, 117, 125, 0.5);
+    -moz-box-shadow: 0 0 0 .2rem rgba(108, 117, 125, 0.5);
+    -webkit-box-shadow: 0 0 0 .2rem rgba(108, 117, 125, 0.5);
+}
+.tail-select.active .select-label:before{
+    transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+}
+/* @end LABEL */
+
+/* @start DROPDOWN */
+.tail-select .select-dropdown{
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin: 0.125rem 0 0;
+    padding: 0;
+    z-index: 35;
+    display: none;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.tail-select .select-dropdown .dropdown-search{
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    display: block;
+    border-bottom: 1px solid #ced4da;
+}
+.tail-select .select-dropdown .dropdown-search input[type=text].search-input{
+    color: #495057;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    vertical-align: middle;
+    border: 1px solid #ced4da;
+    border-radius: 0.2rem;
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border 142ms linear, box-shadow 142ms linear;
+    -moz-transition: border 142ms linear, box-shadow 142ms linear;
+    -webkit-transition: border 142ms linear, box-shadow 142ms linear;
+}
+.tail-select .select-dropdown .dropdown-search input[type=text].search-input:focus{
+    border-color: #80bdff;
+    box-shadow: 0 0 0 .2rem rgba(128, 189, 255, 0.4);
+    -moz-box-shadow: 0 0 0 .2rem rgba(128, 189, 255, 0.4);
+    -webkit-box-shadow: 0 0 0 .2rem rgba(128, 189, 255, 0.4);
+}
+.tail-select .select-dropdown .dropdown-inner{
+    width: 100%;
+    margin: 0;
+    padding: 1px 0;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.tail-select .select-dropdown .dropdown-empty{
+    color: #6c757d;
+    margin: 0;
+    padding: 1.25rem 1.75rem;
+    display: block;
+    font-size: 0.875rem;
+    text-align: center;
+    font-weight: 400;
+    line-height: 1.2;
+}
+.tail-select .select-dropdown .dropdown-action{
+    margin: 0;
+    padding: 7px 0 2px 0;
+    display: block;
+    text-align: center;
+    border-bottom: 1px solid #ced4da;
+}
+.tail-select .select-dropdown ul,
+.tail-select .select-dropdown ul li{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    list-style: none;
+}
+.tail-select .select-dropdown ul li{
+    color: #333333;
+    padding: 0.25rem 1.75rem;
+    text-align: left;
+    font-weight: normal;
+}
+.tail-select .select-dropdown ul li:first-of-type{
+    margin-top: 0.5rem;
+}
+.tail-select .select-dropdown ul li:last-of-type{
+    margin-bottom: 0.5rem;
+}
+.tail-select .select-dropdown ul li.optgroup-title{
+    color: #6c757d;
+    cursor: default;
+    margin: 0;
+    padding: 0.5rem 1.5rem;
+}
+.tail-select .select-dropdown ul li.optgroup-title b{
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.2;
+    text-shadow: none;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.tail-select .select-dropdown ul li.optgroup-title button{
+    float: right;
+    margin: 4px 2px 0 2px;
+    font-size: 65%;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.tail-select .select-dropdown ul li.dropdown-option:before{
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    z-index: 21;
+    display: inline-block;
+    content: "";
+    position: absolute;
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.tail-select .select-dropdown ul li.dropdown-option:hover{
+    color: #222222;
+    cursor: pointer;
+    background-color: #F8F8F8;
+}
+.tail-select .select-dropdown ul li.dropdown-option .option-description{
+    color: #b3b3b3;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    display: block;
+    font-size: 10px;
+    text-align: left;
+    line-height: 14px;
+    vertical-align: top;
+}
+.tail-select .select-dropdown ul li.dropdown-option .option-description *{
+    font-size: 10px;
+    text-align: left;
+    line-height: 14px;
+}
+.tail-select .select-dropdown ul li.dropdown-option:hover .option-description{
+    color: #555555;
+}
+.tail-select.disabled .select-dropdown ul li.dropdown-option,
+.tail-select .select-dropdown ul li.dropdown-option.disabled{
+    cursor: not-allowed;
+    color: #b3b3b3;
+    text-decoration: none;
+    background-color: transparent;
+    background-image: none;
+}
+.tail-select.disabled .select-dropdown ul li.dropdown-option .option-description,
+.tail-select .select-dropdown ul li.dropdown-option.disabled .option-description{
+    color: #b3b3b3;
+}
+.tail-select.hide-selected .select-dropdown ul li.selected,
+.tail-select.hide-disabled .select-dropdown ul li.disabled{
+    display: none;
+}
+.tail-select .select-dropdown ul li.selected,
+.tail-select .select-dropdown ul li.selected:hover{
+    cursor: default;
+    color: #FFFFFF;
+    background-color: #007bff;
+}
+.tail-select .select-dropdown ul li.selected:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+          9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+          SJNMTIgNWwtOCA4LTQtNCAxLjUtMS41TDQgMTBsNi41LTYuNUwxMiA1eiIvPjwvc3ZnPg==");
+}
+.tail-select.deselect .select-dropdown ul li.selected:hover,
+.tail-select.multiple .select-dropdown ul li.selected:hover{
+    cursor: pointer;
+    color: #dc3545;
+    background-color: transparent;
+}
+.tail-select.deselect .select-dropdown ul li.selected:hover:before,
+.tail-select.multiple .select-dropdown ul li.selected:hover:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+          9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZGMzNTQ1IiBkP\
+          SJNNy40OCA4bDMuNzUgMy43NS0xLjQ4IDEuNDhMNiA5LjQ4bC0zLjc1IDMuNzUtMS40OC0xLjQ4TDQuNTIgOCAuNzcgNC4y\
+          NWwxLjQ4LTEuNDhMNiA2LjUybDMuNzUtMy43NSAxLjQ4IDEuNDhMNy40OCA4eiIvPjwvc3ZnPg==");
+}
+/* @end DROPDOWN */
+
